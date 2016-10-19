@@ -15,7 +15,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    
+
     <!-- Strings related to registration -->
     <string name="prompt_first_name">"Enter First Name"</string>
     <string name="prompt_last_name">"Enter Last Name"</string>
