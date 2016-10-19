@@ -4,8 +4,8 @@
     android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp" >
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp" >
     tools:context="com.pfp.parkhere.RegisterActivity">
     <TextView android:id="@+id/RegistrationTitle"
         android:layout_width="match_parent"
