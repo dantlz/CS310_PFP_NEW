@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.ShareActionProvider;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,12 +33,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import ObjectClasses.Space;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    android.widget.ShareActionProvider mShareActionProvider;
+    ShareActionProvider mShareActionProvider;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +57,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     public void onMapSearch(View view) {
@@ -62,6 +86,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        addMarkers();
         // Add a marker in Sydney and move the camera
         LatLng losangeles = new LatLng(34, -118.244);
 //        mMap.addMarker(new MarkerOptions().position(losangeles).title("Los Angeles, CA"));
@@ -77,7 +102,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.Owner:
                 if (checked)
                     // The user is looking to list a space
@@ -109,6 +134,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // User chose the "Profile" action, change to that Activity Screen
                 startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
                 return true;
+            case R.id.itemAddSpace:
+                startActivity(new Intent(MapsActivity.this, AddSpaceActivity.class));
             case R.id.itemPayment:
 
             default:
@@ -119,4 +146,63 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("ParkHere") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    public void addMarkers() {
+        //Go through list of currently available spaces and add a marker where each one is
+        Space mSpace = new Space();
+
+        List<Pair<Float, Float>> addressList = new ArrayList<Pair<Float, Float>>();
+        Pair firstPair = new Pair<Float, Float>((float)32.7, (float)-117);
+        addressList.add(0, firstPair);
+        Pair secondPair = new Pair<Float, Float>((float)37.7, (float)-122.4);
+        addressList.add(1, secondPair);
+
+        for (int i = 0; i < addressList.size(); ++i) {
+            Pair longLat = addressList.get(i);
+            float first = (float) longLat.first;
+            float second = (float) longLat.second;
+            LatLng mine = new LatLng(first, second);
+            mMap.addMarker(new MarkerOptions().position(mine));
+        }
+
+    }
+
+    public void addNewSpot(float longitude, float latitude) {
+
+    }
 }
