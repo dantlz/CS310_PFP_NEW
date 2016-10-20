@@ -40,6 +40,20 @@
         android:hint="@string/prompt_phone"
         android:layout_below="@+id/email_field"
         android:inputType="phone" />
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/phone_field"></ImageView>
+    <Button
+        android:id="@+id/buttonLoadPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Load Picture"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imgView"></Button>
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
