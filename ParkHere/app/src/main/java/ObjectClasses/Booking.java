@@ -10,6 +10,15 @@ public class Booking {
     private Space space;
     private Date start;
     private Date end;
+    private boolean done;
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 
     public boolean isRepeat() {
         return repeat;
