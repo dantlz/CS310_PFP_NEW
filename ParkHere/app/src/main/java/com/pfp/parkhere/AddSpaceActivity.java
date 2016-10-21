@@ -87,23 +87,24 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
 //        String stateName = state.getText().toString();
 
 //        String addressName = streetNumb + " " + streetNam + ", " + cityName + ", " + stateName + " " + zipCode;
-        MapsActivity mMapActivity = new MapsActivity();
+        //MapsActivity mMapActivity = new MapsActivity();
         String addressName = "1202 W 29th Street, Los Angeles, CA 90007";
-        startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-        mMapActivity.addSpace(addressName);
+       // startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
+       // mMapActivity.addSpace(addressName);
 
 
-//        try {
-//            addressList = geocoder.getFromLocationName(addressName, 1);
-//            Address address = addressList.get(0);
-//            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-//            MapsActivity mMapActivity= new MapsActivity();
-//            mMapActivity.addNewSpot(latLng);
-//            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            addressList = geocoder.getFromLocationName(addressName, 1);
+            Address address = addressList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            MapsActivity mMapActivity= new MapsActivity();
+            System.out.println("got geo");
+            mMapActivity.addSpace(latLng);
+            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
+            mMapActivity.addSpace(latLng);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
