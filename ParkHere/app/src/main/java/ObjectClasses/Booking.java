@@ -8,8 +8,22 @@ import java.util.GregorianCalendar;
 
 public class Booking {
     private Space space;
+<<<<<<< HEAD
     private GregorianCalendar start;
     private GregorianCalendar end;
+=======
+    private Date start;
+    private Date end;
+    private boolean done;
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+>>>>>>> 84c06d1c6c19843ebd249ffcc3ac33457445eb3b
 
     public boolean isRepeat() {
         return repeat;
