@@ -32,4 +32,10 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     testCompile 'junit:junit:4.12'
+
+    //For Firebase authentication
+    compile 'com.google.firebase:firebase-auth:9.6.1'
 }
+
+//For Firebase
+apply plugin: 'com.google.gms.google-services'
