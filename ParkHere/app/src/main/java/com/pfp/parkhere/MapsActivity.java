@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ObjectClasses.Space;
@@ -48,6 +49,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private List<String> spaceList = new ArrayList<String>();
+    private Geocoder geocoder;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        geocoder = new Geocoder(this);
+
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -69,7 +77,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<Address> addressList = null;
 
         if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
+            geocoder = new Geocoder(this);
             try {
                 addressList = geocoder.getFromLocationName(location, 1);
 
@@ -80,12 +88,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        System.out.println("33333333333 MAP READY 333333333");
         addMarkers();
         // Add a marker in Sydney and move the camera
         LatLng losangeles = new LatLng(34, -118.244);
@@ -182,27 +192,53 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         client.disconnect();
     }
 
+    public void addSpace(String addressName) {
+        spaceList.add(addressName);
+        System.out.println("Adding space");
+        addMarkers();
+    }
+
     public void addMarkers() {
         //Go through list of currently available spaces and add a marker where each one is
-        Space mSpace = new Space();
 
-        List<Pair<Float, Float>> addressList = new ArrayList<Pair<Float, Float>>();
-        Pair firstPair = new Pair<Float, Float>((float)32.7, (float)-117);
-        addressList.add(0, firstPair);
-        Pair secondPair = new Pair<Float, Float>((float)37.7, (float)-122.4);
-        addressList.add(1, secondPair);
+        List<Address> addressList = null;
 
-        for (int i = 0; i < addressList.size(); ++i) {
-            Pair longLat = addressList.get(i);
-            float first = (float) longLat.first;
-            float second = (float) longLat.second;
-            LatLng mine = new LatLng(first, second);
-            mMap.addMarker(new MarkerOptions().position(mine));
+
+        if (spaceList  == null) {
+            System.out.println("Space still null");
+            return;
+        }
+
+        System.out.println("Not null");
+        System.out.println("Size: " + spaceList.size());
+        for (int i = 0; i < spaceList.size(); ++i) {
+            if (spaceList.get(i) != null || !spaceList.get(i).equals("")) {
+                System.out.println(spaceList.get(0));
+                String addressName = spaceList.get(0);
+                try {
+                    addressList = geocoder.getFromLocationName(addressName, 1);
+                    System.out.println("got location");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Caught exception");
+                }
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                System.out.println("Added Marker");
+            }
         }
 
     }
 
-    public void addNewSpot(float longitude, float latitude) {
+    public void addNewSpot(LatLng newSpot) {
+        System.out.println(newSpot==null);
+        System.out.println(mMap==null);
+
+        mMap.addMarker(new MarkerOptions().position(newSpot).title("Marker"));
 
     }
+
 }
