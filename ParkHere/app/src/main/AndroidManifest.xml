@@ -59,7 +59,24 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
+<<<<<<< HEAD
             android:theme="@style/AppTheme.NoActionBar">
+=======
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MyBookingsActivity" />
+        <activity
+            android:name=".ListedSpaceListActivity"
+            android:label="@string/title_listedspace_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ListedSpaceDetailActivity"
+            android:label="@string/title_listedspace_detail"
+            android:parentActivityName=".ListedSpaceListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pfp.parkhere.ListedSpaceListActivity" />
+>>>>>>> master
         </activity>
     </application>
 
