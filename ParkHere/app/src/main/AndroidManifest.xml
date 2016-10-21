@@ -59,6 +59,9 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
+<<<<<<< HEAD
+            android:theme="@style/AppTheme.NoActionBar">
+=======
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MyBookingsActivity" />
         <activity
@@ -73,6 +76,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pfp.parkhere.ListedSpaceListActivity" />
+>>>>>>> master
         </activity>
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
