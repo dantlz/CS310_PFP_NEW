@@ -146,9 +146,10 @@ public class RegisterActivity extends AppCompatActivity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-
+            System.out.println("Before decode file" + picturePath);
             ImageView imageView = (ImageView) findViewById(R.id.imgView);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            System.out.println("After decode file");
         }
 
 
