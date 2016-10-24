@@ -21,6 +21,8 @@ public class Space {
     private int ownerRating;
     private String spaceReview;
     private String name;
+    private double longitude;
+    private double lattitude;
 
     public CancellationPolicy getPolicy() {
         return policy;
@@ -109,6 +111,10 @@ public class Space {
     public void setPicture(Picture picture) {
         this.picture = picture;
     }
+
+    public void setLong(double longitude) {this.longitude = longitude; }
+
+    public void setLat(double lattitude) { this.lattitude = lattitude; }
 
     private CancellationPolicy policy;
 
