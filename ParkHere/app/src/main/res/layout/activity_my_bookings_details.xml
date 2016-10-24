@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_my_bookings_details">
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:id="@+id/activity_my_bookings_details"
+    tools:context="com.pfp.parkhere.MyBookingsDetailsActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/address"
+        android:textSize="15pt"
+        android:autoLink="map">
+    </TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/start_end_time"
+        android:textSize="12pt"
+        tools:textColor="@android:color/black">
+    </TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/owner_name"
+        android:textSize="12pt"
+        tools:textColor="@android:color/black">
+    </TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/owner_email"
+        android:textSize="12pt"
+        tools:textColor="@android:color/black"
+        android:autoLink="email">
+    </TextView>
 
 </LinearLayout>

@@ -11,6 +11,8 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -24,11 +26,6 @@
             android:label="@string/title_activity_login">
         </activity>
         <activity android:name=".RegisterActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!--
@@ -51,7 +48,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps">
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -60,14 +58,23 @@
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MyBookingsActivity" />
+        <activity android:name=".MyBookingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MyBookingsDetailsActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ListedSpaceListActivity"
             android:label="@string/title_listedspace_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ListedSpaceDetailActivity"
-            android:label="@string/title_listedspace_detail"
+            android:label="ListedSpaceDetail"
             android:parentActivityName=".ListedSpaceListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
