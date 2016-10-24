@@ -36,7 +36,9 @@
             android:value="@integer/google_play_services_version" />
 
         <!--ADD SPACE-->
-        <activity android:name=".AddSpaceActivity">
+        <activity
+            android:name=".AddSpaceActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -82,7 +84,8 @@
         </activity>
 
         <!--REGISTER-->
-        <activity android:name=".RegisterActivity">
+        <activity
+            android:name=".RegisterActivity">
         </activity>
 
         <!--SETTINGS-->
