@@ -25,8 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Pattern;
 
-import static android.R.attr.data;
-
 public class RegisterActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private Button buttonLoadImage;
@@ -93,20 +91,20 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-//        mAuth.createUserWithEmailAndPassword(emailField.getText().toString(),
-//                passwordField.getText().toString())
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if(!task.isSuccessful()){
-//                            Toast.makeText(getActivity(), (String)data.result,
-//                                    Toast.LENGTH_LONG).show();
-//                        }
-//
-//                        Toast.makeText(getActivity(), (String)data.result,
-//                                Toast.LENGTH_LONG).show();
-//                    }
-//                });
+        mAuth.createUserWithEmailAndPassword(emailField.getText().toString(),
+                passwordField.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()){
+                            Toast.makeText(null, "FAILED TO REGISTER",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        Toast.makeText(null, "Registration complete",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private boolean allInputFieldValid(){
