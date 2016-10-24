@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "283003599754",
+    "firebase_url": "https://parkhere-36c0f.firebaseio.com",
+    "project_id": "parkhere-36c0f",
+    "storage_bucket": "parkhere-36c0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283003599754:android:f03b52bb1da5251d",
+        "android_client_info": {
+          "package_name": "com.pfp.parkhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283003599754-3f5njrj9bkndv5136m6crk63luerkvbg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEov3o2RZEtJYRLU_icT24tgPZokq3Ju0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
