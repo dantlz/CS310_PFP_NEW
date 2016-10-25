@@ -1,29 +1,34 @@
 package com.pfp.parkhere;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.regex.Pattern;
+import ObjectClasses.Peer;
+import ObjectClasses.Seeker;
 
 public class RegisterActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
@@ -34,8 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText phoneNumberField;
     private EditText passwordField;
+    private EditText repeatPasswordField;
 
-    final String expression = "[(?=.{10, 20})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])]";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -68,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailField = (EditText) findViewById(R.id.email_field);
         phoneNumberField = (EditText) findViewById(R.id.phone_field);
         passwordField = (EditText) findViewById(R.id.password_field);
+        repeatPasswordField = (EditText) findViewById(R.id.repeat_password_field);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -75,10 +81,32 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                // User is signed in
                 if (user != null) {
-                    // User is signed in
-                } else {
-                    // User is signed out
+                    //First grab the peer/seeker object form database based on user's email
+                    FirebaseDatabase.getInstance()
+                            .getReference("Seekers")
+                            .child(user.getEmail())
+                            .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+                            //TODO Seekers AND owners
+                            Peer currentUser = dataSnapshot.getValue(Peer.class);
+                            ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
+
+                    //Go to Map activity
+                    startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+                }
+                else {
+                    // User is signed out. This would not happen here ever
                 }
             }
         };
@@ -86,8 +114,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void confirmButtonPressed(){
-        if(!allInputFieldValid()) {
-            //Let the user know
+        //TODO ADD SELECTION OF REGISTRATION AS OWNER OR SEEKER
+        String validity = allInputFieldValid();
+        if(!validity.equals("")) {
+            new AlertDialog.Builder(RegisterActivity.this)
+                    .setTitle("Registration failed")
+                    .setMessage(validity)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
             return;
         }
 
@@ -97,37 +136,74 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            Toast.makeText(null, "FAILED TO REGISTER",
-                                    Toast.LENGTH_LONG).show();
+                            System.out.println("Registration failed: Firebase issue");
+
+                            //Check if email is already registered.
+                            if(task.getException().getClass().equals(FirebaseAuthUserCollisionException.class)){
+                                new AlertDialog.Builder(RegisterActivity.this)
+                                        .setTitle("Email already in use")
+                                        .setMessage("The email: " + emailField.getText().toString()
+                                                + " is already registered. Please register with a different email or log in")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                            return;
                         }
 
-                        Toast.makeText(null, "Registration complete",
-                                Toast.LENGTH_LONG).show();
+
+                        //TODO Make sure to create owner or seeker depending on user choice
+                        Seeker seeker = createUserObject();
+                        String reformattedEmail = emailField.getText().toString();
+                        reformattedEmail = reformattedEmail.replace(".", "");
+                        reformattedEmail = reformattedEmail.replace("#", "");
+                        reformattedEmail = reformattedEmail.replace("$", "");
+                        reformattedEmail = reformattedEmail.replace("[", "");
+                        reformattedEmail = reformattedEmail.replace("]", "");
+                        FirebaseDatabase.getInstance().getReference().child("Seekers").
+                                child(reformattedEmail).setValue(seeker);
                     }
                 });
     }
 
-    private boolean allInputFieldValid(){
+    private Seeker createUserObject(){
+        Seeker seeker = new Seeker();
+        seeker.setEmailAddress(emailField.getText().toString());
+        seeker.setFirstName(firstNameField.getText().toString());
+        seeker.setLastName(lastNameField.getText().toString());
+        seeker.setPhoneNumber(phoneNumberField.getText().toString());
+        return seeker;
+    }
 
-        if(firstNameField.getText().toString() == null)
-            return false;
-        if(lastNameField.getText().toString() == null)
-            return false;
-        if(emailField.getText().toString() == null ||
+    private String allInputFieldValid(){
+
+        if(firstNameField.getText().toString().equals(""))
+            return "First name cannot be empty";
+        if(lastNameField.getText().toString().equals(""))
+            return "Last name cannot be empty";
+        if(emailField.getText().toString().equals("") ||
                 !Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches())
-            return false;
-        if(phoneNumberField.getText().toString() == null ||
+            return "Email cannot be empty and must be valid";
+        if(phoneNumberField.getText().toString().equals("") ||
                 !Patterns.PHONE.matcher(phoneNumberField.getText().toString()).matches())
-            return false;
-
+            return "Phone number cannot be empty and must be valid";
+        if(passwordField.getText().toString().equals("") ||
+                repeatPasswordField.getText().toString().equals(""))
+            return "Password fields cannot be empty";
+        if(!passwordField.getText().toString().equals(repeatPasswordField.getText().toString()))
+            return "Password fields must match";
         //Password must be at least 10 characters with upper/lower case, number(s), and special characters
-        if(passwordField.getText().toString() == null ||
-                !Pattern.compile(expression).matcher(passwordField.getText().toString()).matches())
-            return false;
-
-        //TODO Check if email is already registered.
-
-        return true;
+        if(passwordField.getText().toString().length() < 10)
+            return "Password must be at least 10 characters";
+        for(char c: passwordField.getText().toString().toCharArray()){
+            if("!@#$%^&*()_+-=".contains(String.valueOf(c)))
+                return "";
+        }
+        return "Password must contain at least one special character";
     }
 
     @Override

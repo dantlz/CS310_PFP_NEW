@@ -2,8 +2,6 @@ package com.pfp.parkhere;
 
 import android.app.Application;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import ObjectClasses.Peer;
 
 /**
@@ -12,30 +10,19 @@ import ObjectClasses.Peer;
 
 public class Global_ParkHere_Application extends Application {
 
-    private boolean isAuthenticated;
-    private Peer currentUser;
-//    private FirebaseUser ref, refCurrentUser;
+    private Peer currentUserObject;
 
     @Override
     public void onCreate() {
         super.onCreate();
-//        ref =  new Firebase("https://anchronize.firebaseio.com");
-        isAuthenticated = false;    //default it to false when it's created first
     }
 
-    public Peer getCurrentUser() {
-        return currentUser;
+    public Peer getCurrentUserObject() {
+        return currentUserObject;
     }
 
-    public void setCurrentUser(Peer currentUser) {
-        this.currentUser = currentUser;
+    public void setCurrentUserObject(Peer currentUserObject) {
+        this.currentUserObject = currentUserObject;
     }
 
-    public void setAuthenticateStatus(boolean authStatus) {
-        this.isAuthenticated = authStatus;
-    }
-
-    public boolean getAuthenticateStatus() {
-        return isAuthenticated;
-    }
 }
