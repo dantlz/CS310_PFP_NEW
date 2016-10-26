@@ -96,7 +96,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        System.out.println("33333333333 MAP READY 333333333");
         //addMarkers();
         // Add a marker in Los Angeles and move the camera
         LatLng losangeles = new LatLng(34, -118.244);
@@ -176,7 +175,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addMarkers() {
         //TODO: Go through list of currently available spaces and add a marker where each one is
-
+//        LatLng losangeles = new LatLng(34, -118.244);
+//        mMap.addMarker(new MarkerOptions().position(losangeles).title("Los Angeles, CA"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(losangeles));
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//        mMap.setMyLocationEnabled(true);
 
     }
 

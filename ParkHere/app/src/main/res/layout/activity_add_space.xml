@@ -64,22 +64,36 @@
        android:spinnerMode="dropdown">
    </Spinner>
 
-    <Button
-        android:id="@+id/buttonLoadPictureAddSpace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="100dp"
-        android:text="Load Picture"
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="fill_parent"
+        android:layout_height="75dp"
+        android:layout_weight="1"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/spinner">
-    </Button>
+
+    </ImageView>
+
 
     <Button
+        android:id="@+id/LoadPictureButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/imageview"
+        android:onClick="onLoadPictureClicked"
+        android:text="Load Picture"
         android:layout_centerHorizontal="true"
+
+        android:layout_alignStart="@+id/confirmButton" />
+
+
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:onClick="onNewSpaceClicked"
-        android:text="Confirm" />
+        android:text="Confirm"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/LoadPictureButton" />
 
 </RelativeLayout>

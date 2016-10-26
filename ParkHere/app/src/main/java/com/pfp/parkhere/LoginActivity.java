@@ -3,7 +3,6 @@ package com.pfp.parkhere;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -21,7 +20,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -124,13 +122,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (fireBaseUser != null) {
                     // User is signed in
                     //Create intent
-                    ((Global_ParkHere_Application)getApplication()).setAuthenticateStatus(true);
+                    //((Global_ParkHere_Application)getApplication()).setAuthenticateStatus(true);
+
+                    //TODO DELETE THIS ENTIRE ACTIVITY AND XML FILE
 
                     //TODO Get the login type SEEKER/OWNER
                     Peer user = new Owner();
                     //TODO Get email address from firebase
                     user.setEmailAddress(null);
-                    ((Global_ParkHere_Application)getApplication()).setCurrentUser(null);
+                    ((Global_ParkHere_Application)getApplication()).setCurrentUserObject(null);
                 } else {
                     // User is signed out
                 }
