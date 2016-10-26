@@ -1,6 +1,5 @@
 package com.pfp.parkhere;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,11 +20,9 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.pfp.parkhere.MapsActivity;
 
 public class AddSpaceActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -33,6 +31,15 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private String streetNumb = null;
+    private String streetNam = null;
+    private String cityName = null;
+    private String zipCode = null;
+    private String stateName = null;
+    private LatLng latLng = null;
+    private String addressName = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,40 +80,72 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 //
-//        EditText streetNumber = (EditText) findViewById(R.id.streetNumber);
-//        String streetNumb = streetNumber.getText().toString();
-//        EditText streetName = (EditText) findViewById(R.id.streetName);
-//        String streetNam = streetName.getText().toString();
-//        EditText city = (EditText) findViewById(R.id.city);
-//        String cityName = city.getText().toString();
-//        EditText country = (EditText) findViewById(R.id.country);
-//        String countryName = country.getText().toString();
-//        EditText zip = (EditText) findViewById(R.id.zipCode);
-//        String zipCode = zip.getText().toString();
-//        EditText state = (EditText) findViewById(R.id.state);
-//        String stateName = state.getText().toString();
-
-//        String addressName = streetNumb + " " + streetNam + ", " + cityName + ", " + stateName + " " + zipCode;
-        //MapsActivity mMapActivity = new MapsActivity();
-        String addressName = "1202 W 29th Street, Los Angeles, CA 90007";
-       // startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-       // mMapActivity.addSpace(addressName);
-
-
-        try {
-            addressList = geocoder.getFromLocationName(addressName, 1);
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            MapsActivity mMapActivity= new MapsActivity();
-            System.out.println("got geo");
-            mMapActivity.addSpace(latLng);
-            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-            mMapActivity.addSpace(latLng);
-        } catch (IOException e) {
-            e.printStackTrace();
+        EditText streetNumber = (EditText) findViewById(R.id.streetNumber);
+        if (streetNumber.toString().length() == 0) {
+            streetNumb = streetNumber.getText().toString();
+        }
+        EditText streetName = (EditText) findViewById(R.id.streetName);
+        if (streetName.toString().length() == 0) {
+            streetNam = streetName.getText().toString();
+        }
+        EditText city = (EditText) findViewById(R.id.city);
+        if (city.toString().length() == 0) {
+            cityName = city.getText().toString();
+        }
+        EditText zip = (EditText) findViewById(R.id.zipCode);
+        if (zip.toString().length() == 0){
+            zipCode = zip.getText().toString();
         }
 
+        EditText state = (EditText) findViewById(R.id.state);
+        if (state.toString().length() == 0) {
+            stateName = state.getText().toString();
+        }
 
+        if (streetNumb == null | streetNam==null | cityName==null | stateName==null |zipCode==null) {
+            System.out.println("here");
+
+        }
+        else {
+            addressName = streetNumb + " " + streetNam + ", " + cityName + ", " + stateName + " " + zipCode;
+
+            try {
+                addressList = geocoder.getFromLocationName(addressName, 1);
+                Address address = addressList.get(0);
+                latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                //TODO: Add these coordinates to the Firebase list of avaliable spaces
+                startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void onLoadPictureClicked(View view) {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto , 1);
+
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        ImageView imageview = (ImageView) findViewById(R.id.imageview);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    imageview.setImageURI(selectedImage);
+                }
+
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    imageview.setImageURI(selectedImage);
+                }
+                break;
+        }
     }
 
     @Override

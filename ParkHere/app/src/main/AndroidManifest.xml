@@ -43,30 +43,38 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- LOGIN -->
-
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_maps">
+        </activity>
 
         <!-- MAPS -->
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-
+            android:label="@string/title_activity_maps">
+        </activity>
         <!-- MY BOOKINGS -->
-        <activity android:name=".MyBookingsActivity" />
+        <activity
+            android:name=".MyBookingsActivity">
+        </activity>
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
             android:name=".MyBookingsDetailsActivity"
             android:label="BookingDetails"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- MY LISTED SPACES -->
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- PROFILE -->
         <activity
@@ -76,20 +84,20 @@
 
         <!-- REGISTER -->
         <activity android:name=".RegisterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <!-- SETTINGS -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".PaymentActivity"></activity>
+
+        <activity
+            android:name=".PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera2" />
 </manifest>
