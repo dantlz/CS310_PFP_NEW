@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
@@ -25,7 +24,7 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         addressView.setText(extras.getString("ADDRESS_TEXT"));
 
         //set start and end times
-        String times = extras.getString("START_TIME_TEXT") + "\n" + extras.getString("END_TIME_TEXT");
+        String times = "START: " + extras.getString("START_TIME_TEXT") + "\n"+ "END: " + extras.getString("END_TIME_TEXT");
         TextView timesView = (TextView) findViewById(R.id.start_end_time);
         timesView.setTextColor(Color.BLACK);
         //textView.setTextSize(20);
