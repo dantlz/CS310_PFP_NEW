@@ -15,4 +15,9 @@
         android:title="Payment">
     </item>
 
+    <item
+        android:id="@+id/itemAddSpace"
+        android:title="Add Space">
+    </item>
+
 </menu>

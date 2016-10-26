@@ -17,22 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_first_name"
-        android:layout_below="@id/RegistrationTitle"/>
+        android:layout_below="@id/RegistrationTitle"
+        android:inputType="textPersonName"/>
     <EditText android:id="@+id/last_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_last_name"
-        android:layout_below="@+id/first_name_field" />
-    <EditText android:id="@+id/password_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
-        android:layout_below="@+id/last_name_field"/>
+        android:layout_below="@+id/first_name_field"
+        android:inputType="textPersonName"/>
     <EditText android:id="@+id/email_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_email"
-        android:layout_below="@+id/password_field"
+        android:layout_below="@+id/last_name_field"
         android:inputType="textEmailAddress" />
     <EditText android:id="@+id/phone_field"
         android:layout_width="match_parent"
@@ -40,12 +37,24 @@
         android:hint="@string/prompt_phone"
         android:layout_below="@+id/email_field"
         android:inputType="phone" />
+    <EditText android:id="@+id/password_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_password"
+        android:layout_below="@+id/phone_field"
+        android:inputType="textPassword"/>
+    <EditText android:id="@+id/repeat_password_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/repeat_password"
+        android:layout_below="@+id/password_field"
+        android:inputType="textPassword"/>
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_below="@+id/phone_field"></ImageView>
+        android:layout_below="@+id/repeat_password_field"></ImageView>
     <Button
         android:id="@+id/buttonLoadPicture"
         android:layout_width="wrap_content"
@@ -55,6 +64,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imgView"></Button>
     <Button
+        android:id="@+id/confirmButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
