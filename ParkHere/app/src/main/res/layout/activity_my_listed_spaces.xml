@@ -5,30 +5,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="64dp"
+    android:paddingLeft="64dp"
     tools:context="com.pfp.parkhere.MyListedSpacesActivity">
-    <ScrollView
-        android:layout_width="match_parent"
+    <ListView
+        android:id="@+id/listed_spaces_list"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation = "vertical"
-                android:id = "@+id/list_of_my_spaces">
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation = "vertical"
-                android:id = "@+id/view_my_space_buttons">
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+
+    </ListView>
 
 </LinearLayout>

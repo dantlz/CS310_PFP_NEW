@@ -1,64 +1,44 @@
 package com.pfp.parkhere;
 
-import android.content.Context;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
-import java.util.concurrent.SynchronousQueue;
+import java.util.LinkedList;
 
 import ObjectClasses.Space;
+import ObjectClasses.SpaceType;
 
 
 public class MyListedSpacesActivity extends AppCompatActivity {
 
+    public static String LISTING_SPACE_MESSAGE = "com.pfp.parkhere.LISTINGSPACEMESSAGE";
+    ListView listedSpacesList;
+    LinkedList<Space> MyListedSpaces;
+    String [] strFormattedSpaces;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_listed_spaces);
 
-        //Create a set of spaces that will later be passed in on creation of the activity
-        SynchronousQueue<Space> mySpaces = new SynchronousQueue<Space>();
+        listedSpacesList = (ListView) findViewById(R.id.listed_spaces_list);
+        MyListedSpaces = new LinkedList<Space>();
 
-        Space SampleSpace1 = new Space();
-        Space SampleSpace2 = new Space();
-        Space SampleSpace3 = new Space();
-        Space SampleSpace4 = new Space();
 
-        SampleSpace1.setName("USC Parking");
-        SampleSpace2.setName("Colliseum Parking");
-        SampleSpace3.setName("New/North Parking");
-        SampleSpace4.setName("Doheny Parking");
+    }
 
-        mySpaces.add(SampleSpace1);
-        mySpaces.add(SampleSpace2);
-        mySpaces.add(SampleSpace3);
-        mySpaces.add(SampleSpace4);
+    private LinkedList<Space> createTestSpaces() {
+        LinkedList<Space> retList = new LinkedList<Space>();
 
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.activity_my_listed_spaces, null);
+        for (int i = 1; i <= 5; i++) {
+            Space testSpace = new Space();
+            testSpace.setPricePerHour(5*i);
+            testSpace.setName("My Test Space" + i);
+            testSpace.setType(SpaceType.TRUCK);
 
-        LinearLayout spaceLayout = (LinearLayout) view.findViewById(R.id.list_of_my_spaces);
-        LinearLayout buttonLayout = (LinearLayout) view.findViewById(R.id.view_my_space_buttons);
-
-        for (int i = 0; i < mySpaces.size(); i++) {
-            TextView newSpace = new TextView(this);
-            newSpace.setText(mySpaces.remove().getName());
-            newSpace.setTextSize(16);
-
-            Button newButton = new Button(this);
-            newButton.setText("View Space");
-            newButton.setTextSize(16);
-
-            spaceLayout.addView(newSpace);
-            buttonLayout.addView(newButton);
         }
 
-        setContentView(R.layout.activity_my_listed_spaces);
+        return retList;
     }
 }
