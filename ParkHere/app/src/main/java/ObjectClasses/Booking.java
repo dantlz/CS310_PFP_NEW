@@ -1,7 +1,7 @@
 package ObjectClasses;
 
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Date;
 
 /**
  * Created by tianlinz on 10/16/16.
@@ -31,8 +31,8 @@ public class Booking {
         this.repeat = repeat;
     }
 
-    public GregorianCalendar getEnd() {
-        return endCalendarDate;
+    public void setStart(GregorianCalendar start) {
+        this.startCalendarDate = start;
     }
 
     public void setEnd(GregorianCalendar end) {
@@ -43,8 +43,8 @@ public class Booking {
         return startCalendarDate;
     }
 
-    public void setStart(GregorianCalendar start) {
-        this.startCalendarDate = start;
+    public GregorianCalendar getEnd(){
+        return endCalendarDate;
     }
 
     public Space getSpace() {

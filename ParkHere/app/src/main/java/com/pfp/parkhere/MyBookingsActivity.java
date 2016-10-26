@@ -62,15 +62,40 @@ public class MyBookingsActivity extends AppCompatActivity {
                 // ListView Clicked item index
                 int itemPosition  = position;
                 Context context = view.getContext();
+
+                //New intent to pass to booking details, new Bundle to attach to intent
                 Intent intent = new Intent(context, MyBookingsDetailsActivity.class);
+                Bundle extras = new Bundle();
+
+                //Generate text for address
+                Address bookingAddress = myBookingsTest.get(position).getSpace().getAddress();
+                String addressText = bookingAddress.getAddressLine(0) + "\n" +
+                        bookingAddress.getLocality()+ " " + bookingAddress.getAdminArea();
+                extras.putString("ADDRESS_TEXT",addressText);
+
+                //Generate text for start and end dates
                 GregorianCalendar endTime = myBookingsTest.get(position).getEnd();
+                GregorianCalendar startTime = myBookingsTest.get(position).getStart();
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                String message = timeFormat.format(endTime.getTime())+ " "
+
+                String endTimeText = timeFormat.format(endTime.getTime())+ " "
                         + endTime.getDisplayName(Calendar.AM_PM,Calendar.SHORT,Locale.ENGLISH)+ " " +
-                        endTime.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.ENGLISH) + " " +
+                        endTime.getDisplayName(Calendar.MONTH,Calendar.SHORT,Locale.ENGLISH) + " " +
                         endTime.get(Calendar.DAY_OF_MONTH);
-                intent.putExtra(BOOKING_DETAIL_MESSAGE, message);
-                startActivity(intent);
+                String startTimeText = timeFormat.format(startTime.getTime())+ " "
+                        + startTime.getDisplayName(Calendar.AM_PM,Calendar.SHORT,Locale.ENGLISH)+ " " +
+                        startTime.getDisplayName(Calendar.MONTH,Calendar.SHORT,Locale.ENGLISH) + " " +
+                        startTime.get(Calendar.DAY_OF_MONTH);
+                extras.putString("START_TIME_TEXT",startTimeText);
+                extras.putString("END_TIME_TEXT",endTimeText);
+                //Generate text for owner name and email
+                extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getName());
+                extras.putString("OWNER_EMAIL_TEXT",myBookingsTest.get(position).getSpace().getOwnerEmail());
+
+
+                //Place bundle into intent and start activity
+                intent.putExtras(extras);
+                context.startActivity(intent);
             }
 
         });
@@ -91,7 +116,7 @@ public class MyBookingsActivity extends AppCompatActivity {
             tempAddress.setAdminArea("CA");
             //set address in space
             tempSpace.setAddress(tempAddress);
-            tempSpace.setOwnerEmail("ownerNumber" + i + "@email.net");
+            tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
             tempSpace.setName("Booked Space");
             tempBooking.setSpace(tempSpace);
             myBookingsTest.add(tempBooking);
