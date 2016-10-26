@@ -1,9 +1,9 @@
 package com.pfp.parkhere;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
@@ -16,13 +16,25 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_bookings_details);
 
+        //get information passed from mybookings activity
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MyBookingsActivity.BOOKING_DETAIL_MESSAGE);
-        TextView textView = new TextView(this);
-        textView.setTextSize(20);
-        textView.setText(message);
+        Bundle extras = intent.getExtras();
+        TextView addressView = (TextView) findViewById(R.id.address);
+        addressView.setTextColor(Color.BLACK);
+        addressView.setText(extras.getString("ADDRESS_TEXT"));
 
-        ViewGroup layout = (ViewGroup) findViewById(R.id.activity_my_bookings_details);
-        layout.addView(textView);
+        //set start and end times
+        String times = "START: " + extras.getString("START_TIME_TEXT") + "\n"+ "END: " + extras.getString("END_TIME_TEXT");
+        TextView timesView = (TextView) findViewById(R.id.start_end_time);
+        timesView.setTextColor(Color.BLACK);
+        //textView.setTextSize(20);
+
+        timesView.setText(times);
+
+        TextView nameView = (TextView) findViewById(R.id.owner_name);
+        nameView.setText(extras.getString("OWNER_NAME_TEXT"));
+        TextView emailView = (TextView) findViewById(R.id.owner_email);
+        emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
+        //random comment
     }
 }

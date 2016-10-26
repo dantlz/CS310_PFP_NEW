@@ -11,10 +11,11 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -57,16 +58,21 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
         </activity>
-        <!-- MY BOOKINGS -->
+
+        <!--MY BOOKINGS-->
         <activity
             android:name=".MyBookingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
             android:name=".MyBookingsDetailsActivity"
             android:label="BookingDetails"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
         </activity>
 
         <!-- MY LISTED SPACES -->
@@ -82,16 +88,24 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- REGISTER -->
-        <activity android:name=".RegisterActivity">
+        <!--REGISTER-->
+        <activity
+            android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
         <!-- SETTINGS -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!-- PAYMENT -->
         <activity
             android:name=".PaymentActivity"
             android:theme="@style/AppTheme.NoActionBar">
