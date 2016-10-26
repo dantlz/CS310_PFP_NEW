@@ -65,6 +65,16 @@
    </Spinner>
 
     <Button
+        android:id="@+id/buttonLoadPictureAddSpace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="100dp"
+        android:text="Load Picture"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/spinner">
+    </Button>
+
+    <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

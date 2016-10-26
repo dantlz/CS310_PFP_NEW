@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -96,9 +98,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         System.out.println("33333333333 MAP READY 333333333");
         //addMarkers();
-        // Add a marker in Sydney and move the camera
+        // Add a marker in Los Angeles and move the camera
         LatLng losangeles = new LatLng(34, -118.244);
-//        mMap.addMarker(new MarkerOptions().position(losangeles).title("Los Angeles, CA"));
+        mMap.addMarker(new MarkerOptions().position(losangeles).title("Los Angeles, CA"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(losangeles));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -171,100 +173,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
-
-    public void addSpace(LatLng latLng) {
-        //startActivity(new Intent(MapsActivity.this, MapsActivity.class));
-
-        spaceList.add(latLng);
-        System.out.println("Adding space");
-        addMarkers();
-    }
 
     public void addMarkers() {
-        //Go through list of currently available spaces and add a marker where each one is
+        //TODO: Go through list of currently available spaces and add a marker where each one is
 
-        if (spaceList.size() == 1) {
-            System.out.println("Here");
-            
-            System.out.println(mMap == null);
-            mMap.addMarker(new MarkerOptions().position(spaceList.get(0)));
-        }
-//
-//        List<Address> addressList = null;
-//        Geocoder geocode = new Geocoder(this);
-//        System.out.println(geocode==null);
-//        if (spaceList  == null) {
-//            System.out.println("Space still null");
-//            return;
-//        }
-//
-//        System.out.println("Not null");
-//        System.out.println("Size: " + spaceList.size());
-//        for (int i = 0; i < spaceList.size(); ++i) {
-//            if (spaceList.get(i) != null || !spaceList.get(i).equals("")) {
-//                System.out.println(spaceList.get(0));
-//                String addressName = spaceList.get(0);
-//                try {
-//                    System.out.println(geocode==null);
-//                    addressList = geocode.getFromLocationName(addressName, 1);
-//                    System.out.println("got location");
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    System.out.println("Caught exception");
-//                }
-//                Address address = addressList.get(0);
-//                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-//                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//                System.out.println("Added Marker");
-//            }
-////        }
-//        String location = "1202 W 29th Street, Los Angeles, CA";
-//        List<Address> addressList2 = null;
-//        Geocoder geocoder;
-//        if (location != null || !location.equals("")) {
-//            System.out.println("Before geocoder");
-//            geocoder = new Geocoder(this);
-//            try {
-//                System.out.println("In try");
-//                addressList2 = geocoder.getFromLocationName(location, 1);
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Address address = addressList2.get(0);
-//            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-//            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//
-//        }
-    }
-
-    public void addNewSpot(LatLng newSpot) {
-        System.out.println(newSpot==null);
-        System.out.println(mMap==null);
-
-        mMap.addMarker(new MarkerOptions().position(newSpot).title("Marker"));
 
     }
 

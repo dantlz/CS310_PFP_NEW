@@ -73,35 +73,29 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 //
-//        EditText streetNumber = (EditText) findViewById(R.id.streetNumber);
-//        String streetNumb = streetNumber.getText().toString();
-//        EditText streetName = (EditText) findViewById(R.id.streetName);
-//        String streetNam = streetName.getText().toString();
-//        EditText city = (EditText) findViewById(R.id.city);
-//        String cityName = city.getText().toString();
-//        EditText country = (EditText) findViewById(R.id.country);
-//        String countryName = country.getText().toString();
-//        EditText zip = (EditText) findViewById(R.id.zipCode);
-//        String zipCode = zip.getText().toString();
-//        EditText state = (EditText) findViewById(R.id.state);
-//        String stateName = state.getText().toString();
+        EditText streetNumber = (EditText) findViewById(R.id.streetNumber);
+        String streetNumb = streetNumber.getText().toString();
+        EditText streetName = (EditText) findViewById(R.id.streetName);
+        String streetNam = streetName.getText().toString();
+        EditText city = (EditText) findViewById(R.id.city);
+        String cityName = city.getText().toString();
+        EditText country = (EditText) findViewById(R.id.country);
+        String countryName = country.getText().toString();
+        EditText zip = (EditText) findViewById(R.id.zipCode);
+        String zipCode = zip.getText().toString();
+        EditText state = (EditText) findViewById(R.id.state);
+        String stateName = state.getText().toString();
 
-//        String addressName = streetNumb + " " + streetNam + ", " + cityName + ", " + stateName + " " + zipCode;
-        //MapsActivity mMapActivity = new MapsActivity();
-        String addressName = "1202 W 29th Street, Los Angeles, CA 90007";
-       // startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-       // mMapActivity.addSpace(addressName);
+        String addressName = streetNumb + " " + streetNam + ", " + cityName + ", " + stateName + " " + zipCode;
 
+        LatLng latLng = null;
 
         try {
             addressList = geocoder.getFromLocationName(addressName, 1);
             Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            MapsActivity mMapActivity= new MapsActivity();
-            System.out.println("got geo");
-            mMapActivity.addSpace(latLng);
+            latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            //TODO: Add these coordinates to the Firebase list of avaliable spaces
             startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-            mMapActivity.addSpace(latLng);
         } catch (IOException e) {
             e.printStackTrace();
         }
