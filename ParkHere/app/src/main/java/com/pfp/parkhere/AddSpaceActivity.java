@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -30,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pfp.parkhere.R.layout.cancellation_policy_popup;
 
 
 public class AddSpaceActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -204,7 +208,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        View popup = inflater.inflate(R.layout.cancellation_policy_popup,null);
+        View popup = inflater.inflate(cancellation_policy_popup,null);
 
         mPopupWindow = new PopupWindow(
                 popup,
@@ -217,6 +221,16 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         RelativeLayout mRelativeLayout = (RelativeLayout) findViewById(R.id.activity_add_space);
         mPopupWindow.showAtLocation(mRelativeLayout, Gravity.CENTER,0,0);
 
+        Button closeButton = (Button) popup.findViewById(R.id.dismissButton);
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Dismiss the popup window
+                System.out.println("on Click");
+                mPopupWindow.dismiss();
+            }
+        });
 
     }
 
