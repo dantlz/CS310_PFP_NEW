@@ -1,5 +1,6 @@
 package ObjectClasses;
 
+import java.util.GregorianCalendar;
 import java.util.Date;
 
 /**
@@ -8,8 +9,19 @@ import java.util.Date;
 
 public class Booking {
     private Space space;
+    private GregorianCalendar startCalendarDate;
+    private GregorianCalendar endCalendarDate;
     private Date start;
     private Date end;
+    private boolean done;
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 
     public boolean isRepeat() {
         return repeat;
@@ -19,20 +31,20 @@ public class Booking {
         this.repeat = repeat;
     }
 
-    public Date getEnd() {
-        return end;
+    public void setStart(GregorianCalendar start) {
+        this.startCalendarDate = start;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd(GregorianCalendar end) {
+        this.endCalendarDate = end;
     }
 
-    public Date getStart() {
-        return start;
+    public GregorianCalendar getStart() {
+        return startCalendarDate;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public GregorianCalendar getEnd(){
+        return endCalendarDate;
     }
 
     public Space getSpace() {

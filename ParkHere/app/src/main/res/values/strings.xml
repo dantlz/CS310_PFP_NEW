@@ -6,6 +6,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="repeat_password">Repeat password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -188,4 +189,5 @@
     </string>
     <string name="title_listedspace_list">ListedSpaces</string>
     <string name="title_listedspace_detail">ListedSpace Detail</string>
+    <string name="title_activity_add_space">AddSpaceActivity</string>
 </resources>
