@@ -1,17 +1,24 @@
 package com.pfp.parkhere;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AddSpaceActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -39,6 +47,8 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     private String stateName = null;
     private LatLng latLng = null;
     private String addressName = null;
+    private PopupWindow mPopupWindow;
+
 
 
     @Override
@@ -48,11 +58,13 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        //Create Spinners
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinnerForCancellation = (Spinner) findViewById(R.id.spinnerForCancellation);
 
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
+        spinnerForCancellation.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
@@ -60,15 +72,24 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         categories.add("Truck");
         categories.add("Disabled");
 
+        List<String> cancellationCategories = new ArrayList<String>();
+        cancellationCategories.add("Light");
+        cancellationCategories.add("Medium");
+        cancellationCategories.add("Sever");
+        cancellationCategories.add("More Information");
+
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataCancellation = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cancellationCategories);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataCancellation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+        spinnerForCancellation.setAdapter(dataCancellation);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -79,26 +100,26 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
 
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
-//
+
         EditText streetNumber = (EditText) findViewById(R.id.streetNumber);
-        if (streetNumber.toString().length() == 0) {
+        if (streetNumber.toString().length() != 0) {
             streetNumb = streetNumber.getText().toString();
         }
         EditText streetName = (EditText) findViewById(R.id.streetName);
-        if (streetName.toString().length() == 0) {
+        if (streetName.toString().length() != 0) {
             streetNam = streetName.getText().toString();
         }
         EditText city = (EditText) findViewById(R.id.city);
-        if (city.toString().length() == 0) {
+        if (city.toString().length() != 0) {
             cityName = city.getText().toString();
         }
         EditText zip = (EditText) findViewById(R.id.zipCode);
-        if (zip.toString().length() == 0){
+        if (zip.toString().length() != 0){
             zipCode = zip.getText().toString();
         }
 
         EditText state = (EditText) findViewById(R.id.state);
-        if (state.toString().length() == 0) {
+        if (state.toString().length() != 0) {
             stateName = state.getText().toString();
         }
 
@@ -148,10 +169,17 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
+        System.out.println(item);
+
+        if (item.equals("More Information")) {
+            moreInfoClicked();
+        }
 
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
@@ -159,6 +187,37 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
 
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+    private void moreInfoClicked() {
+        System.out.println("Here");
+//        LayoutInflater layoutInflater
+//                = (LayoutInflater)getBaseContext()
+//                .getSystemService(LAYOUT_INFLATER_SERVICE);
+//        View popupView = layoutInflater.inflate(popup, null);
+//        final PopupWindow popupWindow = new PopupWindow(
+//                popupView,
+//                RelativeLayout.LayoutParams.WRAP_CONTENT,
+//                RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        popupWindow.isShowing();
+        Context mContext = getApplicationContext();
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popup = inflater.inflate(R.layout.cancellation_policy_popup,null);
+
+        mPopupWindow = new PopupWindow(
+                popup,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        if(Build.VERSION.SDK_INT>=21){
+            mPopupWindow.setElevation(5.0f);
+        }
+        RelativeLayout mRelativeLayout = (RelativeLayout) findViewById(R.id.activity_add_space);
+        mPopupWindow.showAtLocation(mRelativeLayout, Gravity.CENTER,0,0);
+
+
     }
 
     /**
