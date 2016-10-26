@@ -35,5 +35,6 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         nameView.setText(extras.getString("OWNER_NAME_TEXT"));
         TextView emailView = (TextView) findViewById(R.id.owner_email);
         emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
+        //random comment
     }
 }
