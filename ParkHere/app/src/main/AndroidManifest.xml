@@ -43,7 +43,7 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- LOGIN -->
 
@@ -51,28 +51,28 @@
         <!-- MAPS -->
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
 
         <!-- MY BOOKINGS -->
-        <activity android:name=".MyBookingsActivity"></activity>
+        <activity android:name=".MyBookingsActivity" />
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
             android:name=".MyBookingsDetailsActivity"
             android:label="BookingDetails"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- MY LISTED SPACES -->
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- REGISTER -->
         <activity android:name=".RegisterActivity">
@@ -87,8 +87,9 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".LoginActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".PaymentActivity"></activity>
     </application>
 
 </manifest>
