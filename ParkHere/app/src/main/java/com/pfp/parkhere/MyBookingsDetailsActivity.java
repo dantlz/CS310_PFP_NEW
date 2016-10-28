@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -35,6 +36,17 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         nameView.setText(extras.getString("OWNER_NAME_TEXT"));
         TextView emailView = (TextView) findViewById(R.id.owner_email);
         emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
+        TextView ratingView = (TextView) findViewById(R.id.space_rating);
+        ratingView.setText("Rating: " + extras.getString("SPACE_RATING_TEXT"));
+        TextView reviewView = (TextView) findViewById(R.id.space_review);
+        reviewView.setText("Review: " + extras.getString("SPACE_REVIEW_TEXT"));
         //random comment
+    }
+    public void ReturnToBookings(View view){
+        finish();
+    }
+    public void GoToCancel(View view){
+        Intent intent = new Intent(this, CancelActivity.class);
+        startActivity(intent);
     }
 }
