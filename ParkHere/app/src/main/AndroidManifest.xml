@@ -16,6 +16,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera2" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -45,18 +49,12 @@
         <activity
             android:name=".AddSpaceActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_maps">
-        </activity>
+            android:label="@string/title_activity_maps"></activity>
 
         <!-- MAPS -->
         <activity
@@ -65,25 +63,22 @@
         
         </activity>
 
-        <!--MY BOOKINGS-->
-        <activity
-            android:name=".MyBookingsActivity">
-
+        <!-- MY BOOKINGS -->
+        <activity android:name=".MyBookingsActivity">
+   
         </activity>
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
             android:name=".MyBookingsDetailsActivity"
             android:label="BookingDetails"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"></activity>
 
         <!-- MY LISTED SPACES -->
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- PROFILE -->
         <activity
@@ -91,7 +86,7 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--REGISTER-->
+        <!-- REGISTER -->
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -107,10 +102,8 @@
         <!-- PAYMENT -->
         <activity
             android:name=".PaymentActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".CancelActivity"></activity>
     </application>
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera2" />
 </manifest>
