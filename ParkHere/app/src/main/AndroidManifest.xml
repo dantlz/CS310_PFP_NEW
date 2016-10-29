@@ -49,8 +49,7 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--Cancel-->
         <activity
@@ -79,18 +78,18 @@
             android:name=".MyBookingsActivity">
         </activity>
 
+
         <!-- MY BOOKINGS DETAIL -->
         <activity
             android:name=".MyBookingsDetailsActivity"
             android:label="BookingDetails"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
 
         <!-- MY LISTED SPACES -->
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
         </activity>
 
         <!-- PAYMENT -->
@@ -118,5 +117,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity android:name=".MyListedSpacesDetailsActivity" />
+        <activity android:name=".EditListedSpacesActivity"></activity>
     </application>
 </manifest>

@@ -2,6 +2,7 @@ package ObjectClasses;
 
 import android.graphics.Picture;
 import android.location.Address;
+import android.os.Parcelable;
 
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class Space {
     private Picture picture;
-    private int pricePerHour;
+    private double pricePerHour;
     private String ownerEmail;
     private Address address;
     private List<GregorianCalendar> bookingStartTimes;
@@ -23,6 +24,8 @@ public class Space {
     private String name;
     private double longitude;
     private double lattitude;
+    private CancellationPolicy policy;
+
 
     public CancellationPolicy getPolicy() {
         return policy;
@@ -96,7 +99,7 @@ public class Space {
         this.ownerEmail = ownerEmail;
     }
 
-    public int getPricePerHour() {
+    public double getPricePerHour() {
         return pricePerHour;
     }
 
@@ -115,7 +118,5 @@ public class Space {
     public void setLong(double longitude) {this.longitude = longitude; }
 
     public void setLat(double lattitude) { this.lattitude = lattitude; }
-
-    private CancellationPolicy policy;
 
 }
