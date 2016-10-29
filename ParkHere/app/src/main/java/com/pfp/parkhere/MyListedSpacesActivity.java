@@ -34,7 +34,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         for (int i = 1; i <= 5; i++) {
             Space testSpace = new Space();
             testSpace.setPricePerHour(5*i);
-            testSpace.setName("My Test Space" + i);
+            testSpace.setSpaceName("My Test Space" + i);
             testSpace.setType(SpaceType.TRUCK);
 
         }

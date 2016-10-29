@@ -2,164 +2,164 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ScrollView01" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_add_space"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp" >
-    tools:context="com.pfp.parkhere.AddSpaceActivity">
-    <TextView android:id="@+id/AddSpaceTitle"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_add_space"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="Add Space"
-        tools:textColor="@android:color/black" />
-    <EditText android:id="@+id/streetNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Street Number"
-        android:layout_below="@id/AddSpaceTitle"/>
-
-    <EditText android:id="@+id/streetName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Street Name"
-        android:layout_below="@+id/streetNumber" />
-
-    <EditText android:id="@+id/city"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter City"
-        android:layout_below="@+id/streetName"/>
-
-    <EditText android:id="@+id/state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter State"
-        android:layout_below="@+id/city"
-        android:inputType="textEmailAddress" />
-    <EditText android:id="@+id/country"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Country"
-        android:layout_below="@+id/state" />
-    <EditText android:id="@+id/zipCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Zip Code"
-        android:layout_below="@+id/country"
-        android:inputType="phone" />
-    <EditText
-        android:id="@+id/startDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/zipCode"
-        android:hint="Start Date"/>
-    <EditText
-        android:id="@+id/endDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/startDate"
-        android:layout_below="@+id/zipCode"
-        android:hint="End Date"/>
-
-    <TextView
-        android:id="@+id/startTimeLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/endDate"
-        android:hint="Start Time"
-        tools:text="Start Time"/>
-    <TimePicker
-        android:id="@+id/startTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleY="0.5"
-        android:scaleX="0.5"
-        android:timePickerMode="spinner"
-        android:layout_below="@+id/startTimeLabel">
-    </TimePicker>
-
-    <TextView
-        android:id="@+id/endTimeLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/startTime"
-        android:hint="End Time"
-        tools:text="End Time"/>
-    <TimePicker
-        android:id="@+id/endTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleY="0.5"
-        android:scaleX="0.5"
-        android:timePickerMode="spinner"
-        android:layout_below="@+id/endTimeLabel">
-    </TimePicker>
-
-    <TextView
-        android:id="@+id/spinnerLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/endTime"
-        android:hint="Spot Type:"
-        tools:text="Spot Type"/>
-
-   <Spinner
-       android:id="@+id/spinner"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/spinnerLabel"
-       android:spinnerMode="dropdown">
-   </Spinner>
-    <TextView
-        android:id="@+id/spinnerCancellationLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner"
-        android:hint="Cancellation Policy"
-        tools:text="Cancellation Policy"/>
-    <Spinner
-        android:id="@+id/spinnerForCancellation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerCancellationLabel"
-        android:spinnerMode="dropdown">
-    </Spinner>
-
-    <ImageView
-        android:id="@+id/imageview"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/spinnerForCancellation">
-
-    </ImageView>
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
+        tools:context="com.pfp.parkhere.AddSpaceActivity">
+        <TextView android:id="@+id/AddSpaceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="Add Space"
+            tools:textColor="@android:color/black" />
+        <EditText
+            android:id="@+id/spaceNameField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/AddSpaceTitle"
+            android:hint="Enter your space name"/>
+        <EditText
+            android:id="@+id/priceField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Price"
+            android:layout_below="@+id/spaceNameField"
+            android:inputType="number"/>
+        <EditText
+            android:id="@+id/descriptionField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter your description"
+            android:layout_below="@+id/priceField"/>
 
 
-    <Button
-        android:id="@+id/LoadPictureButton"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imageview"
-        android:onClick="onLoadPictureClicked"
-        android:text="Load Picture"
-        android:layout_centerHorizontal="true"
-        android:layout_alignStart="@+id/confirmButton" />
+        <EditText android:id="@+id/streetNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Street Number"
+            android:layout_below="@id/descriptionField"/>
+        <EditText android:id="@+id/streetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Street Name"
+            android:layout_below="@+id/streetNumber" />
+        <EditText android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter City"
+            android:layout_below="@+id/streetName"/>
+        <EditText android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter State"
+            android:layout_below="@+id/city"
+            android:inputType="textEmailAddress" />
+        <EditText android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Country"
+            android:layout_below="@+id/state" />
+        <EditText android:id="@+id/zipCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Zip Code"
+            android:layout_below="@+id/country"
+            android:inputType="phone" />
 
 
-    <Button
-        android:id="@+id/confirmButton"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:onClick="onNewSpaceClicked"
-        android:text="Confirm"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/LoadPictureButton" />
+        <TextView
+            android:id="@+id/startTimeDateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/zipCode"
+            android:hint="Start Time and Date"
+            tools:text="Start Time"/>
+        <DatePicker
+            android:id="@+id/startDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startTimeDateLabel"
+            android:hint="Start Date"/>
+        <TimePicker
+            android:id="@+id/startTimePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startDatePicker"/>
+        <TextView
+            android:id="@+id/endTimeDateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startTimePicker"
+            android:hint="End Time"
+            tools:text="End Time and Date"/>
+        <DatePicker
+            android:id="@+id/endDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/endTimeDateLabel"
+            android:hint="End Date"/>
+        <TimePicker
+            android:id="@+id/endTimePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/endDatePicker"/>
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/typeSpinnerLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/endTimePicker"
+            android:hint="Spot Type:"
+            tools:text="Spot Type"/>
+        <Spinner
+            android:id="@+id/typeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/typeSpinnerLabel"
+            android:spinnerMode="dropdown"/>
+        <TextView
+            android:id="@+id/spinnerCancellationLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/typeSpinner"
+            android:hint="Cancellation Policy"
+            tools:text="Cancellation Policy"/>
+        <Spinner
+            android:id="@+id/spinnerForCancellation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinnerCancellationLabel"
+            android:spinnerMode="dropdown"/>
+
+            
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/spinnerForCancellation"/>
+        <Button
+            android:id="@+id/LoadPictureButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageview"
+            android:onClick="onLoadPictureClicked"
+            android:text="Load Picture"
+            android:layout_centerHorizontal="true"
+            android:layout_alignStart="@+id/confirmButton" />
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:onClick="onNewSpaceClicked"
+            android:text="Confirm"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/LoadPictureButton" />
+    </RelativeLayout>
 </ScrollView>

@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                     System.out.println(fireBaseUser.getEmail());
                     FirebaseDatabase.getInstance()
                             .getReference("Seekers")
-                            .child(reformatEmail(fireBaseUser.getEmail()))
+                            .child(Global_ParkHere_Application.reformatEmail(fireBaseUser.getEmail()))
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,16 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseSignIn(emailField.getText().toString(), passwordField.getText().toString());
             }
         });
-    }
-
-    private String reformatEmail(String email){
-        String reformattedEmail = email;
-        reformattedEmail = reformattedEmail.replace(".", "");
-        reformattedEmail = reformattedEmail.replace("#", "");
-        reformattedEmail = reformattedEmail.replace("$", "");
-        reformattedEmail = reformattedEmail.replace("[", "");
-        reformattedEmail = reformattedEmail.replace("]", "");
-        return reformattedEmail;
     }
 
     //Firebase sign in

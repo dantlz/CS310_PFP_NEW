@@ -10,6 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,6 +22,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ObjectClasses.Booking;
+import ObjectClasses.Owner;
+import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
 
@@ -26,6 +33,8 @@ public class MyBookingsActivity extends AppCompatActivity {
     LinkedList<Booking> myBookingsTest;
     //GregorianCalendar[] dateValues;
     String[] viewValues;
+    int ownerRating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +69,7 @@ public class MyBookingsActivity extends AppCompatActivity {
         bookingsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 // ListView Clicked item index
                 int itemPosition  = position;
@@ -92,10 +101,29 @@ public class MyBookingsActivity extends AppCompatActivity {
                 extras.putString("START_TIME_TEXT",startTimeText);
                 extras.putString("END_TIME_TEXT",endTimeText);
                 //Generate text for owner name and email
-                extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getName());
+                extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getSpaceName());
                 extras.putString("OWNER_EMAIL_TEXT",myBookingsTest.get(position).getSpace().getOwnerEmail());
                 //Generate Rating and Review
-                extras.putString("SPACE_RATING_TEXT",myBookingsTest.get(position).getSpace().getOwnerRating() + " ");
+                //Get owner object to set rating
+                String bookingsSpacesOwnerEmail = myBookingsTest.get(position).getSpace().getOwnerEmail();
+                FirebaseDatabase.getInstance()
+                        .getReference("Seekers")
+                        .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // This method is called once with the initial value and again
+                                // whenever data at this location is updated.
+
+                                Peer currentUser = dataSnapshot.getValue(Peer.class);
+                                ownerRating = ((Owner) currentUser).getOwnerRating();
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+                                // Failed to read value
+                            }
+                        });
+                extras.putString("SPACE_RATING_TEXT", ownerRating + " ");
                 extras.putString("SPACE_REVIEW_TEXT",myBookingsTest.get(position).getSpace().getSpaceReview());
 
                 //Place bundle into intent and start activity
@@ -123,10 +151,10 @@ public class MyBookingsActivity extends AppCompatActivity {
             tempSpace.setAddress(tempAddress);
             tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
             //set owner name
-            tempSpace.setName("FirstName LastName");
+            tempSpace.setSpaceName("FirstName LastName");
             //set review and rating
             tempSpace.setSpaceReview("This space got my car towed.");
-            tempSpace.setOwnerRating(3);
+//            tempSpace.setOwnerRating(3); No need. Owner rating will be retrieved from owner email - owner object
             //put space in boooking and add booking to linked list
             tempBooking.setSpace(tempSpace);
             myBookingsTest.add(tempBooking);

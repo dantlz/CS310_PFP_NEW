@@ -1,7 +1,10 @@
 package ObjectClasses;
 
 import android.graphics.Picture;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -11,81 +14,30 @@ import java.util.List;
  */
 
 public class Space {
-    private Picture picture;
-    private int pricePerHour;
+
+    private String spaceName;
     private String ownerEmail;
-    private Address address;
-    private List<GregorianCalendar> bookingStartTimes;
-    private List<GregorianCalendar> bookingEndTimes;
     private SpaceType type;
-    private int ownerRating;
+    private LatLng latlng;
+    private Address address;
+    private int pricePerHour;
+    private CancellationPolicy policy;
+    private int spaceRating;
     private String spaceReview;
-    private String name;
-    private double longitude;
-    private double lattitude;
+    private String description;
+    private GregorianCalendar availableStartDateAndTime;
+    private GregorianCalendar availableEndDateAndTime;
+    private List<GregorianCalendar> bookingStartDates;
+    private List<GregorianCalendar> bookingEndDates;
+    //TODO Make this a list of images
+    private Drawable picture;
 
-    public CancellationPolicy getPolicy() {
-        return policy;
+    public String getSpaceName() {
+        return spaceName;
     }
 
-    public void setPolicy(CancellationPolicy policy) {
-        this.policy = policy;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpaceReview() {
-        return spaceReview;
-    }
-
-    public void setSpaceReview(String spaceReview) {
-        this.spaceReview = spaceReview;
-    }
-
-    public int getOwnerRating() {
-        return ownerRating;
-    }
-
-    public void setOwnerRating(int ownerRating) {
-        this.ownerRating = ownerRating;
-    }
-
-    public SpaceType getType() {
-        return type;
-    }
-
-    public void setType(SpaceType type) {
-        this.type = type;
-    }
-
-    public List<GregorianCalendar> getBookingEndTimes() {
-        return bookingEndTimes;
-    }
-
-    public void setBookingEndTimes(List<GregorianCalendar> bookingEndTimes) {
-        this.bookingEndTimes = bookingEndTimes;
-    }
-
-    public List<GregorianCalendar> getBookingStartTimes() {
-        return bookingStartTimes;
-    }
-
-    public void setBookingStartTimes(List<GregorianCalendar> bookingStartTimes) {
-        this.bookingStartTimes = bookingStartTimes;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setSpaceName(String spaceName) {
+        this.spaceName = spaceName;
     }
 
     public String getOwnerEmail() {
@@ -96,6 +48,30 @@ public class Space {
         this.ownerEmail = ownerEmail;
     }
 
+    public SpaceType getType() {
+        return type;
+    }
+
+    public void setType(SpaceType type) {
+        this.type = type;
+    }
+
+    public LatLng getLatlng() {
+        return latlng;
+    }
+
+    public void setLatlng(LatLng latlng) {
+        this.latlng = latlng;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public int getPricePerHour() {
         return pricePerHour;
     }
@@ -104,18 +80,75 @@ public class Space {
         this.pricePerHour = pricePerHour;
     }
 
-    public Picture getPicture() {
+    public CancellationPolicy getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(CancellationPolicy policy) {
+        this.policy = policy;
+    }
+
+    public int getSpaceRating() {
+        return spaceRating;
+    }
+
+    public void setSpaceRating(int spaceRating) {
+        this.spaceRating = spaceRating;
+    }
+
+    public String getSpaceReview() {
+        return spaceReview;
+    }
+
+    public void setSpaceReview(String spaceReview) {
+        this.spaceReview = spaceReview;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public GregorianCalendar getAvailableStartDateAndTime() {
+        return availableStartDateAndTime;
+    }
+
+    public void setAvailableStartDateAndTime(GregorianCalendar availableStartDateAndTime) {
+        this.availableStartDateAndTime = availableStartDateAndTime;
+    }
+
+    public GregorianCalendar getAvailableEndDateAndTime() {
+        return availableEndDateAndTime;
+    }
+
+    public void setAvailableEndDateAndTime(GregorianCalendar availableEndDateAndTime) {
+        this.availableEndDateAndTime = availableEndDateAndTime;
+    }
+
+    public List<GregorianCalendar> getBookingStartDates() {
+        return bookingStartDates;
+    }
+
+    public void setBookingStartDates(List<GregorianCalendar> bookingStartDates) {
+        this.bookingStartDates = bookingStartDates;
+    }
+
+    public List<GregorianCalendar> getBookingEndDates() {
+        return bookingEndDates;
+    }
+
+    public void setBookingEndDates(List<GregorianCalendar> bookingEndDates) {
+        this.bookingEndDates = bookingEndDates;
+    }
+
+    public Drawable getPicture() {
         return picture;
     }
 
-    public void setPicture(Picture picture) {
+    public void setPicture(Drawable picture) {
         this.picture = picture;
     }
-
-    public void setLong(double longitude) {this.longitude = longitude; }
-
-    public void setLat(double lattitude) { this.lattitude = lattitude; }
-
-    private CancellationPolicy policy;
-
 }

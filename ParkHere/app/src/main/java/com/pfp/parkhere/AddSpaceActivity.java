@@ -1,6 +1,8 @@
 package com.pfp.parkhere;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,16 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -29,9 +32,20 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import ObjectClasses.CancellationPolicy;
+import ObjectClasses.Peer;
+import ObjectClasses.Space;
+import ObjectClasses.SpaceType;
 
 import static com.pfp.parkhere.R.layout.cancellation_policy_popup;
 
@@ -44,16 +58,27 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
      */
     private GoogleApiClient client;
     private static int RESULT_LOAD_IMAGE = 1;
-    private String streetNumb = null;
-    private String streetNam = null;
-    private String cityName = null;
-    private String zipCode = null;
-    private String stateName = null;
-    private LatLng latLng = null;
-    private String addressName = null;
     private PopupWindow mPopupWindow;
 
+    private EditText spaceNameField;
+    private EditText priceField;
+    private EditText descriptionField;
 
+    private EditText streetNumberField;
+    private EditText streetNameField;
+    private EditText cityField;
+    private EditText stateField;
+    private EditText countryField;
+    private EditText zipCodeField;
+
+    private DatePicker startDatePicker;
+    private TimePicker startTimePicker;
+    private DatePicker endDatePicker;
+    private TimePicker endTimePicker;
+
+    private Spinner typeSpinner;
+    private Spinner cancellationSpinner;
+    private ImageView picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,38 +87,54 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Create Spinners
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        Spinner spinnerForCancellation = (Spinner) findViewById(R.id.spinnerForCancellation);
+        spaceNameField = (EditText) findViewById(R.id.spaceNameField);
+        priceField = (EditText) findViewById(R.id.priceField);
+        descriptionField = (EditText) findViewById(R.id.descriptionField);
+
+        streetNameField = (EditText) findViewById(R.id.streetNumber);
+        cityField = (EditText) findViewById(R.id.streetName);
+        stateField = (EditText) findViewById(R.id.state);
+        countryField = (EditText) findViewById(R.id.country);
+        zipCodeField = (EditText) findViewById(R.id.zipCode);
+
+        startDatePicker = (DatePicker) findViewById(R.id.startDatePicker);
+        startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        endDatePicker = (DatePicker) findViewById(R.id.endDatePicker);
+        endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+
+        typeSpinner = (Spinner) findViewById(R.id.typeSpinner);
+        cancellationSpinner = (Spinner) findViewById(R.id.spinnerForCancellation);
+
+        picture = (ImageView) findViewById(R.id.imageview);
 
         // Spinner click listener
-        spinner.setOnItemSelectedListener(this);
-        spinnerForCancellation.setOnItemSelectedListener(this);
+        typeSpinner.setOnItemSelectedListener(this);
+        cancellationSpinner.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
-        categories.add("Compact");
-        categories.add("Truck");
-        categories.add("Disabled");
+        List<String> types = new ArrayList<String>();
+        types.add("Compact");
+        types.add("Truck");
+        types.add("Disabled");
 
-        List<String> cancellationCategories = new ArrayList<String>();
-        cancellationCategories.add("Light");
-        cancellationCategories.add("Moderate");
-        cancellationCategories.add("Strict");
-        cancellationCategories.add("More Information");
+        List<String> cancellationPolicies = new ArrayList<String>();
+        cancellationPolicies.add("Light");
+        cancellationPolicies.add("Moderate");
+        cancellationPolicies.add("Strict");
+        cancellationPolicies.add("MoreInformation");
 
 
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-        ArrayAdapter<String> dataCancellation = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cancellationCategories);
+        // Creating adapter for typeSpinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
+        ArrayAdapter<String> dataCancellation = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cancellationPolicies);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dataCancellation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
-        spinnerForCancellation.setAdapter(dataCancellation);
+        // attaching data adapter to typeSpinner
+        typeSpinner.setAdapter(dataAdapter);
+        cancellationSpinner.setAdapter(dataCancellation);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -101,50 +142,82 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     }
 
     public void onNewSpaceClicked(View view) {
-
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 
-        EditText streetNumber = (EditText) findViewById(R.id.streetNumber);
-        if (streetNumber.toString().length() != 0) {
-            streetNumb = streetNumber.getText().toString();
-        }
-        EditText streetName = (EditText) findViewById(R.id.streetName);
-        if (streetName.toString().length() != 0) {
-            streetNam = streetName.getText().toString();
-        }
-        EditText city = (EditText) findViewById(R.id.city);
-        if (city.toString().length() != 0) {
-            cityName = city.getText().toString();
-        }
-        EditText zip = (EditText) findViewById(R.id.zipCode);
-        if (zip.toString().length() != 0){
-            zipCode = zip.getText().toString();
-        }
-
-        EditText state = (EditText) findViewById(R.id.state);
-        if (state.toString().length() != 0) {
-            stateName = state.getText().toString();
-        }
-
-        if (streetNumb == null | streetNam==null | cityName==null | stateName==null |zipCode==null) {
-            System.out.println("here");
-
-        }
-        else {
-            addressName = streetNumb + " " + streetNam + ", " + cityName + ", " + stateName + " " + zipCode;
-
-            try {
-                addressList = geocoder.getFromLocationName(addressName, 1);
-                Address address = addressList.get(0);
-                latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                //TODO: Add these coordinates to the Firebase list of avaliable spaces
-                startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if(streetNumberField.getText().toString().equals("") ||
+                streetNameField.getText().toString().equals("") ||
+                cityField.getText().toString().equals("") ||
+                stateField.getText().toString().equals("") ||
+                countryField.getText().toString().equals("") ||
+                zipCodeField.getText().toString().equals("") ||
+                //Startdate starttime enddate endtime have default values
+                typeSpinner.getSelectedItem().equals(null) ||
+                cancellationSpinner.getSelectedItem().equals(null)
+                ){
+            new AlertDialog.Builder(AddSpaceActivity.this)
+                    .setTitle("Please complete all fields")
+                    .setMessage("All input fields must be completed.")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
 
+        try {
+            Space listedSpace = new Space();
+            listedSpace.setSpaceName(spaceNameField.getText().toString());
+            String currentUserEmail = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
+            listedSpace.setOwnerEmail(currentUserEmail);
+            listedSpace.setType(SpaceType.valueOf(typeSpinner.getSelectedItem().toString().toUpperCase()));
+            String fullAddress = streetNumberField.getText().toString() +
+                    streetNameField.getText().toString() +
+                    cityField.getText().toString() +
+                    zipCodeField.getText().toString() +
+                    stateField.getText().toString();
+            Address address = geocoder.getFromLocationName(fullAddress, 1).get(0);
+            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
+            listedSpace.setAddress(address);
+            listedSpace.setLatlng(latlng);
+            listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
+            listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
+            listedSpace.setDescription(descriptionField.getText().toString());
+            listedSpace.setAvailableStartDateAndTime(new GregorianCalendar(
+                    startDatePicker.getYear(),
+                    startDatePicker.getMonth(),
+                    startDatePicker.getDayOfMonth(),
+                    startTimePicker.getHour(),
+                    startTimePicker.getMinute()
+            ));
+            listedSpace.setAvailableStartDateAndTime(new GregorianCalendar(
+                    endDatePicker.getYear(),
+                    endDatePicker.getMonth(),
+                    endDatePicker.getDayOfMonth(),
+                    endTimePicker.getHour(),
+                    endTimePicker.getMinute()
+            ));
+            listedSpace.setPicture(picture.getDrawable());
+
+            //TODO in confirmation activity create a function to get average of all ratings
+            //TODO in confirmation append new review to a list of string reviews
+
+            FirebaseDatabase.getInstance().getReference("Spaces")
+                    .child(Global_ParkHere_Application.reformatEmail(
+                            currentUserEmail) + spaceNameField.getText().toString()).setValue(listedSpace);
+
+            FirebaseDatabase.getInstance().getReference("Seekers")
+                    .child(Global_ParkHere_Application.reformatEmail(currentUserEmail)).child("Spaces")
+                    .setValue(Global_ParkHere_Application.reformatEmail(
+                            currentUserEmail) + spaceNameField.getText().toString());
+
+//            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
+            finishActivity(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onLoadPictureClicked(View view) {
@@ -153,6 +226,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         startActivityForResult(pickPhoto , 1);
 
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         ImageView imageview = (ImageView) findViewById(R.id.imageview);
@@ -173,11 +247,9 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
+        // On selecting a typeSpinner item
         String item = parent.getItemAtPosition(position).toString();
         System.out.println(item);
 
@@ -185,7 +257,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             moreInfoClicked();
         }
 
-        // Showing selected spinner item
+        // Showing selected typeSpinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
