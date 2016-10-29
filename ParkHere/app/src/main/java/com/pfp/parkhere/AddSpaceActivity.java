@@ -78,8 +78,8 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
 
         List<String> cancellationCategories = new ArrayList<String>();
         cancellationCategories.add("Light");
-        cancellationCategories.add("Medium");
-        cancellationCategories.add("Sever");
+        cancellationCategories.add("Moderate");
+        cancellationCategories.add("Strict");
         cancellationCategories.add("More Information");
 
 

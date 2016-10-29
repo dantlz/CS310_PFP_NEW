@@ -16,6 +16,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera2" />
+
     <application
         android:name=".Global_ParkHere_Application"
         android:allowBackup="true"
@@ -48,6 +52,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <!--Cancel-->
+        <activity
+            android:name=".CancelActivity">
+        </activity>
+
         <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
@@ -63,13 +72,11 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
-        
         </activity>
 
-        <!--MY BOOKINGS-->
+        <!-- MY BOOKINGS -->
         <activity
             android:name=".MyBookingsActivity">
-
         </activity>
 
         <!-- MY BOOKINGS DETAIL -->
@@ -86,32 +93,30 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <!-- PAYMENT -->
+        <activity
+            android:name=".PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--REGISTER-->
+        <!-- REGISTER -->
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
 
         <!-- SETTINGS -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- PAYMENT -->
-        <activity
-            android:name=".PaymentActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-    </application>
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera2" />
+    </application>
 </manifest>

@@ -32,9 +32,12 @@ public class MyBookingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_bookings);
         //get bookings list
         bookingsView = (ListView) findViewById(R.id.bookinglist);
-        //get test bookings
+
+        //get test bookings, in the future requests all the bookings from database
         myBookingsTest = new LinkedList<Booking>();
         mockBookings(myBookingsTest);
+
+        //'tis a SimpleDateFormat to help display times
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         //Set values displayed as a list
         viewValues = new String[myBookingsTest.size()];
@@ -91,7 +94,9 @@ public class MyBookingsActivity extends AppCompatActivity {
                 //Generate text for owner name and email
                 extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getName());
                 extras.putString("OWNER_EMAIL_TEXT",myBookingsTest.get(position).getSpace().getOwnerEmail());
-
+                //Generate Rating and Review
+                extras.putString("SPACE_RATING_TEXT",myBookingsTest.get(position).getSpace().getOwnerRating() + " ");
+                extras.putString("SPACE_REVIEW_TEXT",myBookingsTest.get(position).getSpace().getSpaceReview());
 
                 //Place bundle into intent and start activity
                 intent.putExtras(extras);
@@ -117,7 +122,12 @@ public class MyBookingsActivity extends AppCompatActivity {
             //set address in space
             tempSpace.setAddress(tempAddress);
             tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
-            tempSpace.setName("Booked Space");
+            //set owner name
+            tempSpace.setName("FirstName LastName");
+            //set review and rating
+            tempSpace.setSpaceReview("This space got my car towed.");
+            tempSpace.setOwnerRating(3);
+            //put space in boooking and add booking to linked list
             tempBooking.setSpace(tempSpace);
             myBookingsTest.add(tempBooking);
         }

@@ -3,7 +3,7 @@ package ObjectClasses;
 import android.graphics.Picture;
 import android.location.Address;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -15,8 +15,8 @@ public class Space {
     private int pricePerHour;
     private String ownerEmail;
     private Address address;
-    private List<Date> bookingStartTimes;
-    private List<Date> bookingEndTimes;
+    private List<GregorianCalendar> bookingStartTimes;
+    private List<GregorianCalendar> bookingEndTimes;
     private SpaceType type;
     private int ownerRating;
     private String spaceReview;
@@ -64,19 +64,19 @@ public class Space {
         this.type = type;
     }
 
-    public List<Date> getBookingEndTimes() {
+    public List<GregorianCalendar> getBookingEndTimes() {
         return bookingEndTimes;
     }
 
-    public void setBookingEndTimes(List<Date> bookingEndTimes) {
+    public void setBookingEndTimes(List<GregorianCalendar> bookingEndTimes) {
         this.bookingEndTimes = bookingEndTimes;
     }
 
-    public List<Date> getBookingStartTimes() {
+    public List<GregorianCalendar> getBookingStartTimes() {
         return bookingStartTimes;
     }
 
-    public void setBookingStartTimes(List<Date> bookingStartTimes) {
+    public void setBookingStartTimes(List<GregorianCalendar> bookingStartTimes) {
         this.bookingStartTimes = bookingStartTimes;
     }
 
