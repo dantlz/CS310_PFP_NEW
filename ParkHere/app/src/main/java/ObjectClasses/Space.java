@@ -3,6 +3,7 @@ package ObjectClasses;
 import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
+import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -30,6 +31,7 @@ public class Space {
     private List<GregorianCalendar> bookingStartDates;
     private List<GregorianCalendar> bookingEndDates;
     //TODO Make this a list of images
+
     private Drawable picture;
 
     public String getSpaceName() {
