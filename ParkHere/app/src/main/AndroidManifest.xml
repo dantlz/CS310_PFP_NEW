@@ -27,7 +27,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -49,27 +48,26 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--BOOK SPACE-->
+        <activity android:name=".BookSpaceActivity">
+        </activity>
 
         <!-- Cancel -->
         <activity android:name=".CancelActivity" />
 
-        <!-- LOGIN -->
+        <!--EDIT SPACE-->
+        <activity android:name=".EditListedSpacesActivity" />
+
+        <!--LOGIN-->
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_maps">
              <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-        </activity>
-
-        <!-- VERIFICATION -->
-        <activity
-            android:name=".VerificationActivity"
-            android:label="@string/title_activity_maps">
         </activity>
 
         <!-- MAPS -->
@@ -93,6 +91,13 @@
             android:theme="@style/AppTheme" >
         </activity>
 
+        <!--MY LISTED SPACE DETAIL-->
+        <activity
+            android:name=".MyListedSpacesDetailsActivity"
+            android:label="@string/title_listedspace_list"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <!-- PAYMENT -->
         <activity
             android:name=".PaymentActivity"
@@ -102,7 +107,8 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- REGISTER -->
         <activity
@@ -115,10 +121,11 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MyListedSpacesDetailsActivity" />
-        <activity android:name=".EditListedSpacesActivity" />
-        <!-- <activity android:name=".VerificationActivity"></activity> -->
-        <activity android:name=".BookSpaceActivity"></activity>
-    </application>
 
+        <!-- VERIFICATION -->
+        <activity
+            android:name=".VerificationActivity"
+            android:label="@string/title_activity_maps">
+        </activity>
+    </application>
 </manifest>

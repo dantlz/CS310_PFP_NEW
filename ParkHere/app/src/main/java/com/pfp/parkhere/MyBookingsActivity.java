@@ -82,7 +82,7 @@ public class MyBookingsActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
 
                 //Generate text for address
-                String ad = myBookingsTest.get(position).getSpace().getAddress();
+                String ad = myBookingsTest.get(position).getSpace().getStreetAddress();
                 Address bookingAddress = null;
                 try {
                     bookingAddress = new Geocoder(MyBookingsActivity.this).getFromLocationName(ad, 1).get(0);
@@ -151,7 +151,7 @@ public class MyBookingsActivity extends AppCompatActivity {
             //new space
             Space tempSpace = new Space();
             //set address in space
-            tempSpace.setAddress("1 Infinity LoopCupertinoCA");
+            tempSpace.setStreetAddress("1 Infinity LoopCupertinoCA");
             tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
             //set owner name
             tempSpace.setSpaceName("FirstName LastName");
