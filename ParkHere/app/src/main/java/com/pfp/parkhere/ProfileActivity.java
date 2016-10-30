@@ -15,12 +15,14 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import ObjectClasses.Peer;
+
 import static com.pfp.parkhere.R.id.editButton;
 
 public class ProfileActivity extends AppCompatActivity
 {
 
-    protected EditText mEmail, mPassword, mPhone, mName;
+    protected EditText mEmail, mPhone, mName;
     private Button mEditButton, mSaveButton;
     private ImageView mImageView = null;
 
@@ -38,12 +40,10 @@ public class ProfileActivity extends AppCompatActivity
 
         mImageView = (ImageView)findViewById(R.id.imageView);
         mEmail = (EditText)findViewById(R.id.emailLabel);
-        mPassword = (EditText)findViewById(R.id.passwordLabel);
         mPhone = (EditText)findViewById(R.id.phoneLabel);
         mName = (EditText)findViewById(R.id.nameLabel);
 
         disableEditText(mEmail);
-        disableEditText(mPassword);
         disableEditText(mPhone);
         disableEditText(mName);
 
@@ -53,7 +53,6 @@ public class ProfileActivity extends AppCompatActivity
             public void onClick(View v) {
                 mSaveButton.setVisibility(View.VISIBLE);
                 enableEditText(mEmail);
-                enableEditText(mPassword);
                 enableEditText(mPhone);
                 enableEditText(mName);
             }
@@ -66,7 +65,6 @@ public class ProfileActivity extends AppCompatActivity
             public void onClick(View v) {
                 mSaveButton.setVisibility(View.GONE);
                 disableEditText(mEmail);
-                disableEditText(mPassword);
                 disableEditText(mPhone);
                 disableEditText(mName);
             }
@@ -77,6 +75,17 @@ public class ProfileActivity extends AppCompatActivity
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        populateFields();
+    }
+
+    private void populateFields(){
+        Peer currentUser = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject();
+        mImageView.setImageBitmap(currentUser.getProfilePicture());
+        mName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+        mPhone.setText(currentUser.getPhoneNumber());
+        mEmail.setText(currentUser.getEmailAddress());
+
     }
 
     private void disableEditText(EditText editText) {
