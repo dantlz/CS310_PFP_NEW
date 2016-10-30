@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -33,22 +30,15 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.ChangeSequenceNumber;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
 
 import ObjectClasses.CancellationPolicy;
 import ObjectClasses.MyCalendar;
-import ObjectClasses.Peer;
 import ObjectClasses.Space;
 import ObjectClasses.SpaceType;
 
@@ -223,7 +213,10 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                     stateField.getText().toString();
             Address address = geocoder.getFromLocationName(fullAddress, 1).get(0);
             LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
-            listedSpace.setAddress(fullAddress);
+            listedSpace.setStreetAddress(streetNumberField.getText().toString() + " " + streetNameField.getText().toString());
+            listedSpace.setCity(cityField.getText().toString());
+            listedSpace.setState(stateField.getText().toString());
+            listedSpace.setZipCode(zipCodeField.getText().toString());
             listedSpace.setLatlng(latlng);
             listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
             listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));

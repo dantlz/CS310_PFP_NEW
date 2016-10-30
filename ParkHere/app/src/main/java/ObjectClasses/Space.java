@@ -2,17 +2,13 @@ package ObjectClasses;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.os.Parcelable;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -25,7 +21,10 @@ public class Space {
     private String ownerEmail;
     private SpaceType type;
     private LatLng latlng;
-    private String address;
+    private String streetAddress;
+    private String city;
+    private String state;
+    private String zipCode;
     private int pricePerHour;
     private CancellationPolicy policy;
     private String description;
@@ -34,8 +33,8 @@ public class Space {
     private MyCalendar availableEndDateAndTime;
     private String picture;
 
-    //    private List<MyCalendar> bookingStartDates;
-//    private List<MyCalendar> bookingEndDates;
+    private List<MyCalendar> bookingStartDates;
+    private List<MyCalendar> bookingEndDates;
     private int spaceRating;
     private String spaceReview;
 
@@ -71,12 +70,36 @@ public class Space {
         this.latlng = latlng;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreetAddress() {
+        return streetAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public int getPricePerHour() {
@@ -148,22 +171,22 @@ public class Space {
 
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
-//
-//    public List<MyCalendar> getBookingStartDates() {
-//        return bookingStartDates;
-//    }
-//
-//    public void setBookingStartDates(List<MyCalendar> bookingStartDates) {
-//        this.bookingStartDates = bookingStartDates;
-//    }
-//
-//    public List<MyCalendar> getBookingEndDates() {
-//        return bookingEndDates;
-//    }
-//
-//    public void setBookingEndDates(List<MyCalendar> bookingEndDates) {
-//        this.bookingEndDates = bookingEndDates;
-//    }
+
+    public List<MyCalendar> getBookingStartDates() {
+        return bookingStartDates;
+    }
+
+    public void setBookingStartDates(List<MyCalendar> bookingStartDates) {
+        this.bookingStartDates = bookingStartDates;
+    }
+
+    public List<MyCalendar> getBookingEndDates() {
+        return bookingEndDates;
+    }
+
+    public void setBookingEndDates(List<MyCalendar> bookingEndDates) {
+        this.bookingEndDates = bookingEndDates;
+    }
 
     public int getSpaceRating() {
         return spaceRating;

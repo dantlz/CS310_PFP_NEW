@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Locale;
 
 import ObjectClasses.Space;
 import ObjectClasses.SpaceType;
@@ -42,7 +41,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         strFormattedSpaces = new String[MyListedSpaces.size()];
         for (int i = 0; i < MyListedSpaces.size(); i++) {
             Space currSpace = MyListedSpaces.get(i);
-            String ad = currSpace.getAddress();
+            String ad = currSpace.getStreetAddress();
             Address currAddress = null;
             try {
                 currAddress = new Geocoder(this).getFromLocationName(ad, 1).get(0);
@@ -76,7 +75,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
 
                 extras.putDouble("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
 
-                String spaceAddress = chosenSpace.getAddress();
+                String spaceAddress = chosenSpace.getStreetAddress();
                 extras.putString("LISTED_SPACE_ADDRESS", spaceAddress);
 
                 intent.putExtras(extras);
@@ -96,7 +95,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
             testSpace.setPricePerHour(5*i);
             testSpace.setType(SpaceType.TRUCK);
 
-            testSpace.setAddress("654" + i + " Washington Avenue" + "Los Angeles" + "CA" + "90007");
+            testSpace.setStreetAddress("654" + i + " Washington Avenue" + "Los Angeles" + "CA" + "90007");
 
             retList.add(testSpace);
         }
