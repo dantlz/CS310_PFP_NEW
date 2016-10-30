@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText phoneNumberField;
     private EditText passwordField;
     private EditText repeatPasswordField;
-
+    private Button loginButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -74,6 +74,15 @@ public class RegisterActivity extends AppCompatActivity {
         phoneNumberField = (EditText) findViewById(R.id.phone_field);
         passwordField = (EditText) findViewById(R.id.password_field);
         repeatPasswordField = (EditText) findViewById(R.id.repeat_password_field);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();

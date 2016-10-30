@@ -44,9 +44,13 @@ public class MyBookingsActivity extends AppCompatActivity {
         //get bookings list
         bookingsView = (ListView) findViewById(R.id.bookinglist);
 
+        //HARD CODED BOOKINGs
         //get test bookings, in the future requests all the bookings from database
-        myBookingsTest = new LinkedList<Booking>();
-        mockBookings(myBookingsTest);
+//        myBookingsTest = new LinkedList<Booking>();
+//        mockBookings(myBookingsTest);
+        String currentUserEmail =
+                ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
+//        FirebaseDatabase.getInstance().getReference().
 
         //'tis a SimpleDateFormat to help display times
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -141,26 +145,26 @@ public class MyBookingsActivity extends AppCompatActivity {
 
         });
     }
-    private void mockBookings(LinkedList<Booking> myBookingsTest) {
-        for(int i = 0; i < 11;i++){
-            //create new booking
-            Booking tempBooking = new Booking();
-            //start and end times for booking
-            tempBooking.setStart(new GregorianCalendar(2000+i,1+i,1+i,3+i,1+i));
-            tempBooking.setEnd(new GregorianCalendar(2000+i,1+i,1+i,4+i,1+i));
-            //new space
-            Space tempSpace = new Space();
-            //set address in space
-            tempSpace.setStreetAddress("1 Infinity LoopCupertinoCA");
-            tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
-            //set owner name
-            tempSpace.setSpaceName("FirstName LastName");
-            //set review and rating
-            tempSpace.setSpaceReview("This space got my car towed.");
-//            tempSpace.setOwnerRating(3); No need. Owner rating will be retrieved from owner email - owner object
-            //put space in boooking and add booking to linked list
-            tempBooking.setSpace(tempSpace);
-            myBookingsTest.add(tempBooking);
-        }
-    }
+//    private void mockBookings(LinkedList<Booking> myBookingsTest) {
+//        for(int i = 0; i < 11;i++){
+//            //create new booking
+//            Booking tempBooking = new Booking();
+//            //start and end times for booking
+//            tempBooking.setStart(new GregorianCalendar(2000+i,1+i,1+i,3+i,1+i));
+//            tempBooking.setEnd(new GregorianCalendar(2000+i,1+i,1+i,4+i,1+i));
+//            //new space
+//            Space tempSpace = new Space();
+//            //set address in space
+//            tempSpace.setStreetAddress("1 Infinity LoopCupertinoCA");
+//            tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
+//            //set owner name
+//            tempSpace.setSpaceName("FirstName LastName");
+//            //set review and rating
+//            tempSpace.setSpaceReview("This space got my car towed.");
+////            tempSpace.setOwnerRating(3); No need. Owner rating will be retrieved from owner email - owner object
+//            //put space in boooking and add booking to linked list
+//            tempBooking.setSpace(tempSpace);
+//            myBookingsTest.add(tempBooking);
+//        }
+//    }
 }

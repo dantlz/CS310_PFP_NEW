@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, MapsActivity.class));
                 firebaseSignIn(emailField.getText().toString(), passwordField.getText().toString());
             }
         });
