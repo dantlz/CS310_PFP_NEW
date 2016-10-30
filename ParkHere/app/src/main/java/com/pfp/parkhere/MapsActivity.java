@@ -52,10 +52,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     private GoogleApiClient client;
     private List<LatLng> spaceList = new ArrayList<LatLng>();
-
-
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -21,12 +21,12 @@
     <uses-feature android:name="android.hardware.camera2" />
 
     <application
+        android:name=".Global_ParkHere_Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,12 +48,28 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        <!-- LOGIN -->
+        <!--BOOK SPACE-->
+        <activity android:name=".BookSpaceActivity">
+        </activity>
+
+        <!-- Cancel -->
+        <activity android:name=".CancelActivity" />
+
+        <!--EDIT SPACE-->
+        <activity android:name=".EditListedSpacesActivity" />
+
+        <!--LOGIN-->
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_login">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
 
         <!-- MAPS -->
         <activity
@@ -61,7 +77,7 @@
             android:label="@string/title_activity_maps" />
 
         <!-- MY BOOKINGS -->
-        <activity android:name=".MyBookingsActivity"></activity>
+        <activity android:name=".MyBookingsActivity" />
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
@@ -73,24 +89,33 @@
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/AppTheme" >
         </activity>
+
+        <!--MY LISTED SPACE DETAIL-->
+        <activity
+            android:name=".MyListedSpacesDetailsActivity"
+            android:label="@string/title_listedspace_list"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- PAYMENT -->
+        <activity
+            android:name=".PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- REGISTER -->
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- SETTINGS -->
         <activity
@@ -98,12 +123,10 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- PAYMENT -->
+        <!-- VERIFICATION -->
         <activity
-            android:name=".PaymentActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MyListedSpacesDetailsActivity" />
-        <activity android:name=".EditListedSpacesActivity"></activity>
+            android:name=".VerificationActivity"
+            android:label="@string/title_activity_maps">
+        </activity>
     </application>
-
 </manifest>

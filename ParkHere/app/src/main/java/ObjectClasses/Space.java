@@ -1,11 +1,14 @@
 package ObjectClasses;
 
-import android.graphics.Picture;
-import android.location.Address;
-import android.os.Parcelable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
@@ -13,83 +16,34 @@ import java.util.List;
  */
 
 public class Space {
-    private Picture picture;
-    private double pricePerHour;
+
+    private String spaceName;
     private String ownerEmail;
-    private Address address;
-    private List<Date> bookingStartTimes;
-    private List<Date> bookingEndTimes;
     private SpaceType type;
-    private int ownerRating;
-    private String spaceReview;
-    private String name;
-    private double longitude;
-    private double lattitude;
+    private LatLng latlng;
+    private String streetAddress;
+    private String city;
+    private String state;
+    private String zipCode;
+    private int pricePerHour;
     private CancellationPolicy policy;
+    private String description;
+    //TODO Make this a list of images
+    private MyCalendar availableStartDateAndTime;
+    private MyCalendar availableEndDateAndTime;
+    private String picture;
 
+    private List<MyCalendar> bookingStartDates;
+    private List<MyCalendar> bookingEndDates;
+    private int spaceRating;
+    private String spaceReview;
 
-    public CancellationPolicy getPolicy() {
-        return policy;
+    public String getSpaceName() {
+        return spaceName;
     }
 
-    public void setPolicy(CancellationPolicy policy) {
-        this.policy = policy;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpaceReview() {
-        return spaceReview;
-    }
-
-    public void setSpaceReview(String spaceReview) {
-        this.spaceReview = spaceReview;
-    }
-
-    public int getOwnerRating() {
-        return ownerRating;
-    }
-
-    public void setOwnerRating(int ownerRating) {
-        this.ownerRating = ownerRating;
-    }
-
-    public SpaceType getType() {
-        return type;
-    }
-
-    public void setType(SpaceType type) {
-        this.type = type;
-    }
-
-    public List<Date> getBookingEndTimes() {
-        return bookingEndTimes;
-    }
-
-    public void setBookingEndTimes(List<Date> bookingEndTimes) {
-        this.bookingEndTimes = bookingEndTimes;
-    }
-
-    public List<Date> getBookingStartTimes() {
-        return bookingStartTimes;
-    }
-
-    public void setBookingStartTimes(List<Date> bookingStartTimes) {
-        this.bookingStartTimes = bookingStartTimes;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setSpaceName(String spaceName) {
+        this.spaceName = spaceName;
     }
 
     public String getOwnerEmail() {
@@ -100,7 +54,55 @@ public class Space {
         this.ownerEmail = ownerEmail;
     }
 
-    public double getPricePerHour() {
+    public SpaceType getType() {
+        return type;
+    }
+
+    public void setType(SpaceType type) {
+        this.type = type;
+    }
+
+    public LatLng getLatlng() {
+        return latlng;
+    }
+
+    public void setLatlng(LatLng latlng) {
+        this.latlng = latlng;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public int getPricePerHour() {
         return pricePerHour;
     }
 
@@ -108,16 +110,98 @@ public class Space {
         this.pricePerHour = pricePerHour;
     }
 
-    public Picture getPicture() {
-        return picture;
+    public CancellationPolicy getPolicy() {
+        return policy;
     }
 
-    public void setPicture(Picture picture) {
-        this.picture = picture;
+    public void setPolicy(CancellationPolicy policy) {
+        this.policy = policy;
     }
 
-    public void setLong(double longitude) {this.longitude = longitude; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setLat(double lattitude) { this.lattitude = lattitude; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public MyCalendar getAvailableStartDateAndTime() {
+        return availableStartDateAndTime;
+    }
+
+    public void setAvailableStartDateAndTime(MyCalendar availableStartDateAndTime) {
+        this.availableStartDateAndTime = availableStartDateAndTime;
+    }
+
+    public MyCalendar getAvailableEndDateAndTime() {
+        return availableEndDateAndTime;
+    }
+
+    public void setAvailableEndDateAndTime(MyCalendar availableEndDateAndTime) {
+        this.availableEndDateAndTime = availableEndDateAndTime;
+    }
+
+    public Bitmap getPicture() {
+        byte [] encodeByte =Base64.decode(picture,Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        return bitmap;
+    }
+
+    public void setPicture(Drawable drawable) {
+        Bitmap copySelectedImage = getResizedBitmap(((BitmapDrawable)drawable).getBitmap(), 500);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        copySelectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        picture = Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    public List<MyCalendar> getBookingStartDates() {
+        return bookingStartDates;
+    }
+
+    public void setBookingStartDates(List<MyCalendar> bookingStartDates) {
+        this.bookingStartDates = bookingStartDates;
+    }
+
+    public List<MyCalendar> getBookingEndDates() {
+        return bookingEndDates;
+    }
+
+    public void setBookingEndDates(List<MyCalendar> bookingEndDates) {
+        this.bookingEndDates = bookingEndDates;
+    }
+
+    public int getSpaceRating() {
+        return spaceRating;
+    }
+
+    public void setSpaceRating(int spaceRating) {
+        this.spaceRating = spaceRating;
+    }
+
+    public String getSpaceReview() {
+        return spaceReview;
+    }
+
+    public void setSpaceReview(String spaceReview) {
+        this.spaceReview = spaceReview;
+    }
 
 }

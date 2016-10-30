@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Locale;
 
 import ObjectClasses.Space;
+import ObjectClasses.SpaceType;
 
 
 public class MyListedSpacesActivity extends AppCompatActivity {
@@ -39,8 +41,14 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         strFormattedSpaces = new String[MyListedSpaces.size()];
         for (int i = 0; i < MyListedSpaces.size(); i++) {
             Space currSpace = MyListedSpaces.get(i);
-            Address currAddress = currSpace.getAddress();
-            strFormattedSpaces[i] = currSpace.getName() + "\n" +
+            String ad = currSpace.getStreetAddress();
+            Address currAddress = null;
+            try {
+                currAddress = new Geocoder(this).getFromLocationName(ad, 1).get(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            strFormattedSpaces[i] = currSpace.getSpaceName() + "\n" +
                     currAddress.getAddressLine(0) + ",\n" +
                     currAddress.getLocality() + ", " +
                     currAddress.getAdminArea();
@@ -63,14 +71,12 @@ public class MyListedSpacesActivity extends AppCompatActivity {
 
                 Space chosenSpace = MyListedSpaces.get(position);
 
-                extras.putString("LISTED_SPACE_NAME", chosenSpace.getName());
+                extras.putString("LISTED_SPACE_NAME", chosenSpace.getSpaceName());
 
                 extras.putDouble("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
 
-                Address spaceAddress = chosenSpace.getAddress();
-                extras.putString("LISTED_SPACE_ADDRESS", spaceAddress.getAddressLine(0)+ ",\n" +
-                            spaceAddress.getLocality() + ", "
-                            + spaceAddress.getAdminArea() + " " + spaceAddress.getPostalCode());
+                String spaceAddress = chosenSpace.getStreetAddress();
+                extras.putString("LISTED_SPACE_ADDRESS", spaceAddress);
 
                 intent.putExtras(extras);
 
@@ -85,16 +91,11 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         for (int i = 1; i <= 11; i++) {
             Space testSpace = new Space();
 
-            testSpace.setName("My Test Space "+ i);
+            testSpace.setSpaceName("My Test Space "+ i);
             testSpace.setPricePerHour(5*i);
+            testSpace.setType(SpaceType.TRUCK);
 
-            Address testAddress = new Address(Locale.ENGLISH);
-            testAddress.setAddressLine(0, "654" + i + " Washington Avenue");
-            testAddress.setLocality("Los Angeles");
-            testAddress.setAdminArea("CA");
-            testAddress.setPostalCode("90007");
-
-            testSpace.setAddress(testAddress);
+            testSpace.setStreetAddress("654" + i + " Washington Avenue" + "Los Angeles" + "CA" + "90007");
 
             retList.add(testSpace);
         }

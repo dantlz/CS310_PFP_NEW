@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                     //First grab the peer/seeker object form database based on user's email
                     FirebaseDatabase.getInstance()
                             .getReference("Seekers")
-                            .child(user.getEmail())
+                            .child(Global_ParkHere_Application.reformatEmail(user.getEmail()))
                             .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,17 +95,16 @@ public class RegisterActivity extends AppCompatActivity {
                             //TODO Seekers AND owners
                             Peer currentUser = dataSnapshot.getValue(Peer.class);
                             ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
+                            //Go to Map activity
+                            startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
                         }
                         @Override
                         public void onCancelled(DatabaseError error) {
                             // Failed to read value
                         }
                     });
-
-                    //Go to Map activity
-                    startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
                 }
-                else {
+                else{
                     // User is signed out. This would not happen here ever
                 }
             }
@@ -136,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            System.out.println("Registration failed: Firebase issue");
+                            System.out.println("Registration failed: Firebase issue: " + task.getException().toString());
 
                             //Check if email is already registered.
                             if(task.getException().getClass().equals(FirebaseAuthUserCollisionException.class)){
@@ -158,14 +157,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                         //TODO Make sure to create owner or seeker depending on user choice
                         Seeker seeker = createUserObject();
-                        String reformattedEmail = emailField.getText().toString();
-                        reformattedEmail = reformattedEmail.replace(".", "");
-                        reformattedEmail = reformattedEmail.replace("#", "");
-                        reformattedEmail = reformattedEmail.replace("$", "");
-                        reformattedEmail = reformattedEmail.replace("[", "");
-                        reformattedEmail = reformattedEmail.replace("]", "");
                         FirebaseDatabase.getInstance().getReference().child("Seekers").
-                                child(reformattedEmail).setValue(seeker);
+                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(seeker);
                     }
                 });
     }
@@ -204,6 +197,18 @@ public class RegisterActivity extends AppCompatActivity {
                 return "";
         }
         return "Password must contain at least one special character";
+    }
+
+    @Override
+    protected void onDestroy() {
+        mAuth.signOut();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        mAuth.signOut();
+        super.onStop();
     }
 
     @Override
