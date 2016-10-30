@@ -71,13 +71,23 @@ public class Peer {
         this.firstName = firstName;
     }
 
-    public Bitmap getProfilePicture() {
+    //This is for firebase purposes.
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    //This is for firebase purposes.
+    public String profilePicture(){
+        return this.profilePicture;
+    }
+
+    public Bitmap getProfilePictureNonFireBase() {
         byte [] encodeByte =Base64.decode(profilePicture,Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         return bitmap;
     }
 
-    public void setProfilePicture(Drawable dpDrawable) {
+    public void setDPNonFirebaseRelated(Drawable dpDrawable) {
         Bitmap copySelectedImage = getResizedBitmap(((BitmapDrawable) dpDrawable).getBitmap(), 500);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         copySelectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
