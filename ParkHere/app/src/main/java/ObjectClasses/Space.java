@@ -35,6 +35,7 @@ public class Space {
     private List<MyCalendar> bookingStartDates;
     private List<MyCalendar> bookingEndDates;
     private int spaceRating;
+    //TODO Make this a list of reviews
     private String spaceReview;
 
     public String getSpaceName() {

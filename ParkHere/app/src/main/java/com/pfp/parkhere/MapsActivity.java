@@ -95,10 +95,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             (findViewById(R.id.Owner)).setEnabled(false);
             userMode = Status.SEEKER;
         }
-        //Default to seeker if the peer has registered as both
         else{
-            ((RadioButton)findViewById(R.id.Seeker)).setChecked(true);
-            userMode = Status.SEEKER;
+            //Remember last time's preferred status
+            if(Global_ParkHere_Application.getCurrentUserObject().getPreferredStatus().equals(Status.SEEKER)) {
+                ((RadioButton) findViewById(R.id.Seeker)).setChecked(true);
+                userMode = Status.SEEKER;
+            }
+            else{
+                ((RadioButton) findViewById(R.id.Owner)).setChecked(true);
+                userMode = Status.OWNER;
+            }
         }
     }
 

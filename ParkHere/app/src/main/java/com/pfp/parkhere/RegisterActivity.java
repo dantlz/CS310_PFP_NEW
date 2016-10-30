@@ -96,7 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
         List<String> types = new ArrayList<String>();
         types.add("Owner");
         types.add("Seeker");
-        types.add("Both");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(dataAdapter);
@@ -192,6 +191,12 @@ public class RegisterActivity extends AppCompatActivity {
         peer.setPhoneNumber(phoneNumberField.getText().toString());
         peer.setDPNonFirebaseRelated(imageView.getDrawable());
         peer.setStatus(Status.valueOf(statusSpinner.getSelectedItem().toString().toUpperCase()));
+        if(peer.getStatus().equals(Status.OWNER)) {
+            peer.setPreferredStatus(Status.OWNER);
+        }
+        else{
+            peer.setPreferredStatus(Status.SEEKER);
+        }
         return peer;
     }
 

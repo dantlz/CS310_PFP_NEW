@@ -18,7 +18,6 @@ import java.util.List;
 public class Peer {
     private String emailAddress;
 //    Password
-    private Preferences preferences;
     private PaymentInfo paymentInfo;
     private String firstName;
     private String lastName;
@@ -26,6 +25,7 @@ public class Peer {
     private String profilePicture;
     private Status status;
     private String photoID;
+    private Status preferredStatus;
 
     public String getLastName() {
         return lastName;
@@ -49,14 +49,6 @@ public class Peer {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-
-    public Preferences getPreferences() {
-        return preferences;
-    }
-
-    public void setPreferences(Preferences preferences) {
-        this.preferences = preferences;
     }
 
     public PaymentInfo getPaymentInfo() {
@@ -172,6 +164,13 @@ public class Peer {
         this.photoID = photoID;
     }
 
+    public Status getPreferredStatus() {
+        return preferredStatus;
+    }
+
+    public void setPreferredStatus(Status preferredStatus) {
+        this.preferredStatus = preferredStatus;
+    }
 
     public void setIDNonFirebaseRelated(Drawable dpDrawable) {
         Bitmap copySelectedImage = getResizedBitmap(((BitmapDrawable) dpDrawable).getBitmap(), 500);

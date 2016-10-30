@@ -53,8 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser fireBaseUser = firebaseAuth.getCurrentUser();
                 if(fireBaseUser != null) {
                     //User is signed in
-                    //TODO Get the login type SEEKER/OWNER from last time preference
-                    //TODO add button to swtich status
 
                     FirebaseDatabase.getInstance()
                             .getReference("Peers")
@@ -65,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                                     // This method is called once with the initial value and again
                                     // whenever data at this location is updated.
                                     Peer currentUser = dataSnapshot.getValue(Peer.class);
+                                    if(currentUser == null){
+                                        return;
+                                    }
                                     Global_ParkHere_Application.setCurrentUserObject(currentUser);
                                     Global_ParkHere_Application.addListener();
                                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));

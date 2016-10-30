@@ -132,6 +132,10 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 
+        //PICTURE CHECK NULL DOESNT WORK!!
+        //Address and latlng are from above
+        //Startdate starttime enddate endtime have default values
+        //email is given
         if(spaceNameField.getText().toString().equals("")||
                 priceField.getText().toString().equals("")||
                 descriptionField.getText().toString().equals("")||
@@ -143,12 +147,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                 zipCodeField.getText().toString().equals("") ||
                 typeSpinner.getSelectedItem().equals(null) ||
                 cancellationSpinner.getSelectedItem().equals(null)||
-                picture.getDrawable() == null)
-            //TODO PICTURE CHECK NULL DOESNT WORK!!
-            //Address and latlng are from above
-            //Startdate starttime enddate endtime have default values
-            //email is given
-                {
+                picture.getDrawable() == null) {
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("Please complete all fields")
                     .setMessage("All input fields must be completed.")
@@ -172,13 +171,25 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                     cityField.getText().toString() + " " +
                     zipCodeField.getText().toString() + " " +
                     stateField.getText().toString();
-            Address address = geocoder.getFromLocationName(fullAddress, 1).get(0);
-//            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
+            List<Address> addressResults = geocoder.getFromLocationName(fullAddress, 1);
+            if(addressResults.size() == 0){
+                new AlertDialog.Builder(AddSpaceActivity.this)
+                        .setTitle("Location not found")
+                        .setMessage("We could not find a location based on your address. Please try again")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return;
+            }
+
             listedSpace.setStreetAddress(streetNumberField.getText().toString() + " " + streetNameField.getText().toString());
             listedSpace.setCity(cityField.getText().toString());
             listedSpace.setState(stateField.getText().toString());
             listedSpace.setZipCode(zipCodeField.getText().toString());
-//            listedSpace.setLatlng(latlng);
             listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
             listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
             listedSpace.setDescription(descriptionField.getText().toString());
@@ -247,9 +258,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-    }
+    public void onNothingSelected(AdapterView<?> arg0) {}
 
     private void moreInfoClicked() {
 //        LayoutInflater layoutInflater
@@ -288,22 +297,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             }
         });
 
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("AddSpace Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
     }
 
     @Override
