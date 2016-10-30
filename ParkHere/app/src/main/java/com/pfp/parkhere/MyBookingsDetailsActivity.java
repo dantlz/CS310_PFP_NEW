@@ -20,7 +20,7 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         //get information passed from mybookings activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        TextView addressView = (TextView) findViewById(R.id.address);
+        TextView addressView = (TextView) findViewById(R.id.streetAddress);
         addressView.setTextColor(Color.BLACK);
         addressView.setText(extras.getString("ADDRESS_TEXT"));
 
