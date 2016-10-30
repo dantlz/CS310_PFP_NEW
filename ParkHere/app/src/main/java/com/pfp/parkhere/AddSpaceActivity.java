@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.ChangeSequenceNumber;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,9 +43,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import ObjectClasses.CancellationPolicy;
+import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 import ObjectClasses.SpaceType;
@@ -80,6 +85,32 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     private Spinner cancellationSpinner;
     private ImageView picture;
 
+    private List<Space> listOfAllSpaces;
+
+
+    private void setValues(){
+        CharSequence a = "test";
+        CharSequence b = "1";
+        CharSequence c = "ASKHFDJDA";
+        CharSequence d = "3335";
+        CharSequence e = "South Figueroa Street";
+        CharSequence f = "Los Angeles";
+        CharSequence g = "California";
+        CharSequence h = "United States of America";
+        CharSequence i = "90007";
+
+        spaceNameField.setText(a);
+        priceField.setText(b);
+        descriptionField.setText(c);
+        streetNumberField.setText(d);
+        streetNameField.setText(e);
+        cityField.setText(f);
+        stateField.setText(g);
+        countryField.setText(h);
+        zipCodeField.setText(i);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +122,9 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         priceField = (EditText) findViewById(R.id.priceField);
         descriptionField = (EditText) findViewById(R.id.descriptionField);
 
-        streetNameField = (EditText) findViewById(R.id.streetNumber);
-        cityField = (EditText) findViewById(R.id.streetName);
+        streetNumberField = (EditText) findViewById(R.id.streetNumber);
+        streetNameField = (EditText) findViewById(R.id.streetName);
+        cityField = (EditText) findViewById(R.id.city);
         stateField = (EditText) findViewById(R.id.state);
         countryField = (EditText) findViewById(R.id.country);
         zipCodeField = (EditText) findViewById(R.id.zipCode);
@@ -139,22 +171,33 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        setValues();
     }
 
     public void onNewSpaceClicked(View view) {
+        System.out.println("Confirm pressed!");
+
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 
-        if(streetNumberField.getText().toString().equals("") ||
+        if(spaceNameField.getText().toString().equals("")||
+                priceField.getText().toString().equals("")||
+                descriptionField.getText().toString().equals("")||
+                streetNumberField.getText().toString().equals("") ||
                 streetNameField.getText().toString().equals("") ||
                 cityField.getText().toString().equals("") ||
                 stateField.getText().toString().equals("") ||
                 countryField.getText().toString().equals("") ||
                 zipCodeField.getText().toString().equals("") ||
-                //Startdate starttime enddate endtime have default values
                 typeSpinner.getSelectedItem().equals(null) ||
-                cancellationSpinner.getSelectedItem().equals(null)
-                ){
+                cancellationSpinner.getSelectedItem().equals(null)||
+                picture.getDrawable() == null)
+            //TODO PICTURE CHECK NULL DOESNT WORK!!
+            //Address and latlng are from above
+            //Startdate starttime enddate endtime have default values
+            //email is given
+                {
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("Please complete all fields")
                     .setMessage("All input fields must be completed.")
@@ -180,19 +223,19 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                     stateField.getText().toString();
             Address address = geocoder.getFromLocationName(fullAddress, 1).get(0);
             LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
-            listedSpace.setAddress(address);
+            listedSpace.setAddress(fullAddress);
             listedSpace.setLatlng(latlng);
             listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
             listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
             listedSpace.setDescription(descriptionField.getText().toString());
-            listedSpace.setAvailableStartDateAndTime(new GregorianCalendar(
+            listedSpace.setAvailableStartDateAndTime(new MyCalendar(
                     startDatePicker.getYear(),
                     startDatePicker.getMonth(),
                     startDatePicker.getDayOfMonth(),
                     startTimePicker.getHour(),
                     startTimePicker.getMinute()
             ));
-            listedSpace.setAvailableStartDateAndTime(new GregorianCalendar(
+            listedSpace.setAvailableEndDateAndTime(new MyCalendar(
                     endDatePicker.getYear(),
                     endDatePicker.getMonth(),
                     endDatePicker.getDayOfMonth(),
@@ -204,16 +247,14 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             //TODO in confirmation activity create a function to get average of all ratings
             //TODO in confirmation append new review to a list of string reviews
 
-            FirebaseDatabase.getInstance().getReference("Spaces")
+            FirebaseDatabase.getInstance().getReference().child("Spaces")
                     .child(Global_ParkHere_Application.reformatEmail(
                             currentUserEmail) + spaceNameField.getText().toString()).setValue(listedSpace);
 
             FirebaseDatabase.getInstance().getReference("Seekers")
                     .child(Global_ParkHere_Application.reformatEmail(currentUserEmail)).child("Spaces")
-                    .setValue(Global_ParkHere_Application.reformatEmail(
-                            currentUserEmail) + spaceNameField.getText().toString());
+                    .child(spaceNameField.getText().toString()).setValue(0);
 
-//            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class));
             finishActivity(0);
         } catch (IOException e) {
             e.printStackTrace();

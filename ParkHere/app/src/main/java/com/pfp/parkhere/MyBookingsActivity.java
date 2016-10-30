@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -80,7 +82,13 @@ public class MyBookingsActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
 
                 //Generate text for address
-                Address bookingAddress = myBookingsTest.get(position).getSpace().getAddress();
+                String ad = myBookingsTest.get(position).getSpace().getAddress();
+                Address bookingAddress = null;
+                try {
+                    bookingAddress = new Geocoder(MyBookingsActivity.this).getFromLocationName(ad, 1).get(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 String addressText = bookingAddress.getAddressLine(0) + "\n" +
                         bookingAddress.getLocality()+ " " + bookingAddress.getAdminArea();
                 extras.putString("ADDRESS_TEXT",addressText);
@@ -142,13 +150,8 @@ public class MyBookingsActivity extends AppCompatActivity {
             tempBooking.setEnd(new GregorianCalendar(2000+i,1+i,1+i,4+i,1+i));
             //new space
             Space tempSpace = new Space();
-            //new address for space
-            Address tempAddress = new Address(Locale.ENGLISH);
-            tempAddress.setAddressLine(0,"1 Infinity Loop");
-            tempAddress.setLocality("Cupertino");
-            tempAddress.setAdminArea("CA");
             //set address in space
-            tempSpace.setAddress(tempAddress);
+            tempSpace.setAddress("1 Infinity LoopCupertinoCA");
             tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
             //set owner name
             tempSpace.setSpaceName("FirstName LastName");
@@ -160,5 +163,4 @@ public class MyBookingsActivity extends AppCompatActivity {
             myBookingsTest.add(tempBooking);
         }
     }
-
 }

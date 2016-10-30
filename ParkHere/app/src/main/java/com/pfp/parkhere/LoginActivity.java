@@ -131,9 +131,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    @Override
-    protected void onStop() {
-        mAuth.signOut();
-        super.onStop();
-    }
+    //TODO UNCOMMENT THIS
+//    @Override
+//    protected void onStop() {
+//        mAuth.signOut();
+//        super.onStop();
+//    }
 }
