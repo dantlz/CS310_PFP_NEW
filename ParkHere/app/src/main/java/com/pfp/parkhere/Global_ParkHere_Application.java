@@ -25,4 +25,14 @@ public class Global_ParkHere_Application extends Application {
         this.currentUserObject = currentUserObject;
     }
 
+    public static String reformatEmail(String email){
+        String reformattedEmail = email;
+        reformattedEmail = reformattedEmail.replace(".", "");
+        reformattedEmail = reformattedEmail.replace("#", "");
+        reformattedEmail = reformattedEmail.replace("$", "");
+        reformattedEmail = reformattedEmail.replace("[", "");
+        reformattedEmail = reformattedEmail.replace("]", "");
+        return reformattedEmail;
+    }
+
 }

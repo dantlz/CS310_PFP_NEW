@@ -5,5 +5,5 @@ package ObjectClasses;
  */
 
 public enum CancellationPolicy {
-    POLICY1, POLICY2, POLICY3
+    LIGHT, MODERATE, STRICT, MOREINFORMATION
 }

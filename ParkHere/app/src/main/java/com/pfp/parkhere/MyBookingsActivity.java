@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,6 +24,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ObjectClasses.Booking;
+import ObjectClasses.Owner;
+import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
 
@@ -26,6 +35,8 @@ public class MyBookingsActivity extends AppCompatActivity {
     LinkedList<Booking> myBookingsTest;
     //GregorianCalendar[] dateValues;
     String[] viewValues;
+    int ownerRating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +71,7 @@ public class MyBookingsActivity extends AppCompatActivity {
         bookingsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 // ListView Clicked item index
                 int itemPosition  = position;
@@ -71,7 +82,13 @@ public class MyBookingsActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
 
                 //Generate text for address
-                Address bookingAddress = myBookingsTest.get(position).getSpace().getAddress();
+                String ad = myBookingsTest.get(position).getSpace().getAddress();
+                Address bookingAddress = null;
+                try {
+                    bookingAddress = new Geocoder(MyBookingsActivity.this).getFromLocationName(ad, 1).get(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 String addressText = bookingAddress.getAddressLine(0) + "\n" +
                         bookingAddress.getLocality()+ " " + bookingAddress.getAdminArea();
                 extras.putString("ADDRESS_TEXT",addressText);
@@ -92,10 +109,29 @@ public class MyBookingsActivity extends AppCompatActivity {
                 extras.putString("START_TIME_TEXT",startTimeText);
                 extras.putString("END_TIME_TEXT",endTimeText);
                 //Generate text for owner name and email
-                extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getName());
+                extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getSpaceName());
                 extras.putString("OWNER_EMAIL_TEXT",myBookingsTest.get(position).getSpace().getOwnerEmail());
                 //Generate Rating and Review
-                extras.putString("SPACE_RATING_TEXT",myBookingsTest.get(position).getSpace().getOwnerRating() + " ");
+                //Get owner object to set rating
+                String bookingsSpacesOwnerEmail = myBookingsTest.get(position).getSpace().getOwnerEmail();
+                FirebaseDatabase.getInstance()
+                        .getReference("Seekers")
+                        .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // This method is called once with the initial value and again
+                                // whenever data at this location is updated.
+
+                                Peer currentUser = dataSnapshot.getValue(Peer.class);
+                                ownerRating = ((Owner) currentUser).getOwnerRating();
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+                                // Failed to read value
+                            }
+                        });
+                extras.putString("SPACE_RATING_TEXT", ownerRating + " ");
                 extras.putString("SPACE_REVIEW_TEXT",myBookingsTest.get(position).getSpace().getSpaceReview());
 
                 //Place bundle into intent and start activity
@@ -114,23 +150,17 @@ public class MyBookingsActivity extends AppCompatActivity {
             tempBooking.setEnd(new GregorianCalendar(2000+i,1+i,1+i,4+i,1+i));
             //new space
             Space tempSpace = new Space();
-            //new address for space
-            Address tempAddress = new Address(Locale.ENGLISH);
-            tempAddress.setAddressLine(0,"1 Infinity Loop");
-            tempAddress.setLocality("Cupertino");
-            tempAddress.setAdminArea("CA");
             //set address in space
-            tempSpace.setAddress(tempAddress);
+            tempSpace.setAddress("1 Infinity LoopCupertinoCA");
             tempSpace.setOwnerEmail("ownerName" + i + "@email.net");
             //set owner name
-            tempSpace.setName("FirstName LastName");
+            tempSpace.setSpaceName("FirstName LastName");
             //set review and rating
             tempSpace.setSpaceReview("This space got my car towed.");
-            tempSpace.setOwnerRating(3);
+//            tempSpace.setOwnerRating(3); No need. Owner rating will be retrieved from owner email - owner object
             //put space in boooking and add booking to linked list
             tempBooking.setSpace(tempSpace);
             myBookingsTest.add(tempBooking);
         }
     }
-
 }
