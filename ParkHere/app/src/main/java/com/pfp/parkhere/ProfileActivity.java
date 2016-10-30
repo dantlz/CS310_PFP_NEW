@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,5 +17,22 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+    }
+
+    public void clickedMyBookings(View view)
+    {
+        startActivity(new Intent(ProfileActivity.this, MyBookingsActivity.class));
+
+    }
+
+    public void clickedMyListedSpaces(View view)
+    {
+        startActivity(new Intent(ProfileActivity.this, MyListedSpacesActivity.class));
+
+    }
+
+    public void clickedVerification(View view)
+    {
+        startActivity(new Intent(ProfileActivity.this, VerificationActivity.class));
     }
 }

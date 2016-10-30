@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,6 +54,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     private GoogleApiClient client;
     private List<LatLng> spaceList = new ArrayList<LatLng>();
+    public static String userMode = "Seeker";
+    public static String spaceMode = "Compact";
+    LocationManager locationManager;
+    LocationListener locationListener;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
