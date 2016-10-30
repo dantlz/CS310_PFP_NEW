@@ -82,9 +82,9 @@ public class ProfileActivity extends AppCompatActivity
                 }
             });
 
-            if(((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getStatus().equals(Status.OWNER))
+            if((Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.OWNER)))
                 mBookingButton.setVisibility(View.GONE);
-            if(((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getStatus().equals(Status.SEEKER))
+            if((Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)))
                 myListedSpacesButton.setVisibility(View.GONE);
 
             try {
@@ -131,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     private void populateFields() throws InterruptedException {
-        Peer currentUser = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject();
+        Peer currentUser = Global_ParkHere_Application.getCurrentUserObject();
         mImageView.setImageBitmap(currentUser.retrieveDPBitmap());
         mName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
         mPhone.setText(currentUser.getPhoneNumber());

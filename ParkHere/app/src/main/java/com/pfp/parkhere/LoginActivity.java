@@ -53,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser fireBaseUser = firebaseAuth.getCurrentUser();
                 if(fireBaseUser != null) {
                     //User is signed in
-                    //TODO Get the login type SEEKER/OWNER
+                    //TODO Get the login type SEEKER/OWNER from last time preference
+                    //TODO add button to swtich status
 
-
-                    System.out.println(fireBaseUser.getEmail());
+                    System.out.println("EMAIL: @@@ " + fireBaseUser.getEmail());
                     FirebaseDatabase.getInstance()
                             .getReference("Peers")
                             .child(Global_ParkHere_Application.reformatEmail(fireBaseUser.getEmail()))
@@ -66,7 +66,8 @@ public class LoginActivity extends AppCompatActivity {
                                     // This method is called once with the initial value and again
                                     // whenever data at this location is updated.
                                     Peer currentUser = dataSnapshot.getValue(Peer.class);
-                                    ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
+                                    Global_ParkHere_Application.setCurrentUserObject(currentUser);
+                                    Global_ParkHere_Application.addListener();
                                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));
                                 }
                                 @Override
@@ -85,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, MapsActivity.class));
                 firebaseSignIn(emailField.getText().toString(), passwordField.getText().toString());
             }
         });
@@ -111,7 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()){
-                            if(task.getException().getClass().equals(FirebaseAuthInvalidCredentialsException.class)){
                                 new AlertDialog.Builder(LoginActivity.this)
                                         .setTitle("Email or password invalid")
                                         .setMessage("The entered email or password is invalid. " +
@@ -123,8 +122,6 @@ public class LoginActivity extends AppCompatActivity {
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .show();
-                            }
-                            return;
                         }
 
                         //Other wise, the user is successfully signed in. Further action in mAuthListener

@@ -41,7 +41,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         listedSpacesList = (ListView) findViewById(R.id.listed_spaces_list);
         MyListedSpaces = new LinkedList<Space>();
 
-        String currentUserEmail = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
+        String currentUserEmail = Global_ParkHere_Application.getCurrentUserObject().getEmailAddress();
         //Retrieve all the current user's actual space objects
         FirebaseDatabase.getInstance().getReference().child("Spaces")
                 .child(Global_ParkHere_Application.reformatEmail(currentUserEmail))

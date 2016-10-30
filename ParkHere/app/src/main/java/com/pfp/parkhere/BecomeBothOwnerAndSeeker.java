@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import ObjectClasses.Status;
 
@@ -16,8 +17,12 @@ public class BecomeBothOwnerAndSeeker extends AppCompatActivity {
         setContentView(R.layout.activity_become_both_owner_and_seeker);
     }
 
-    private void changeStatus(View view){
-        ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().setStatus(Status.BOTH);
+    public void changeStatus(View view){
+        FirebaseDatabase.getInstance().getReference().child("Peers").child(
+                Global_ParkHere_Application.reformatEmail(
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+                .child("status").setValue(Status.BOTH);
+        finish();
     }
 
     @Override

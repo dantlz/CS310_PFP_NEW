@@ -2,6 +2,11 @@ package com.pfp.parkhere;
 
 import android.app.Application;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import ObjectClasses.Peer;
 
 /**
@@ -10,19 +15,35 @@ import ObjectClasses.Peer;
 
 public class Global_ParkHere_Application extends Application {
 
-    private Peer currentUserObject;
+    private static Peer currentUserObject;
 
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
-    public Peer getCurrentUserObject() {
+    public static void addListener(){
+        FirebaseDatabase.getInstance().getReference().child("Peers")
+                .child(Global_ParkHere_Application.reformatEmail(currentUserObject.getEmailAddress()))
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        setCurrentUserObject(dataSnapshot.getValue(Peer.class));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public static Peer getCurrentUserObject() {
         return currentUserObject;
     }
 
-    public void setCurrentUserObject(Peer currentUserObject) {
-        this.currentUserObject = currentUserObject;
+    public static void setCurrentUserObject(Peer obj) {
+        currentUserObject = obj;
     }
 
     public static String reformatEmail(String email){

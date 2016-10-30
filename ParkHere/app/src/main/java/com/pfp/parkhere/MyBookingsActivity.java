@@ -49,7 +49,7 @@ public class MyBookingsActivity extends AppCompatActivity {
 //        myBookingsTest = new LinkedList<Booking>();
 //        mockBookings(myBookingsTest);
         String currentUserEmail =
-                ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress();
 //        FirebaseDatabase.getInstance().getReference().
 
         //'tis a SimpleDateFormat to help display times

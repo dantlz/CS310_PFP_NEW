@@ -119,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                             // This method is called once with the initial value and again
                             // whenever data at this location is updated.
                             Peer currentUser = dataSnapshot.getValue(Peer.class);
-                            ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
+                            Global_ParkHere_Application.setCurrentUserObject(currentUser);
                             //Go to Map activity
                             startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
                         }

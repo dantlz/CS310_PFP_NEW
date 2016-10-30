@@ -53,14 +53,20 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
 
         Button ownerButton = (Button) findViewById(R.id.ownerButton);
-        ownerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, ProfileActivity.class);
-                intent.putExtra("LISTED_SPACE_OWNEREMAIL", extras.getStringArrayList("LISTED_SPACE_OWNEREMAIL"));
-                startActivity(new Intent());
-            }
-        });
+        if(extras.getString("LISTED_SPACE_OWNEREMAIL").equals(
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress())) {
+            ownerButton.setVisibility(View.GONE);
+        }
+        else {
+            ownerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MyListedSpacesDetailsActivity.this, ProfileActivity.class);
+                    intent.putExtra("LISTED_SPACE_OWNEREMAIL", extras.getString("LISTED_SPACE_OWNEREMAIL"));
+                    startActivity(new Intent());
+                }
+            });
+        }
     }
 
     public void onEditListedSpaceClicked(View view) {

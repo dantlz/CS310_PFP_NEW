@@ -25,14 +25,7 @@ public class Peer {
     private String phoneNumber;
     private String profilePicture;
     private Status status;
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    private String photoID;
 
     public String getLastName() {
         return lastName;
@@ -162,5 +155,37 @@ public class Peer {
     public void setOwnerRating(int ownerRating) {
         this.ownerRating = ownerRating;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getPhotoID() {
+        return photoID;
+    }
+
+    public void setPhotoID(String photoID) {
+        this.photoID = photoID;
+    }
+
+
+    public void setIDNonFirebaseRelated(Drawable dpDrawable) {
+        Bitmap copySelectedImage = getResizedBitmap(((BitmapDrawable) dpDrawable).getBitmap(), 500);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        copySelectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        photoID = Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public Bitmap retrieveIDBitmap() {
+        byte [] encodeByte =Base64.decode(photoID,Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        return bitmap;
+    }
+
 }
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class VerificationActivity extends AppCompatActivity {
 
@@ -43,18 +44,10 @@ public class VerificationActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            System.out.println("Before decode file" + picturePath);
-            ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            System.out.println("After decode file");
+            FirebaseDatabase.getInstance().getReference().child("Peers")
+                    .child(Global_ParkHere_Application
+                            .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+                    .child("photoID").setValue(selectedImage.toString());
         }
 
 
