@@ -28,7 +28,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         addressText.setText(extras.getString("LISTED_SPACE_ADDRESS"));
 
         TextView priceText = (TextView)findViewById(R.id.listed_space_price);
-        priceText.setText("Price: $" + extras.getDouble("LISTED_SPACE_PRICE"));
+        priceText.setText("Price: $" + extras.getDouble("LISTED_SPACE_PRICE") + "0");
 
     }
 

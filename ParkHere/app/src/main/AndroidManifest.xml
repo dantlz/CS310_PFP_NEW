@@ -60,11 +60,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- MAPS -->
@@ -90,6 +85,11 @@
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
             android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- PAYMENT -->
