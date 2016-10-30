@@ -12,21 +12,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.graphics.Color;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//import com.google.android.gms.common.api.GoogleApiClient;
 
 import ObjectClasses.Peer;
-import ObjectClasses.Status;
 
 import static com.pfp.parkhere.R.id.editButton;
-import static com.pfp.parkhere.R.id.myListedSpacesButton;
 
 public class ProfileActivity extends AppCompatActivity
 {
@@ -59,7 +53,18 @@ public class ProfileActivity extends AppCompatActivity
         myListedSpacesButton = (Button) findViewById(R.id.myListedSpacesButton);
 
         //User's own profile
-        if(extras == null) {
+        if(extras.get("LISTED_SPACE_OWNEREMAIL") == null) {
+            if(extras.get("Status").equals("OWNER")){
+                System.out.println(1);
+                mBookingButton.setVisibility(View.GONE);
+                myListedSpacesButton.setVisibility(View.VISIBLE);
+            }
+            else{
+                System.out.println(2);
+                myListedSpacesButton.setVisibility(View.GONE);
+                mBookingButton.setVisibility(View.VISIBLE);
+            }
+
             disableEditText(mEmail);
             disableEditText(mPhone);
             disableEditText(mFirstName);
@@ -101,11 +106,6 @@ public class ProfileActivity extends AppCompatActivity
                 }
             });
 
-            if((Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.OWNER)))
-                mBookingButton.setVisibility(View.GONE);
-            if((Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)))
-                myListedSpacesButton.setVisibility(View.GONE);
-
             try {
                 populateFields();
             } catch (InterruptedException e) {
@@ -127,10 +127,16 @@ public class ProfileActivity extends AppCompatActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Peer owner = dataSnapshot.getValue(Peer.class);
                         mFirstName.setText("Owner first name: " + owner.getFirstName());
+                        disableEditText(mFirstName);
+                        mFirstName.setTextColor(Color.BLACK);
                         mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
                         mEmail.setText("Owner rating: " + owner.getOwnerRating());
+                        disableEditText(mEmail);
+                        mEmail.setTextColor(Color.BLACK);
                         mPhone.setInputType(InputType.TYPE_CLASS_TEXT);
                         mPhone.setText("Owner review: " + owner.getReview());
+                        disableEditText(mPhone);
+                        mPhone.setTextColor(Color.BLACK);
                     }
 
                     @Override
@@ -144,6 +150,10 @@ public class ProfileActivity extends AppCompatActivity
         mImageView.setVisibility(View.GONE);
         mEditButton.setVisibility(View.GONE);
         mSaveButton.setVisibility(View.GONE);
+        mLastName.setVisibility(View.GONE);
+        mBookingButton.setVisibility(View.GONE);
+        myListedSpacesButton.setVisibility(View.GONE);
+        ((Button) findViewById(R.id.verificationButton)).setVisibility(View.GONE);
     }
 
     private void populateFields() throws InterruptedException {

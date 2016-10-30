@@ -75,7 +75,6 @@ public class MyListedSpacesActivity extends AppCompatActivity {
                     currAddress.getAddressLine(0) + ",\n" +
                     currAddress.getLocality() + ", " +
                     currAddress.getAdminArea();
-            System.out.println("##: " + currAddress);
         }
 
         //This adapts the strings to be compatable with the list

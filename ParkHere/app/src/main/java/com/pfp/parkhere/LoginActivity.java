@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                     //TODO Get the login type SEEKER/OWNER from last time preference
                     //TODO add button to swtich status
 
-                    System.out.println("EMAIL: @@@ " + fireBaseUser.getEmail());
                     FirebaseDatabase.getInstance()
                             .getReference("Peers")
                             .child(Global_ParkHere_Application.reformatEmail(fireBaseUser.getEmail()))
@@ -129,9 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    //TODO login registrer add buttons to go to each other
-    //TODO option to login/register as owner AND seeker
-    //TODO Add these logouts to MapsActivity as well!!!
     @Override
     protected void onDestroy() {
         mAuth.signOut();

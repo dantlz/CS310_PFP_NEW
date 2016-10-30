@@ -18,20 +18,20 @@
             tools:textColor="@android:color/black" />
         <EditText
             android:id="@+id/spaceNameField"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/AddSpaceTitle"
             android:hint="Enter your space name"/>
         <EditText
             android:id="@+id/priceField"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Price"
             android:layout_below="@+id/spaceNameField"
             android:inputType="number"/>
         <EditText
             android:id="@+id/descriptionField"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your description"
             android:layout_below="@+id/priceField"
@@ -121,7 +121,7 @@
         <Spinner
             android:id="@+id/typeSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@+id/typeSpinnerLabel"
             android:spinnerMode="dropdown"/>
         <TextView
@@ -134,7 +134,7 @@
         <Spinner
             android:id="@+id/spinnerForCancellation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@+id/spinnerCancellationLabel"
             android:spinnerMode="dropdown"/>
 

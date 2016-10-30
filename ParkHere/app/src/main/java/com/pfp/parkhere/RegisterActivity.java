@@ -159,7 +159,6 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            System.out.println("Registration failed: Firebase issue: " + task.getException().toString());
 
                             //Check if email is already registered.
                             if(task.getException().getClass().equals(FirebaseAuthUserCollisionException.class)){

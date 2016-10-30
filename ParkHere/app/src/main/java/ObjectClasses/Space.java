@@ -20,7 +20,6 @@ public class Space {
     private String spaceName;
     private String ownerEmail;
     private SpaceType type;
-//    private LatLng latlng;
     private String streetAddress;
     private String city;
     private String state;
@@ -61,14 +60,6 @@ public class Space {
     public void setType(SpaceType type) {
         this.type = type;
     }
-
-//    public LatLng getLatlng() {
-//        return latlng;
-//    }
-//
-//    public void setLatlng(LatLng latlng) {
-//        this.latlng = latlng;
-//    }
 
     public String getStreetAddress() {
         return streetAddress;

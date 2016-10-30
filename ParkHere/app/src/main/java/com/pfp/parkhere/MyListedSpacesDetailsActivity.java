@@ -9,8 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import ObjectClasses.Space;
 
 public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
@@ -24,49 +30,95 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         extras = intent.getExtras();
 
-        TextView nameText = (TextView)findViewById(R.id.listed_space_name);
-        nameText.setText(extras.getString("LISTED_SPACE_NAME"));
+        Button ownerButton = (Button) findViewById(R.id.ownerButton);
+        Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
 
-        TextView addressText = (TextView)findViewById(R.id.listed_space_address);
-        addressText.setText(extras.getString("LISTED_SPACE_ADDRESS"));
-        addressText.append(",\n" + extras.getString("LISTED_SPACE_CITY"));
-        addressText.append(", " + extras.getString("LISTED_SPACE_STATE"));
-        addressText.append(", " + extras.getString("LISTED_SPACE_ZIP"));
+        //My listed space detail
+        if(extras.getString("SPACENAME") == null) {
+            TextView nameText = (TextView) findViewById(R.id.listed_space_name);
+            nameText.setText(extras.getString("LISTED_SPACE_NAME"));
 
-        TextView priceText = (TextView)findViewById(R.id.listed_space_price);
-        priceText.setText("$" + extras.getInt("LISTED_SPACE_PRICE"));
+            TextView addressText = (TextView) findViewById(R.id.listed_space_address);
+            addressText.setText(extras.getString("LISTED_SPACE_ADDRESS"));
+            addressText.append(",\n" + extras.getString("LISTED_SPACE_CITY"));
+            addressText.append(", " + extras.getString("LISTED_SPACE_STATE"));
+            addressText.append(", " + extras.getString("LISTED_SPACE_ZIP"));
+
+            TextView priceText = (TextView) findViewById(R.id.listed_space_price);
+            priceText.setText("$" + extras.getInt("LISTED_SPACE_PRICE"));
+
+            TextView typeField = (TextView) findViewById(R.id.typeField);
+            typeField.setText(extras.getString("LISTED_SPACE_TYPE"));
+
+            TextView policyField = (TextView) findViewById(R.id.policyField);
+            policyField.setText(extras.getString("LISTED_SPACE_POLICY"));
+
+            TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
+            descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
+
+            TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
+            spaceRatingField.setText("" + extras.getInt("LISTED_SPACE_RATING"));
+
+            TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
+            spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
+            ownerButton.setVisibility(View.GONE);
+
+            return;
+        }
+
+        //Directed from map
+        ownerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, ProfileActivity.class);
+                intent.putExtra("LISTED_SPACE_OWNEREMAIL", extras.getString("OWNEREMAIL"));
+                startActivity(intent);
+            }
+        });
+        editButton.setVisibility(View.GONE);
+
+        FirebaseDatabase.getInstance().getReference().child("Spaces")
+                .child(Global_ParkHere_Application.reformatEmail(extras.getString("OWNEREMAIL")))
+                .child(extras.getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                populateNotMySpaceDetails(dataSnapshot.getValue(Space.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void populateNotMySpaceDetails(Space space){
+        TextView nameText = (TextView) findViewById(R.id.listed_space_name);
+        nameText.setText(space.getSpaceName());
+
+        TextView addressText = (TextView) findViewById(R.id.listed_space_address);
+        addressText.setText(space.getStreetAddress());
+        addressText.append(",\n" + space.getCity());
+        addressText.append(", " + space.getState());
+        addressText.append(", " + space.getState());
+
+        TextView priceText = (TextView) findViewById(R.id.listed_space_price);
+        priceText.setText("$" + space.getPricePerHour());
 
         TextView typeField = (TextView) findViewById(R.id.typeField);
-        typeField.setText(extras.getString("LISTED_SPACE_TYPE"));
+        typeField.setText(String.valueOf(space.getType()));
 
         TextView policyField = (TextView) findViewById(R.id.policyField);
-        policyField.setText(extras.getString("LISTED_SPACE_POLICY"));
+        policyField.setText(String.valueOf(space.getPolicy()));
 
         TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
-        descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
+        descriptionField.setText(space.getDescription());
 
         TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
-        spaceRatingField.setText(""+extras.getInt("LISTED_SPACE_RATING"));
+        spaceRatingField.setText("" + space.getSpaceRating());
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
-        spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
-
-
-        Button ownerButton = (Button) findViewById(R.id.ownerButton);
-        if(extras.getString("LISTED_SPACE_OWNEREMAIL").equals(
-                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress())) {
-            ownerButton.setVisibility(View.GONE);
-        }
-        else {
-            ownerButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MyListedSpacesDetailsActivity.this, ProfileActivity.class);
-                    intent.putExtra("LISTED_SPACE_OWNEREMAIL", extras.getString("LISTED_SPACE_OWNEREMAIL"));
-                    startActivity(new Intent());
-                }
-            });
-        }
+        spaceReviewField.setText(space.getSpaceReview());
     }
 
     public void onEditListedSpaceClicked(View view) {
