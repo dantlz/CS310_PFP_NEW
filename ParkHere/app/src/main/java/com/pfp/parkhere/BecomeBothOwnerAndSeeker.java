@@ -1,29 +1,24 @@
 package com.pfp.parkhere;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class CancelActivity extends AppCompatActivity {
+import ObjectClasses.Status;
+
+public class BecomeBothOwnerAndSeeker extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cancel);
-    }
-    public void ReturnToBookingDetail(View view){
-        finish();
-    }
-    public void CancelBooking(View view){
-        //remove from database. If things work out right, the mybookings activity should reload from database without the deleted booking
-        Intent intent = new Intent(this, MyBookingsActivity.class);
-        startActivity(intent);
-        finish();
+        setContentView(R.layout.activity_become_both_owner_and_seeker);
     }
 
+    private void changeStatus(View view){
+        ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().setStatus(Status.BOTH);
+    }
 
     @Override
     protected void onDestroy() {

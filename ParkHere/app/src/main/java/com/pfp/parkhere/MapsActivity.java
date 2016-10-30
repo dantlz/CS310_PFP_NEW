@@ -40,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -252,8 +253,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.itemAddSpace:
                 startActivity(new Intent(MapsActivity.this, AddSpaceActivity.class));
+                return true;
+            case R.id.Both:
+                startActivity(new Intent(MapsActivity.this, BecomeBothOwnerAndSeeker.class));
+                return true;
             case R.id.itemPayment:
-
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -289,6 +294,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
 //        mMap.setMyLocationEnabled(true);
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        FirebaseAuth.getInstance().signOut();
+        super.onStop();
     }
 
 }

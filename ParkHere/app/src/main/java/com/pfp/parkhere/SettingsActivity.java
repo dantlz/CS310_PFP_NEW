@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -26,4 +28,16 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        FirebaseAuth.getInstance().signOut();
+        super.onStop();
+    }
 }

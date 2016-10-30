@@ -20,4 +20,9 @@
         android:title="Add Space">
     </item>
 
+    <item
+        android:id="@+id/Both"
+        android:title="Register as both owner and seeker">
+    </item>
+
 </menu>

@@ -105,15 +105,15 @@
         <item>WY</item>
     </string-array>
 
-    <string name = "state_selection_prompt">Select State</string>
+    <string name="state_selection_prompt">Select State</string>
 
-    <string name = "edit_name_text">Name: </string>
-    <string name = "edit_address_text">Address: </string>
-    <string name = "edit_state_text">State: </string>
-    <string name = "edit_country_text">Country: </string>
-    <string name = "edit_price_text">Price: </string>
-    <string name = "save_listed_space_changes">Save Changes</string>
-    <string name = "delete_listed_space">Delete Space</string>
+    <string name="edit_name_text">Name: </string>
+    <string name="edit_address_text">Address: </string>
+    <string name="edit_state_text">State: </string>
+    <string name="edit_country_text">Country: </string>
+    <string name="edit_price_text">Price: </string>
+    <string name="save_listed_space_changes">Save Changes</string>
+    <string name="delete_listed_space">Delete Space</string>
 
     <string-array name="cancellation_policy_choices">
         <item>Flexible</item>

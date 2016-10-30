@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class EditListedSpacesActivity extends AppCompatActivity {
 
@@ -31,6 +34,24 @@ public class EditListedSpacesActivity extends AppCompatActivity {
 
         EditText priceTextField = (EditText)findViewById(R.id.edit_price_field);
         priceTextField.setText("" + extras.getDouble("LISTED_SPACE_PRICE") + "0");
+
+//        TextView priceText = (TextView)findViewById(R.id.listed_space_price);
+//        priceText.setText("Price: $" + extras.getDouble("LISTED_SPACE_PRICE") + "0");
+//
+//        TextView typeField = (TextView) findViewById(R.id.typeField);
+//        typeField.setText(extras.getString("LISTED_SPACE_TYPE"));
+//
+//        TextView policyField = (TextView) findViewById(R.id.policyField);
+//        policyField.setText(extras.getString("LISTED_SPACE_POLICY"));
+//
+//        TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
+//        descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
+//
+//        TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
+//        spaceRatingField.setText(extras.getString("LISTED_SPACE_RATING"));
+//
+//        TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
+//        spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
     }
 
     public void saveListedSpaceDetails(View view) {
@@ -51,5 +72,18 @@ public class EditListedSpacesActivity extends AppCompatActivity {
 
         intent.putExtras(extras);
         context.startActivity(intent);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        FirebaseAuth.getInstance().signOut();
+        super.onStop();
     }
 }

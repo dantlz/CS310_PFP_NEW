@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import ObjectClasses.Owner;
 import ObjectClasses.Peer;
 
 public class LoginActivity extends AppCompatActivity {
@@ -59,14 +58,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     System.out.println(fireBaseUser.getEmail());
                     FirebaseDatabase.getInstance()
-                            .getReference("Seekers")
+                            .getReference("Peers")
                             .child(Global_ParkHere_Application.reformatEmail(fireBaseUser.getEmail()))
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     // This method is called once with the initial value and again
                                     // whenever data at this location is updated.
-                                    //TODO Seekers AND owners
                                     Peer currentUser = dataSnapshot.getValue(Peer.class);
                                     ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
                                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));

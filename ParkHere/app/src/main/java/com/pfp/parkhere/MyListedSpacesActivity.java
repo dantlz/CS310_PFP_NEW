@@ -9,7 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -34,10 +41,25 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         listedSpacesList = (ListView) findViewById(R.id.listed_spaces_list);
         MyListedSpaces = new LinkedList<Space>();
 
-        //Put firebase stream here.
-        //Generate test cases for spaces
-        MyListedSpaces = createTestSpaces();
+        String currentUserEmail = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
+        //Retrieve all the current user's actual space objects
+        FirebaseDatabase.getInstance().getReference().child("Spaces")
+                .child(Global_ParkHere_Application.reformatEmail(currentUserEmail))
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                            MyListedSpaces.add(postSnapshot.getValue(Space.class));
+                        }
+                        populate();
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+    }
+
+    private void populate(){
         //Format the information into an array of strings to add to the list
         strFormattedSpaces = new String[MyListedSpaces.size()];
         for (int i = 0; i < MyListedSpaces.size(); i++) {
@@ -53,62 +75,72 @@ public class MyListedSpacesActivity extends AppCompatActivity {
                     currAddress.getAddressLine(0) + ",\n" +
                     currAddress.getLocality() + ", " +
                     currAddress.getAdminArea();
+            System.out.println("##: " + currAddress);
         }
 
         //This adapts the strings to be compatable with the list
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                    android.R.id.text1, strFormattedSpaces);
+                android.R.id.text1, strFormattedSpaces);
 
         listedSpacesList.setAdapter(arrayAdapter);
-
         listedSpacesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Context context = view.getContext();
-
                 Intent intent = new Intent(context, MyListedSpacesDetailsActivity.class);
                 Bundle extras = new Bundle();
-
                 Space chosenSpace = MyListedSpaces.get(position);
-
                 extras.putString("LISTED_SPACE_NAME", chosenSpace.getSpaceName());
-
                 extras.putDouble("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
-
                 extras.putString("LISTED_SPACE_ADDRESS", chosenSpace.getStreetAddress());
-
                 extras.putString("LISTED_SPACE_CITY", chosenSpace.getCity());
-
                 extras.putString("LISTED_SPACE_STATE", chosenSpace.getState());
-
                 extras.putString("LISTED_SPACE_ZIP", chosenSpace.getZipCode());
+                extras.putString("LISTED_SPACE_TYPE", String.valueOf(chosenSpace.getType()));
+                extras.putString("LISTED_SPACE_POLICY", String.valueOf(chosenSpace.getPolicy()));
+                extras.putString("LISTED_SPACE_DESCRIPTION", chosenSpace.getDescription());
+                extras.putString("LISTED_SPACE_RATING", String.valueOf(chosenSpace.getSpaceRating()));
+                extras.putString("LISTED_SPACE_REVIEW", chosenSpace.getSpaceReview());
+                extras.putString("LISTED_SPACE_OWNEREMAIL", chosenSpace.getOwnerEmail());
 
                 intent.putExtras(extras);
-
                 context.startActivity(intent);
             }
         });
     }
 
-    private LinkedList<Space> createTestSpaces() {
-        LinkedList<Space> retList = new LinkedList<Space>();
+    //Used to create hard coded spaces
+//    private LinkedList<Space> createTestSpaces() {
+//        LinkedList<Space> retList = new LinkedList<Space>();
+//
+//        for (int i = 1; i <= 11; i++) {
+//            Space testSpace = new Space();
+//
+//            testSpace.setSpaceName("My Test Space "+ i);
+//            testSpace.setPricePerHour(5*i);
+//            testSpace.setType(SpaceType.TRUCK);
+//
+//            testSpace.setStreetAddress("654" + i + " Washington Avenue");
+//            testSpace.setCity("Los Angeles");
+//            testSpace.setState("CA");
+//            testSpace.setZipCode("90007");
+//
+//            retList.add(testSpace);
+//        }
+//
+//        return retList;
+//    }
 
-        for (int i = 1; i <= 11; i++) {
-            Space testSpace = new Space();
 
-            testSpace.setSpaceName("My Test Space "+ i);
-            testSpace.setPricePerHour(5*i);
-            testSpace.setType(SpaceType.TRUCK);
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
+    }
 
-            testSpace.setStreetAddress("654" + i + " Washington Avenue");
-            testSpace.setCity("Los Angeles");
-            testSpace.setState("CA");
-            testSpace.setZipCode("90007");
-
-            retList.add(testSpace);
-        }
-
-        return retList;
+    @Override
+    protected void onStop() {
+        FirebaseAuth.getInstance().signOut();
+        super.onStop();
     }
 }

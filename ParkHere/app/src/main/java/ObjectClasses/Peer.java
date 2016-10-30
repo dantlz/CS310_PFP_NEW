@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tianlinz on 10/16/16.
@@ -22,6 +24,15 @@ public class Peer {
     private String lastName;
     private String phoneNumber;
     private String profilePicture;
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public String getLastName() {
         return lastName;
@@ -95,7 +106,6 @@ public class Peer {
         return bitmap;
     }
 
-
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -110,6 +120,47 @@ public class Peer {
         }
 
         return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    //SEEKER STUFF
+    private List<Booking> completedBookings = new ArrayList<Booking>();
+
+    public List<Booking> getCompletedBookings() {
+        return completedBookings;
+    }
+
+    public void setCompletedBookings(List<Booking> completedBookings) {
+        this.completedBookings = completedBookings;
+    }
+
+    //OWNER STUFF
+    private List<Space> listedSpaces = new ArrayList<Space>();
+    int ownerRating;
+    //TODO Make this a list of reviews
+    String review;
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    public List<Space> getListedSpaces() {
+        return listedSpaces;
+    }
+
+    public void setListedSpaces(List<Space> listedSpaces) {
+        this.listedSpaces = listedSpaces;
+    }
+
+    public int getOwnerRating() {
+        return ownerRating;
+    }
+
+    public void setOwnerRating(int ownerRating) {
+        this.ownerRating = ownerRating;
     }
 }
 

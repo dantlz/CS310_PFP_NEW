@@ -11,6 +11,10 @@ public class MyCalendar {
     int hour;
     int minute;
 
+    public MyCalendar(){
+
+    }
+
     public MyCalendar(int year, int month, int day, int hour, int minute){
         this.year = year;
         this.month = month;

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,7 +25,6 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ObjectClasses.Booking;
-import ObjectClasses.Owner;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
@@ -119,7 +119,7 @@ public class MyBookingsActivity extends AppCompatActivity {
                 //Get owner object to set rating
                 String bookingsSpacesOwnerEmail = myBookingsTest.get(position).getSpace().getOwnerEmail();
                 FirebaseDatabase.getInstance()
-                        .getReference("Seekers")
+                        .getReference("Peers")
                         .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
                         .addValueEventListener(new ValueEventListener() {
                             @Override
@@ -128,7 +128,7 @@ public class MyBookingsActivity extends AppCompatActivity {
                                 // whenever data at this location is updated.
 
                                 Peer currentUser = dataSnapshot.getValue(Peer.class);
-                                ownerRating = ((Owner) currentUser).getOwnerRating();
+                                ownerRating = ((Peer) currentUser).getOwnerRating();
                             }
                             @Override
                             public void onCancelled(DatabaseError error) {
@@ -167,4 +167,17 @@ public class MyBookingsActivity extends AppCompatActivity {
 //            myBookingsTest.add(tempBooking);
 //        }
 //    }
+
+
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        FirebaseAuth.getInstance().signOut();
+        super.onStop();
+    }
 }

@@ -31,6 +31,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
@@ -166,8 +167,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     }
 
     public void onNewSpaceClicked(View view) {
-        System.out.println("Confirm pressed!");
-
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 
@@ -212,12 +211,12 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                     zipCodeField.getText().toString() +
                     stateField.getText().toString();
             Address address = geocoder.getFromLocationName(fullAddress, 1).get(0);
-            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
+//            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
             listedSpace.setStreetAddress(streetNumberField.getText().toString() + " " + streetNameField.getText().toString());
             listedSpace.setCity(cityField.getText().toString());
             listedSpace.setState(stateField.getText().toString());
             listedSpace.setZipCode(zipCodeField.getText().toString());
-            listedSpace.setLatlng(latlng);
+//            listedSpace.setLatlng(latlng);
             listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
             listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
             listedSpace.setDescription(descriptionField.getText().toString());
@@ -235,20 +234,20 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                     endTimePicker.getHour(),
                     endTimePicker.getMinute()
             ));
-            listedSpace.setPicture(picture.getDrawable());
+            listedSpace.setDPNonFireBase(picture.getDrawable());
 
             //TODO in confirmation activity create a function to get average of all ratings
             //TODO in confirmation append new review to a list of string reviews
 
             FirebaseDatabase.getInstance().getReference().child("Spaces")
                     .child(Global_ParkHere_Application.reformatEmail(
-                            currentUserEmail) + spaceNameField.getText().toString()).setValue(listedSpace);
+                            currentUserEmail)).child(spaceNameField.getText().toString()).setValue(listedSpace);
 
-            FirebaseDatabase.getInstance().getReference("Seekers")
-                    .child(Global_ParkHere_Application.reformatEmail(currentUserEmail)).child("Spaces")
-                    .child(spaceNameField.getText().toString()).setValue(0);
+//            FirebaseDatabase.getInstance().getReference("Seekers")
+//                    .child(Global_ParkHere_Application.reformatEmail(currentUserEmail)).child("Spaces")
+//                    .child(spaceNameField.getText().toString()).setValue(0);
 
-            finishActivity(0);
+            finish();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -285,14 +284,10 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a typeSpinner item
         String item = parent.getItemAtPosition(position).toString();
-        System.out.println(item);
 
         if (item.equals("More Information")) {
             moreInfoClicked();
         }
-
-        // Showing selected typeSpinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -300,7 +295,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void moreInfoClicked() {
-        System.out.println("Here");
 //        LayoutInflater layoutInflater
 //                = (LayoutInflater)getBaseContext()
 //                .getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -333,7 +327,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(View view) {
                 // Dismiss the popup window
-                System.out.println("on Click");
                 mPopupWindow.dismiss();
             }
         });
@@ -369,10 +362,16 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onStop() {
         super.onStop();
-
+        FirebaseAuth.getInstance().signOut();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
     }
 }

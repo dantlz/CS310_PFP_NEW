@@ -20,7 +20,7 @@ public class Space {
     private String spaceName;
     private String ownerEmail;
     private SpaceType type;
-    private LatLng latlng;
+//    private LatLng latlng;
     private String streetAddress;
     private String city;
     private String state;
@@ -62,13 +62,13 @@ public class Space {
         this.type = type;
     }
 
-    public LatLng getLatlng() {
-        return latlng;
-    }
-
-    public void setLatlng(LatLng latlng) {
-        this.latlng = latlng;
-    }
+//    public LatLng getLatlng() {
+//        return latlng;
+//    }
+//
+//    public void setLatlng(LatLng latlng) {
+//        this.latlng = latlng;
+//    }
 
     public String getStreetAddress() {
         return streetAddress;
@@ -142,13 +142,21 @@ public class Space {
         this.availableEndDateAndTime = availableEndDateAndTime;
     }
 
-    public Bitmap getPicture() {
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public Bitmap retrievePicNonFireBase() {
         byte [] encodeByte =Base64.decode(picture,Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         return bitmap;
     }
 
-    public void setPicture(Drawable drawable) {
+    public void setDPNonFireBase(Drawable drawable) {
         Bitmap copySelectedImage = getResizedBitmap(((BitmapDrawable)drawable).getBitmap(), 500);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         copySelectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);

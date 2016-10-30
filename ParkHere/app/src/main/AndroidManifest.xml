@@ -27,6 +27,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,22 +49,26 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--BOOK SPACE-->
-        <activity android:name=".BookSpaceActivity">
-        </activity>
+        <!-- BOOK SPACE -->
+        <activity android:name=".BookSpaceActivity"></activity>
 
         <!-- Cancel -->
         <activity android:name=".CancelActivity" />
 
-        <!--EDIT SPACE-->
+        <!-- EDIT SPACE -->
         <activity android:name=".EditListedSpacesActivity" />
 
-        <!--LOGIN-->
+        <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- MAPS -->
@@ -84,38 +89,26 @@
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme"></activity>
 
-        <!--MY LISTED SPACE DETAIL-->
+        <!-- MY LISTED SPACE DETAIL -->
         <activity
             android:name=".MyListedSpacesDetailsActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- PAYMENT -->
-        <activity
-            android:name=".PaymentActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- REGISTER -->
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- SETTINGS -->
         <activity
@@ -126,7 +119,8 @@
         <!-- VERIFICATION -->
         <activity
             android:name=".VerificationActivity"
-            android:label="@string/title_activity_maps">
-        </activity>
+            android:label="@string/title_activity_maps"></activity>
+        <activity android:name=".BecomeBothOwnerAndSeeker"></activity>
     </application>
+
 </manifest>

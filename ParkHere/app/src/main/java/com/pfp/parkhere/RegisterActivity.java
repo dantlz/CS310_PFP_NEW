@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,8 +26,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ObjectClasses.Peer;
-import ObjectClasses.Seeker;
+import ObjectClasses.Status;
 
 public class RegisterActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
@@ -39,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText repeatPasswordField;
     private Button gotoLoginButton;
     private ImageView imageView;
+    private Spinner statusSpinner;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -83,6 +89,17 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         imageView = (ImageView) findViewById(R.id.imgView);
+        statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
+
+
+        // Spinner Drop down elements
+        List<String> types = new ArrayList<String>();
+        types.add("Owner");
+        types.add("Seeker");
+        types.add("Both");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(dataAdapter);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -94,14 +111,13 @@ public class RegisterActivity extends AppCompatActivity {
                 if (user != null) {
                     //First grab the peer/seeker object form database based on user's email
                     FirebaseDatabase.getInstance()
-                            .getReference("Seekers")
+                            .getReference("Peers")
                             .child(Global_ParkHere_Application.reformatEmail(user.getEmail()))
                             .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             // This method is called once with the initial value and again
                             // whenever data at this location is updated.
-                            //TODO Seekers AND owners
                             Peer currentUser = dataSnapshot.getValue(Peer.class);
                             ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
                             //Go to Map activity
@@ -122,7 +138,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void confirmButtonPressed(){
-        //TODO ADD SELECTION OF REGISTRATION AS OWNER OR SEEKER
         String validity = allInputFieldValid();
         if(!validity.equals("")) {
             new AlertDialog.Builder(RegisterActivity.this)
@@ -163,23 +178,22 @@ public class RegisterActivity extends AppCompatActivity {
                             return;
                         }
 
-
-                        //TODO Make sure to create owner or seeker depending on user choice
-                        Seeker seeker = createUserObject();
-                        FirebaseDatabase.getInstance().getReference().child("Seekers").
-                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(seeker);
+                        Peer peer = createUserObject();
+                        FirebaseDatabase.getInstance().getReference().child("Peers").
+                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(peer);
                     }
                 });
     }
 
-    private Seeker createUserObject(){
-        Seeker seeker = new Seeker();
-        seeker.setEmailAddress(emailField.getText().toString());
-        seeker.setFirstName(firstNameField.getText().toString());
-        seeker.setLastName(lastNameField.getText().toString());
-        seeker.setPhoneNumber(phoneNumberField.getText().toString());
-        seeker.setDPNonFirebaseRelated(imageView.getDrawable());
-        return seeker;
+    private Peer createUserObject(){
+        Peer peer = new Peer();
+        peer.setEmailAddress(emailField.getText().toString());
+        peer.setFirstName(firstNameField.getText().toString());
+        peer.setLastName(lastNameField.getText().toString());
+        peer.setPhoneNumber(phoneNumberField.getText().toString());
+        peer.setDPNonFirebaseRelated(imageView.getDrawable());
+        peer.setStatus(Status.valueOf(statusSpinner.getSelectedItem().toString().toUpperCase()));
+        return peer;
     }
 
     private String allInputFieldValid(){

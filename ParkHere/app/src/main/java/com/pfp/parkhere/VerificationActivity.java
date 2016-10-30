@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class VerificationActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
@@ -56,5 +58,18 @@ public class VerificationActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        FirebaseAuth.getInstance().signOut();
+        super.onStop();
     }
 }
