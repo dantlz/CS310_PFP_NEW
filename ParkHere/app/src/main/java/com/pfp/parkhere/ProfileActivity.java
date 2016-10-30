@@ -127,8 +127,4 @@ public class ProfileActivity extends AppCompatActivity
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
-
-    class Profile {
-        String email, password, phone, name;
-    }
 }
