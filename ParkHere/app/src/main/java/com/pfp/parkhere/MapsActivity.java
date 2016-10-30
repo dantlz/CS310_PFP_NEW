@@ -71,6 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static String spaceMode = "Compact";
     private LocationListener locationListener;
     private MenuItem addSpaceItem;
+    private MenuItem registerAsBothItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,12 +152,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Space selectedSpace = allSpaces.get(marker.getPosition());
-                Intent intent = new Intent(MapsActivity.this, MyListedSpacesDetailsActivity.class);
-                System.out.println("@@" + selectedSpace);
-                intent.putExtra("SPACENAME", selectedSpace.getSpaceName());
-                intent.putExtra("OWNEREMAIL", selectedSpace.getOwnerEmail());
-                startActivity(intent);
+                //This is a listed space marker
+                if(allSpaces.get(marker.getPosition()) != null) {
+                    Space selectedSpace = allSpaces.get(marker.getPosition());
+                    Intent intent = new Intent(MapsActivity.this, MyListedSpacesDetailsActivity.class);
+                    intent.putExtra("SPACENAME", selectedSpace.getSpaceName());
+                    intent.putExtra("OWNEREMAIL", selectedSpace.getOwnerEmail());
+                    intent.putExtra("STATUS", String.valueOf(userMode));
+                    startActivity(intent);
+                }
+                //This is an owner listing a new space
+                else{
+                    Intent intent = new Intent(MapsActivity.this, AddSpaceActivity.class);
+                    intent.putExtra("LAT", marker.getPosition().latitude);
+                    intent.putExtra("LNG", marker.getPosition().longitude);
+                    startActivity(intent);
+                }
+            }
+        });
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                //Only owners can drop new pins
+                if(!userMode.equals(Status.OWNER)){
+                    return;
+                }
+
+                MarkerOptions marker = new MarkerOptions();
+                marker.position(latLng);
+                marker.title("List a space here");
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                mMap.addMarker(marker);
             }
         });
 
@@ -320,6 +346,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         addSpaceItem = menu.getItem(0);
+        registerAsBothItem = menu.getItem(2);
+        if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.BOTH)){
+            registerAsBothItem.setEnabled(false);
+
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

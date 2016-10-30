@@ -38,22 +38,17 @@
             android:inputType="text"/>
 
 
-        <EditText android:id="@+id/streetNumber"
+        <EditText android:id="@+id/streetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Street Number"
+            android:hint="Enter Street Address"
             android:layout_below="@id/descriptionField"
             android:inputType="number"/>
-        <EditText android:id="@+id/streetName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Street Name"
-            android:layout_below="@+id/streetNumber" />
         <EditText android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter City"
-            android:layout_below="@+id/streetName"/>
+            android:layout_below="@+id/streetAddress"/>
         <EditText android:id="@+id/state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -9,7 +9,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -48,7 +48,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- BOOK SPACE -->
-        <activity android:name=".BookSpaceActivity"></activity>
+        <activity android:name=".BookSpaceActivity" />
 
         <!-- Cancel -->
         <activity android:name=".CancelActivity" />
@@ -85,26 +85,27 @@
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <!-- MY LISTED SPACE DETAIL -->
         <activity
             android:name=".MyListedSpacesDetailsActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- PAYMENT -->
+
 
         <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- REGISTER -->
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- SETTINGS -->
         <activity
@@ -115,8 +116,9 @@
         <!-- VERIFICATION -->
         <activity
             android:name=".VerificationActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".BecomeBothOwnerAndSeeker"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".BecomeBothOwnerAndSeeker" />
+        <activity android:name=".SearchFiltersActivity"></activity>
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import android.widget.TimePicker;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -54,8 +55,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     private EditText priceField;
     private EditText descriptionField;
 
-    private EditText streetNumberField;
-    private EditText streetNameField;
+    private EditText streetAddressField;
     private EditText cityField;
     private EditText stateField;
     private EditText countryField;
@@ -81,8 +81,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         priceField = (EditText) findViewById(R.id.priceField);
         descriptionField = (EditText) findViewById(R.id.descriptionField);
 
-        streetNumberField = (EditText) findViewById(R.id.streetNumber);
-        streetNameField = (EditText) findViewById(R.id.streetName);
+        streetAddressField = (EditText) findViewById(R.id.streetAddress);
         cityField = (EditText) findViewById(R.id.city);
         stateField = (EditText) findViewById(R.id.state);
         countryField = (EditText) findViewById(R.id.country);
@@ -126,6 +125,21 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         // attaching data adapter to typeSpinner
         typeSpinner.setAdapter(dataAdapter);
         cancellationSpinner.setAdapter(dataCancellation);
+
+        if(getIntent().getExtras() != null){
+            try {
+                Address address = new Geocoder(this)
+                        .getFromLocation(getIntent().getExtras().getDouble("LAT"),getIntent().getExtras().getDouble("LNG"), 1)
+                        .get(0);
+                streetAddressField.setText(address.getAddressLine(0));
+                cityField.setText(address.getLocality());
+                stateField.setText(address.getAdminArea());
+                countryField.setText(address.getCountryName());
+                zipCodeField.setText(address.getPostalCode());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void onNewSpaceClicked(View view) {
@@ -139,8 +153,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         if(spaceNameField.getText().toString().equals("")||
                 priceField.getText().toString().equals("")||
                 descriptionField.getText().toString().equals("")||
-                streetNumberField.getText().toString().equals("") ||
-                streetNameField.getText().toString().equals("") ||
+                streetAddressField.getText().toString().equals("") ||
                 cityField.getText().toString().equals("") ||
                 stateField.getText().toString().equals("") ||
                 countryField.getText().toString().equals("") ||
@@ -166,8 +179,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             String currentUserEmail = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
             listedSpace.setOwnerEmail(currentUserEmail);
             listedSpace.setType(SpaceType.valueOf(typeSpinner.getSelectedItem().toString().toUpperCase()));
-            String fullAddress = streetNumberField.getText().toString() + " " +
-                    streetNameField.getText().toString() + " " +
+            String fullAddress = streetAddressField.getText().toString() + " " +
                     cityField.getText().toString() + " " +
                     zipCodeField.getText().toString() + " " +
                     stateField.getText().toString();
@@ -186,7 +198,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                 return;
             }
 
-            listedSpace.setStreetAddress(streetNumberField.getText().toString() + " " + streetNameField.getText().toString());
+            listedSpace.setStreetAddress(streetAddressField.getText().toString());
             listedSpace.setCity(cityField.getText().toString());
             listedSpace.setState(stateField.getText().toString());
             listedSpace.setZipCode(zipCodeField.getText().toString());

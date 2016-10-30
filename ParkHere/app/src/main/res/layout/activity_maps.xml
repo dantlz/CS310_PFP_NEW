@@ -41,15 +41,15 @@
 
         <EditText
             android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:hint="Search Location Here" />
+            android:hint="Search for a parking space" />
 
 
         <Button
             android:id="@+id/search_button"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:onClick="onMapSearch"
@@ -61,49 +61,22 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="330dp"
         android:layout_above = "@+id/CarRadioGroup"
         tools:context="com.viralandroid.googlemapsandroidapi.MapsActivity" />
-
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/CarRadioGroup"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal"
-        android:layout_below="@+id/map">
-        <RadioButton
-            android:id="@+id/compactRadioButton"
-            android:text="Compact"
-            android:button="@null"
-            android:drawableBottom="@android:drawable/btn_radio"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/filtersButton"
             android:layout_width="wrap_content"
-            android:onClick="onCarTypeRadioButtonClicked"/>
-
-        <RadioButton
-            android:id="@+id/truckRadioButton"
-            android:text="Truck"
-            android:button="@null"
-            android:drawableBottom="@android:drawable/btn_radio"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:onClick="onCarTypeRadioButtonClicked"/>
-        <RadioButton
-            android:id="@+id/handicapRadioButton"
-            android:text="Handicapped"
-            android:button="@null"
-            android:drawableBottom="@android:drawable/btn_radio"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:onClick="onCarTypeRadioButtonClicked"/>
-
-    </RadioGroup>
-
+            android:layout_height="wrap_content"
+            android:text="Filters"/>
+        <Button
+            android:id="@+id/resultListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Results as List"/>
+    </LinearLayout>
 </LinearLayout>

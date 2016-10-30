@@ -32,6 +32,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
         Button ownerButton = (Button) findViewById(R.id.ownerButton);
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
+        Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
 
         //My listed space detail
         if(extras.getString("SPACENAME") == null) {
@@ -62,6 +63,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
             spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
             ownerButton.setVisibility(View.GONE);
+            bookSpaceButton.setVisibility(View.GONE);
 
             return;
         }
@@ -76,6 +78,10 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             }
         });
         editButton.setVisibility(View.GONE);
+        if(extras.getString("STATUS").equals("OWNER")){
+            bookSpaceButton.setVisibility(View.GONE
+            );
+        }
 
         FirebaseDatabase.getInstance().getReference().child("Spaces")
                 .child(Global_ParkHere_Application.reformatEmail(extras.getString("OWNEREMAIL")))
