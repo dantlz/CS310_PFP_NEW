@@ -73,7 +73,7 @@
         android:orientation="horizontal"
         android:layout_below="@+id/map">
         <RadioButton
-            android:id="@+id/compactType"
+            android:id="@+id/compactRadioButton"
             android:text="Compact"
             android:button="@null"
             android:drawableBottom="@android:drawable/btn_radio"
@@ -84,7 +84,7 @@
             android:onClick="onCarTypeRadioButtonClicked"/>
 
         <RadioButton
-            android:id="@+id/truckType"
+            android:id="@+id/truckRadioButton"
             android:text="Truck"
             android:button="@null"
             android:drawableBottom="@android:drawable/btn_radio"
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:onClick="onCarTypeRadioButtonClicked"/>
         <RadioButton
-            android:id="@+id/handicappedType"
+            android:id="@+id/handicapRadioButton"
             android:text="Handicapped"
             android:button="@null"
             android:drawableBottom="@android:drawable/btn_radio"
