@@ -75,8 +75,13 @@ public class MyListedSpacesActivity extends AppCompatActivity {
 
                 extras.putDouble("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
 
-                String spaceAddress = chosenSpace.getStreetAddress();
-                extras.putString("LISTED_SPACE_ADDRESS", spaceAddress);
+                extras.putString("LISTED_SPACE_ADDRESS", chosenSpace.getStreetAddress());
+
+                extras.putString("LISTED_SPACE_CITY", chosenSpace.getCity());
+
+                extras.putString("LISTED_SPACE_STATE", chosenSpace.getState());
+
+                extras.putString("LISTED_SPACE_ZIP", chosenSpace.getZipCode());
 
                 intent.putExtras(extras);
 
@@ -95,7 +100,10 @@ public class MyListedSpacesActivity extends AppCompatActivity {
             testSpace.setPricePerHour(5*i);
             testSpace.setType(SpaceType.TRUCK);
 
-            testSpace.setStreetAddress("654" + i + " Washington Avenue" + "Los Angeles" + "CA" + "90007");
+            testSpace.setStreetAddress("654" + i + " Washington Avenue");
+            testSpace.setCity("Los Angeles");
+            testSpace.setState("CA");
+            testSpace.setZipCode("90007");
 
             retList.add(testSpace);
         }
