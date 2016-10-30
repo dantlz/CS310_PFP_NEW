@@ -30,7 +30,7 @@
         android:textColor="@android:color/black"
         android:textSize="12pt"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit"
         android:id="@+id/edit_listed_space_button"
