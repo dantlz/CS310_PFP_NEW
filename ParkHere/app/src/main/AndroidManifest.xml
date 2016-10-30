@@ -51,14 +51,25 @@
             android:name=".AddSpaceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--Cancel-->
-        <activity
-            android:name=".CancelActivity">
-        </activity>
+        <!-- Cancel -->
+        <activity android:name=".CancelActivity" />
 
         <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
+            android:label="@string/title_activity_maps">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+
+        <!-- VERIFICATION -->
+        <activity
+            android:name=".VerificationActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,14 +81,10 @@
         <!-- MAPS -->
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-        </activity>
+            android:label="@string/title_activity_maps" />
 
         <!-- MY BOOKINGS -->
-        <activity
-            android:name=".MyBookingsActivity">
-        </activity>
-
+        <activity android:name=".MyBookingsActivity" />
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
@@ -89,14 +96,12 @@
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="@string/title_listedspace_list"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
 
         <!-- PAYMENT -->
         <activity
             android:name=".PaymentActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- PROFILE -->
         <activity
@@ -108,16 +113,24 @@
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- SETTINGS -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MyListedSpacesDetailsActivity" />
-        <activity android:name=".EditListedSpacesActivity"></activity>
+        <activity android:name=".EditListedSpacesActivity" />
+        <!-- <activity android:name=".VerificationActivity"></activity> -->
+        <activity android:name=".BookSpaceActivity"></activity>
     </application>
+
 </manifest>
