@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -135,5 +136,22 @@ public class ProfileActivity extends AppCompatActivity
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    public void clickedMyBookings(View view)
+    {
+        startActivity(new Intent(ProfileActivity.this, MyBookingsActivity.class));
+
+    }
+
+    public void clickedMyListedSpaces(View view)
+    {
+        startActivity(new Intent(ProfileActivity.this, MyListedSpacesActivity.class));
+
+    }
+
+    public void clickedVerification(View view)
+    {
+        startActivity(new Intent(ProfileActivity.this, VerificationActivity.class));
     }
 }
