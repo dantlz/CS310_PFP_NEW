@@ -11,14 +11,26 @@
         app:srcCompat="@drawable/cast_album_art_placeholder"
         android:id="@+id/imageView" />
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:hint="Name"
-        android:ems="10"
-        android:id="@+id/nameLabel" />
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Firstname"
+            android:ems="10"
+            android:id="@+id/firstNameLabel"
+            android:layout_marginRight="20dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Lastname"
+            android:ems="10"
+            android:id="@+id/lastNameLabel" />
+    </LinearLayout>
 
     <EditText
         android:layout_width="match_parent"

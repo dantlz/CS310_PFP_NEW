@@ -9,8 +9,8 @@ import java.util.Date;
 
 public class Booking {
     private Space space;
-    private GregorianCalendar startCalendarDate;
-    private GregorianCalendar endCalendarDate;
+    private MyCalendar startCalendarDate;
+    private MyCalendar endCalendarDate;
     private Date start;
     private Date end;
     private boolean done;
@@ -31,19 +31,19 @@ public class Booking {
         this.repeat = repeat;
     }
 
-    public void setStart(GregorianCalendar start) {
+    public void setStart(MyCalendar start) {
         this.startCalendarDate = start;
     }
 
-    public void setEnd(GregorianCalendar end) {
+    public void setEnd(MyCalendar end) {
         this.endCalendarDate = end;
     }
 
-    public GregorianCalendar getStart() {
+    public MyCalendar getStart() {
         return startCalendarDate;
     }
 
-    public GregorianCalendar getEnd(){
+    public MyCalendar getEnd(){
         return endCalendarDate;
     }
 

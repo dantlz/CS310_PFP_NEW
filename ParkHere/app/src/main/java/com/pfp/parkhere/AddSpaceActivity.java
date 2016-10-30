@@ -24,13 +24,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -52,8 +48,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
-    private static int RESULT_LOAD_IMAGE = 1;
     private PopupWindow mPopupWindow;
 
     private EditText spaceNameField;
@@ -75,32 +69,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     private Spinner typeSpinner;
     private Spinner cancellationSpinner;
     private ImageView picture;
-
-    private List<Space> listOfAllSpaces;
-
-
-    private void setValues(){
-        CharSequence a = "test";
-        CharSequence b = "1";
-        CharSequence c = "ASKHFDJDA";
-        CharSequence d = "3335";
-        CharSequence e = "South Figueroa Street";
-        CharSequence f = "Los Angeles";
-        CharSequence g = "California";
-        CharSequence h = "United States of America";
-        CharSequence i = "90007";
-
-        spaceNameField.setText(a);
-        priceField.setText(b);
-        descriptionField.setText(c);
-        streetNumberField.setText(d);
-        streetNameField.setText(e);
-        cityField.setText(f);
-        stateField.setText(g);
-        countryField.setText(h);
-        zipCodeField.setText(i);
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,12 +126,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         // attaching data adapter to typeSpinner
         typeSpinner.setAdapter(dataAdapter);
         cancellationSpinner.setAdapter(dataCancellation);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-        setValues();
     }
 
     public void onNewSpaceClicked(View view) {
@@ -242,11 +204,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             FirebaseDatabase.getInstance().getReference().child("Spaces")
                     .child(Global_ParkHere_Application.reformatEmail(
                             currentUserEmail)).child(spaceNameField.getText().toString()).setValue(listedSpace);
-
-//            FirebaseDatabase.getInstance().getReference("Seekers")
-//                    .child(Global_ParkHere_Application.reformatEmail(currentUserEmail)).child("Spaces")
-//                    .child(spaceNameField.getText().toString()).setValue(0);
-
             finish();
         } catch (IOException e) {
             e.printStackTrace();
@@ -352,21 +309,12 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
     public void onStop() {
         super.onStop();
         FirebaseAuth.getInstance().signOut();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 
     @Override
@@ -374,4 +322,27 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         FirebaseAuth.getInstance().signOut();
         super.onDestroy();
     }
+
+    //To create hardcoded space
+//    private void setValues(){
+//        CharSequence a = "test";
+//        CharSequence b = "1";
+//        CharSequence c = "ASKHFDJDA";
+//        CharSequence d = "3335";
+//        CharSequence e = "South Figueroa Street";
+//        CharSequence f = "Los Angeles";
+//        CharSequence g = "California";
+//        CharSequence h = "United States of America";
+//        CharSequence i = "90007";
+//
+//        spaceNameField.setText(a);
+//        priceField.setText(b);
+//        descriptionField.setText(c);
+//        streetNumberField.setText(d);
+//        streetNameField.setText(e);
+//        cityField.setText(f);
+//        stateField.setText(g);
+//        countryField.setText(h);
+//        zipCodeField.setText(i);
+//    }
 }

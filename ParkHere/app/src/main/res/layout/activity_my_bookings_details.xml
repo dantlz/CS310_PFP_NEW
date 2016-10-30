@@ -60,13 +60,13 @@
         android:layout_height="wrap_content"
         android:onClick="GoToCancel"
         android:id="@+id/Booking_To_Cancel"
-        android:text="Cancel?">
+        android:text="Cancel Booking">
     </Button>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Return me to Bookings"
+        android:text="Return to My Bookings"
         android:id="@+id/BookingDetail_to_Bookings"
         android:onClick="ReturnToBookings">
     </Button>

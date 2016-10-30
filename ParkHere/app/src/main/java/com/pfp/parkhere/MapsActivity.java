@@ -246,7 +246,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // User chose the "Settings" item, show the app settings UI...
                 startActivity(new Intent(MapsActivity.this, SettingsActivity.class));
                 return true;
-
             case R.id.itemProfile:
                 // User chose the "Profile" action, change to that Activity Screen
                 startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
@@ -256,8 +255,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.Both:
                 startActivity(new Intent(MapsActivity.this, BecomeBothOwnerAndSeeker.class));
-                return true;
-            case R.id.itemPayment:
                 return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();

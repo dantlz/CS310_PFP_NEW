@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 
 public class MyBookingsDetailsActivity extends AppCompatActivity{
+    String identifier;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +32,6 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         String times = "START: " + extras.getString("START_TIME_TEXT") + "\n"+ "END: " + extras.getString("END_TIME_TEXT");
         TextView timesView = (TextView) findViewById(R.id.start_end_time);
         timesView.setTextColor(Color.BLACK);
-        //textView.setTextSize(20);
-
         timesView.setText(times);
 
         TextView nameView = (TextView) findViewById(R.id.owner_name);
@@ -39,19 +39,24 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         TextView emailView = (TextView) findViewById(R.id.owner_email);
         emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
         TextView ratingView = (TextView) findViewById(R.id.space_rating);
-        ratingView.setText("Rating: " + extras.getString("SPACE_RATING_TEXT"));
+        String rating = "Rating: " + extras.getString("SPACE_RATING_TEXT");
+        ratingView.setText(rating);
         TextView reviewView = (TextView) findViewById(R.id.space_review);
-        reviewView.setText("Review: " + extras.getString("SPACE_REVIEW_TEXT"));
-        //random comment
+        String spaceReview = "Review: " + extras.getString("SPACE_REVIEW_TEXT");
+        reviewView.setText(spaceReview);
+
+        identifier = extras.getString("IDENTIFIER");
     }
+
     public void ReturnToBookings(View view){
         finish();
     }
+
     public void GoToCancel(View view){
         Intent intent = new Intent(this, CancelActivity.class);
+        intent.putExtra("identifier", identifier);
         startActivity(intent);
     }
-
 
     @Override
     protected void onDestroy() {

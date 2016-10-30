@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.api.model.StringList;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,6 +26,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ObjectClasses.Booking;
+import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
@@ -32,10 +34,12 @@ import ObjectClasses.Space;
 public class MyBookingsActivity extends AppCompatActivity {
     public final static String BOOKING_DETAIL_MESSAGE = "com.pfp.parkhere.BOOKINGDETAILMESSAGE";
     ListView bookingsView;
-    LinkedList<Booking> myBookingsTest;
-    //GregorianCalendar[] dateValues;
+    LinkedList<String> myBookingIdentifiers;
+    LinkedList<Booking> myBookings;
     String[] viewValues;
     int ownerRating;
+    Intent intent;
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +50,34 @@ public class MyBookingsActivity extends AppCompatActivity {
 
         //HARD CODED BOOKINGs
         //get test bookings, in the future requests all the bookings from database
-//        myBookingsTest = new LinkedList<Booking>();
-//        mockBookings(myBookingsTest);
-        String currentUserEmail =
-                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress();
-//        FirebaseDatabase.getInstance().getReference().
+        myBookings = new LinkedList<>();
+        FirebaseDatabase.getInstance().getReference().child("Bookings")
+                .child(
+                        Global_ParkHere_Application.reformatEmail(
+                                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                            myBookingIdentifiers.add(postSnapshot.getKey());
+                            myBookings.add(postSnapshot.getValue(Booking.class));
+                        }
+                        populate();
+                    }
 
-        //'tis a SimpleDateFormat to help display times
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+    }
+
+
+    private void populate() {
         //Set values displayed as a list
-        viewValues = new String[myBookingsTest.size()];
-        for(int i = 0; i < myBookingsTest.size();i++){
-            GregorianCalendar tempDate = myBookingsTest.get(i).getStart();
-            viewValues[i] = timeFormat.format(tempDate.getTime())+ " "
-                + tempDate.getDisplayName(Calendar.AM_PM,Calendar.SHORT,Locale.ENGLISH)+ " " +
-                    tempDate.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.ENGLISH) + " " +
-                    tempDate.get(Calendar.DAY_OF_MONTH);
+        viewValues = new String[myBookings.size()];
+        for (int i = 0; i < myBookings.size(); i++) {
+            MyCalendar tempDate = myBookings.get(i).getStart();
+            viewValues[i] = tempDate.getHour() + " " + tempDate.getMinute() + " "
+                    +tempDate.getDay() + " " + tempDate.getMonth() + " " + tempDate.getYear();
         }
 
         //Adapter to dynamically fill listview
@@ -78,46 +94,49 @@ public class MyBookingsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 // ListView Clicked item index
-                int itemPosition  = position;
                 Context context = view.getContext();
 
                 //New intent to pass to booking details, new Bundle to attach to intent
-                Intent intent = new Intent(context, MyBookingsDetailsActivity.class);
-                Bundle extras = new Bundle();
+                intent = new Intent(context, MyBookingsDetailsActivity.class);
+                extras = new Bundle();
+
+                Booking currBooking = myBookings.get(position);
 
                 //Generate text for address
-                String ad = myBookingsTest.get(position).getSpace().getStreetAddress();
+                String ad = currBooking.getSpace().getStreetAddress()
+                + " " + currBooking.getSpace().getCity() + " " + currBooking.getSpace().getState()
+                        + " " + currBooking.getSpace().getZipCode();
                 Address bookingAddress = null;
                 try {
                     bookingAddress = new Geocoder(MyBookingsActivity.this).getFromLocationName(ad, 1).get(0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 String addressText = bookingAddress.getAddressLine(0) + "\n" +
-                        bookingAddress.getLocality()+ " " + bookingAddress.getAdminArea();
-                extras.putString("ADDRESS_TEXT",addressText);
+                        bookingAddress.getLocality() + " " + bookingAddress.getAdminArea();
+                extras.putString("ADDRESS_TEXT", addressText);
 
                 //Generate text for start and end dates
-                GregorianCalendar endTime = myBookingsTest.get(position).getEnd();
-                GregorianCalendar startTime = myBookingsTest.get(position).getStart();
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-
-                String endTimeText = timeFormat.format(endTime.getTime())+ " "
-                        + endTime.getDisplayName(Calendar.AM_PM,Calendar.SHORT,Locale.ENGLISH)+ " " +
-                        endTime.getDisplayName(Calendar.MONTH,Calendar.SHORT,Locale.ENGLISH) + " " +
-                        endTime.get(Calendar.DAY_OF_MONTH);
-                String startTimeText = timeFormat.format(startTime.getTime())+ " "
-                        + startTime.getDisplayName(Calendar.AM_PM,Calendar.SHORT,Locale.ENGLISH)+ " " +
-                        startTime.getDisplayName(Calendar.MONTH,Calendar.SHORT,Locale.ENGLISH) + " " +
-                        startTime.get(Calendar.DAY_OF_MONTH);
-                extras.putString("START_TIME_TEXT",startTimeText);
-                extras.putString("END_TIME_TEXT",endTimeText);
+                String endTimeText = currBooking.getEnd().getHour() + " "
+                        + currBooking.getEnd().getMinute() + " "
+                        +currBooking.getEnd().getDay() + " " + currBooking.getEnd().getMonth()
+                        + " " + currBooking.getEnd().getYear();
+                String startTimeText = currBooking.getStart().getHour() + " "
+                        + currBooking.getStart().getMinute() + " "
+                        +currBooking.getStart().getDay() + " " + currBooking.getStart().getMonth()
+                        + " " + currBooking.getStart().getYear();
+                extras.putString("START_TIME_TEXT", startTimeText);
+                extras.putString("END_TIME_TEXT", endTimeText);
                 //Generate text for owner name and email
-                extras.putString("OWNER_NAME_TEXT",myBookingsTest.get(position).getSpace().getSpaceName());
-                extras.putString("OWNER_EMAIL_TEXT",myBookingsTest.get(position).getSpace().getOwnerEmail());
+                extras.putString("OWNER_NAME_TEXT", myBookings.get(position).getSpace().getSpaceName());
+                extras.putString("OWNER_EMAIL_TEXT", myBookings.get(position).getSpace().getOwnerEmail());
+                extras.putString("SPACE_REVIEW_TEXT", myBookings.get(position).getSpace().getSpaceReview());
+                extras.putSerializable("IDENTIFIER", myBookingIdentifiers.get(position));
+
                 //Generate Rating and Review
                 //Get owner object to set rating
-                String bookingsSpacesOwnerEmail = myBookingsTest.get(position).getSpace().getOwnerEmail();
+                String bookingsSpacesOwnerEmail = myBookings.get(position).getSpace().getOwnerEmail();
                 FirebaseDatabase.getInstance()
                         .getReference("Peers")
                         .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
@@ -129,23 +148,29 @@ public class MyBookingsActivity extends AppCompatActivity {
 
                                 Peer currentUser = dataSnapshot.getValue(Peer.class);
                                 ownerRating = ((Peer) currentUser).getOwnerRating();
+                                finishPopulate(extras);
                             }
+
                             @Override
                             public void onCancelled(DatabaseError error) {
                                 // Failed to read value
                             }
                         });
-                extras.putString("SPACE_RATING_TEXT", ownerRating + " ");
-                extras.putString("SPACE_REVIEW_TEXT",myBookingsTest.get(position).getSpace().getSpaceReview());
 
-                //Place bundle into intent and start activity
-                intent.putExtras(extras);
-                context.startActivity(intent);
             }
-
         });
     }
-//    private void mockBookings(LinkedList<Booking> myBookingsTest) {
+
+    private void finishPopulate(Bundle extras){
+        extras.putString("SPACE_RATING_TEXT", ownerRating + "");
+
+        //Place bundle into intent and start activity
+        intent.putExtras(extras);
+        startActivity(intent);
+    }
+
+    //Used to create hard coded bookings
+//    private void mockBookings(LinkedList<Booking> myBookings) {
 //        for(int i = 0; i < 11;i++){
 //            //create new booking
 //            Booking tempBooking = new Booking();
@@ -164,7 +189,7 @@ public class MyBookingsActivity extends AppCompatActivity {
 ////            tempSpace.setOwnerRating(3); No need. Owner rating will be retrieved from owner email - owner object
 //            //put space in boooking and add booking to linked list
 //            tempBooking.setSpace(tempSpace);
-//            myBookingsTest.add(tempBooking);
+//            myBookings.add(tempBooking);
 //        }
 //    }
 

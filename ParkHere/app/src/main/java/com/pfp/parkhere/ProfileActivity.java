@@ -31,7 +31,7 @@ import static com.pfp.parkhere.R.id.myListedSpacesButton;
 public class ProfileActivity extends AppCompatActivity
 {
 
-    protected EditText mEmail, mPhone, mName;
+    protected EditText mEmail, mPhone, mFirstName, mLastName;
     private Button mEditButton, mSaveButton, mBookingButton, myListedSpacesButton;
     private ImageView mImageView = null;
 
@@ -51,7 +51,8 @@ public class ProfileActivity extends AppCompatActivity
         mImageView = (ImageView) findViewById(R.id.imageView);
         mEmail = (EditText) findViewById(R.id.emailLabel);
         mPhone = (EditText) findViewById(R.id.phoneLabel);
-        mName = (EditText) findViewById(R.id.nameLabel);
+        mFirstName = (EditText) findViewById(R.id.firstNameLabel);
+        mLastName = (EditText) findViewById(R.id.lastNameLabel);
         mEditButton = (Button) findViewById(editButton);
         mSaveButton = (Button) findViewById(R.id.saveButton);
         mBookingButton = (Button) findViewById(R.id.bookingButton);
@@ -61,14 +62,17 @@ public class ProfileActivity extends AppCompatActivity
         if(extras == null) {
             disableEditText(mEmail);
             disableEditText(mPhone);
-            disableEditText(mName);
+            disableEditText(mFirstName);
+            disableEditText(mLastName);
 
             mEditButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     mSaveButton.setVisibility(View.VISIBLE);
-                    enableEditText(mEmail);
+                    mEditButton.setVisibility(View.GONE);
                     enableEditText(mPhone);
-                    enableEditText(mName);
+                    enableEditText(mFirstName);
+                    enableEditText(mLastName);
+                    enableEditText(mEmail);
                 }
             });
 
@@ -76,9 +80,24 @@ public class ProfileActivity extends AppCompatActivity
             mSaveButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     mSaveButton.setVisibility(View.GONE);
-                    disableEditText(mEmail);
+                    mEditButton.setVisibility(View.VISIBLE);
                     disableEditText(mPhone);
-                    disableEditText(mName);
+                    disableEditText(mFirstName);
+                    disableEditText(mLastName);
+                    disableEditText(mEmail);
+
+                    FirebaseDatabase.getInstance().getReference().child("Peers")
+                            .child(Global_ParkHere_Application
+                                    .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+                            .child("phoneNumber").setValue(mPhone.getText().toString());
+                    FirebaseDatabase.getInstance().getReference().child("Peers")
+                            .child(Global_ParkHere_Application
+                                    .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+                            .child("firstName").setValue(mFirstName.getText().toString());
+                    FirebaseDatabase.getInstance().getReference().child("Peers")
+                            .child(Global_ParkHere_Application
+                                    .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+                            .child("lastName").setValue(mLastName.getText().toString());
                 }
             });
 
@@ -98,9 +117,6 @@ public class ProfileActivity extends AppCompatActivity
         String ownerEmail = extras.getString("LISTED_SPACE_OWNEREMAIL");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         //Checking owner profile
         hideFields();
@@ -110,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Peer owner = dataSnapshot.getValue(Peer.class);
-                        mName.setText("Owner first name: " + owner.getFirstName());
+                        mFirstName.setText("Owner first name: " + owner.getFirstName());
                         mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
                         mEmail.setText("Owner rating: " + owner.getOwnerRating());
                         mPhone.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -133,7 +149,8 @@ public class ProfileActivity extends AppCompatActivity
     private void populateFields() throws InterruptedException {
         Peer currentUser = Global_ParkHere_Application.getCurrentUserObject();
         mImageView.setImageBitmap(currentUser.retrieveDPBitmap());
-        mName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+        mFirstName.setText(currentUser.getFirstName());
+        mLastName.setText(currentUser.getLastName());
         mPhone.setText(currentUser.getPhoneNumber());
         mEmail.setText(currentUser.getEmailAddress());
 
@@ -142,51 +159,13 @@ public class ProfileActivity extends AppCompatActivity
     private void disableEditText(EditText editText) {
         editText.setFocusable(false);
         editText.setEnabled(false);
-        editText.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void enableEditText(EditText editText) {
         editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
         editText.setEnabled(true);
     }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder().setName("Profile Page").setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-                /*
-                TODO: Define a title for the content shown.
-                TODO: Make sure this auto-generated URL is correct.
-                */
-
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        // ATTENTION: This was auto-generated to implement the App Indexing API.
-//        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        client.connect();
-//        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//
-//        // ATTENTION: This was auto-generated to implement the App Indexing API.
-//        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-//        client.disconnect();
-//    }
 
     public void clickedMyBookings(View view)
     {
