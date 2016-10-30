@@ -34,6 +34,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         listedSpacesList = (ListView) findViewById(R.id.listed_spaces_list);
         MyListedSpaces = new LinkedList<Space>();
 
+        //Put firebase stream here.
         //Generate test cases for spaces
         MyListedSpaces = createTestSpaces();
 

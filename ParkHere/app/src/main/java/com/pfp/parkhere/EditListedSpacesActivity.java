@@ -37,11 +37,15 @@ public class EditListedSpacesActivity extends AppCompatActivity {
         Context context = view.getContext();
         Intent intent = new Intent(context, MyListedSpacesDetailsActivity.class);
 
+        //TODO SAVE TO FIREBASE HERE
+
         intent.putExtras(extras);
         context.startActivity(intent);
     }
 
     public void deleteListedSpace(View view) {
+        //TODO DELETE from firebase
+
         Context context = view.getContext();
         Intent intent = new Intent(context, MyListedSpacesActivity.class);
 

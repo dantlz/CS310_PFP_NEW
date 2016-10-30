@@ -82,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity
 
     private void populateFields(){
         Peer currentUser = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject();
-        mImageView.setImageBitmap(currentUser.getProfilePictureNonFireBase());
+        mImageView.setImageBitmap(currentUser.retrieveDPBitmap());
         mName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
         mPhone.setText(currentUser.getPhoneNumber());
         mEmail.setText(currentUser.getEmailAddress());

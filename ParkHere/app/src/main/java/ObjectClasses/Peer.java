@@ -77,14 +77,8 @@ public class Peer {
     }
 
     //This is for firebase purposes.
-    public String profilePicture(){
+    public String getProfilePicture(){
         return this.profilePicture;
-    }
-
-    public Bitmap getProfilePictureNonFireBase() {
-        byte [] encodeByte =Base64.decode(profilePicture,Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        return bitmap;
     }
 
     public void setDPNonFirebaseRelated(Drawable dpDrawable) {
@@ -94,6 +88,13 @@ public class Peer {
         byte[] b = baos.toByteArray();
         profilePicture = Base64.encodeToString(b, Base64.DEFAULT);
     }
+
+    public Bitmap retrieveDPBitmap() {
+        byte [] encodeByte =Base64.decode(profilePicture,Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        return bitmap;
+    }
+
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();

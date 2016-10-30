@@ -3,10 +3,7 @@ package com.pfp.parkhere;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText phoneNumberField;
     private EditText passwordField;
     private EditText repeatPasswordField;
-    private Button loginButton;
+    private Button gotoLoginButton;
+    private ImageView imageView;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -74,15 +72,17 @@ public class RegisterActivity extends AppCompatActivity {
         phoneNumberField = (EditText) findViewById(R.id.phone_field);
         passwordField = (EditText) findViewById(R.id.password_field);
         repeatPasswordField = (EditText) findViewById(R.id.repeat_password_field);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        gotoLoginButton = (Button) findViewById(R.id.goToLoginButton);
+        gotoLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
+        imageView = (ImageView) findViewById(R.id.imgView);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -178,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
         seeker.setFirstName(firstNameField.getText().toString());
         seeker.setLastName(lastNameField.getText().toString());
         seeker.setPhoneNumber(phoneNumberField.getText().toString());
+        seeker.setDPNonFirebaseRelated(imageView.getDrawable());
         return seeker;
     }
 
@@ -226,18 +227,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            System.out.println("Before decode file" + picturePath);
-            ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            System.out.println("After decode file");
+            imageView.setImageURI(selectedImage);
         }
 
 

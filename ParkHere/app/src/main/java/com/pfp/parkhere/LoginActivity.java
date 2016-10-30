@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText passwordField;
     private Button loginButton;
+    private Button goToRegisterButton;
 
 
     @Override
@@ -90,6 +91,16 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseSignIn(emailField.getText().toString(), passwordField.getText().toString());
             }
         });
+        goToRegisterButton = (Button) findViewById(R.id.goToRegisterButton);
+        goToRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     //Firebase sign in
@@ -132,10 +143,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    //TODO UNCOMMENT THIS
-//    @Override
-//    protected void onStop() {
-//        mAuth.signOut();
-//        super.onStop();
-//    }
+    @Override
+    protected void onStop() {
+        mAuth.signOut();
+        super.onStop();
+    }
 }
