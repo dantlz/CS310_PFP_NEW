@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,6 +30,7 @@
             android:layout_width="wrap_content"
             android:onClick="onRadioButtonClicked"/>
     </RadioGroup>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +62,48 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above = "@+id/CarRadioGroup"
         tools:context="com.viralandroid.googlemapsandroidapi.MapsActivity" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/CarRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/map">
+        <RadioButton
+            android:id="@+id/compactType"
+            android:text="Compact"
+            android:button="@null"
+            android:drawableBottom="@android:drawable/btn_radio"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:onClick="onCarTypeRadioButtonClicked"/>
+
+        <RadioButton
+            android:id="@+id/truckType"
+            android:text="Truck"
+            android:button="@null"
+            android:drawableBottom="@android:drawable/btn_radio"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:onClick="onCarTypeRadioButtonClicked"/>
+        <RadioButton
+            android:id="@+id/handicappedType"
+            android:text="Handicapped"
+            android:button="@null"
+            android:drawableBottom="@android:drawable/btn_radio"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:onClick="onCarTypeRadioButtonClicked"/>
+
+    </RadioGroup>
 
 </LinearLayout>

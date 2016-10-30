@@ -17,22 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_first_name"
-        android:layout_below="@id/RegistrationTitle"/>
+        android:layout_below="@id/RegistrationTitle"
+        android:inputType="textPersonName"/>
     <EditText android:id="@+id/last_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_last_name"
-        android:layout_below="@+id/first_name_field" />
-    <EditText android:id="@+id/password_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
-        android:layout_below="@+id/last_name_field"/>
+        android:layout_below="@+id/first_name_field"
+        android:inputType="textPersonName"/>
     <EditText android:id="@+id/email_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/prompt_email"
-        android:layout_below="@+id/password_field"
+        android:layout_below="@+id/last_name_field"
         android:inputType="textEmailAddress" />
     <EditText android:id="@+id/phone_field"
         android:layout_width="match_parent"
@@ -40,7 +37,34 @@
         android:hint="@string/prompt_phone"
         android:layout_below="@+id/email_field"
         android:inputType="phone" />
+    <EditText android:id="@+id/password_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_password"
+        android:layout_below="@+id/phone_field"
+        android:inputType="textPassword"/>
+    <EditText android:id="@+id/repeat_password_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/repeat_password"
+        android:layout_below="@+id/password_field"
+        android:inputType="textPassword"/>
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/repeat_password_field"></ImageView>
     <Button
+        android:id="@+id/buttonLoadPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Load Picture"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imgView"></Button>
+    <Button
+        android:id="@+id/confirmButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -48,253 +72,6 @@
         android:onClick="confirmRegistration"
         android:text="Confirm" />
 
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/LastNameLabel"
-        android:layout_alignParentStart="true"
-        android:text="Last Name"
-        android:layout_alignBottom="@+id/LastNameField"
-        android:layout_below="@+id/FirstNameField" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/FirstNameField"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/NameField"
-        android:layout_alignStart="@+id/ConfirmButton" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/NameField"
-        android:layout_alignParentStart="true"
-        android:text="First Name"
-        android:layout_above="@+id/LastNameLabel"
-        android:layout_alignParentTop="true" />
-
-    <CheckBox
-        android:text="Seeker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SeekerBox"
-        android:layout_above="@+id/ConfirmButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="19dp" />
-
-    <CheckBox
-        android:text="Owner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/OwnerBox"
-        android:layout_above="@+id/SeekerBox" />
-
-    <Button
-        android:text="Confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ConfirmButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/LastNameField"
-        android:layout_below="@+id/FirstNameField"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/FirstNameField" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/PasswordField"
-        android:layout_below="@+id/LastNameField"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/LastNameField" />
-
-    <TextView
-        android:text="Password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/PasswordLabel"
-        android:layout_below="@+id/LastNameLabel"
-        android:layout_alignEnd="@+id/LastNameLabel"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/PasswordField" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_below="@+id/PasswordField"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/EmailField"
-        android:layout_alignStart="@+id/PasswordField" />
-
-    <TextView
-        android:text="Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/EmailLabel"
-        android:layout_below="@+id/PasswordLabel"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/EmailField"
-        android:layout_alignEnd="@+id/PasswordLabel" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:layout_below="@+id/EmailField"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/PhoneField"
-        android:layout_alignStart="@+id/EmailField" />
-
-    <TextView
-        android:text="Password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/PhoneLabel"
-        android:layout_below="@+id/EmailLabel"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/PhoneField"
-        android:layout_alignEnd="@+id/EmailLabel" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/LastNameLabel"
-        android:layout_alignParentStart="true"
-        android:text="Last Name"
-        android:layout_alignBottom="@+id/LastNameField"
-        android:layout_below="@+id/FirstNameField" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/FirstNameField"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/NameField"
-        android:layout_alignStart="@+id/ConfirmButton" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/NameField"
-        android:layout_alignParentStart="true"
-        android:text="First Name"
-        android:layout_above="@+id/LastNameLabel"
-        android:layout_alignParentTop="true" />
-
-    <CheckBox
-        android:text="Seeker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SeekerBox"
-        android:layout_above="@+id/ConfirmButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="19dp" />
-
-    <CheckBox
-        android:text="Owner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/OwnerBox"
-        android:layout_above="@+id/SeekerBox" />
-
-    <Button
-        android:text="Confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ConfirmButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/LastNameField"
-        android:layout_below="@+id/FirstNameField"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/FirstNameField" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/PasswordField"
-        android:layout_below="@+id/LastNameField"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/LastNameField" />
-
-    <TextView
-        android:text="Password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/PasswordLabel"
-        android:layout_below="@+id/LastNameLabel"
-        android:layout_alignEnd="@+id/LastNameLabel"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/PasswordField" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_below="@+id/PasswordField"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/EmailField"
-        android:layout_alignStart="@+id/PasswordField" />
-
-    <TextView
-        android:text="Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/EmailLabel"
-        android:layout_below="@+id/PasswordLabel"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/EmailField"
-        android:layout_alignEnd="@+id/PasswordLabel" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:layout_below="@+id/EmailField"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/PhoneField"
-        android:layout_alignStart="@+id/EmailField" />
-
-    <TextView
-        android:text="Password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/PhoneLabel"
-        android:layout_below="@+id/EmailLabel"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/PhoneField"
-        android:layout_alignEnd="@+id/EmailLabel" />
 
 </RelativeLayout>
 
