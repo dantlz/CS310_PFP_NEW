@@ -45,7 +45,7 @@ public class EditListedSpacesActivity extends AppCompatActivity {
         editAddress.setText(extras.getString("LISTED_SPACE_ADDRESS"));
 
         editPrice = (EditText)findViewById(R.id.editPrice);
-        editPrice.setText("" + extras.getDouble("LISTED_SPACE_PRICE") + "0");
+        editPrice.setText("" + extras.getInt("LISTED_SPACE_PRICE"));
 
         editDescription = (EditText) findViewById(R.id.editDescription);
         editDescription.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
@@ -92,15 +92,15 @@ public class EditListedSpacesActivity extends AppCompatActivity {
         ref.child("Spaces").child(Global_ParkHere_Application
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
-                .child("pricePerHour").setValue(editPrice.getText().toString());
+                .child("pricePerHour").setValue(Integer.valueOf(editPrice.getText().toString()));
         ref.child("Spaces").child(Global_ParkHere_Application
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
-                .child("type").setValue(typeSpinner.getSelectedItem().toString());
+                .child("type").setValue(typeSpinner.getSelectedItem().toString().toUpperCase());
         ref.child("Spaces").child(Global_ParkHere_Application
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
-                .child("policy").setValue(cancellationSpinner.getSelectedItem().toString());
+                .child("policy").setValue(cancellationSpinner.getSelectedItem().toString().toUpperCase());
         ref.child("Spaces").child(Global_ParkHere_Application
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
@@ -123,34 +123,14 @@ public class EditListedSpacesActivity extends AppCompatActivity {
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
                 .child("country").setValue(address.getCountryName());
-        String fullStreet = address.getAddressLine(0);
-        String streetNumber = "";
-        String streetName = "";
-        for(int i = 0; i < fullStreet.length(); i++){
-            if(fullStreet.charAt(i) == ' '){
-                streetNumber = String.valueOf(fullStreet.substring(0, i));
-                fullStreet = fullStreet.substring(i + 1);
-                break;
-            }
-        }
-        for(int i = 0; i < fullStreet.length(); i++){
-            if(fullStreet.charAt(i) == ' ' || i == fullStreet.length() - 1){
-                streetName = String.valueOf(fullStreet.substring(0, i));
-                break;
-            }
-        }
-
         ref.child("Spaces").child(Global_ParkHere_Application
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
-                .child("streetName").setValue(streetName);
-        finish();
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
-                .child("streetNumber").setValue(streetNumber);
+                .child("streetAddress").setValue(address.getAddressLine(0));
 
         //TODO Edit start date and time end date and time
+        finish();
+        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class));
     }
 
     public void deleteListedSpace(View view) {

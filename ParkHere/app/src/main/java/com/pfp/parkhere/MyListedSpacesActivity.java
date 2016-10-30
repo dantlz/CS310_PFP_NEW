@@ -91,7 +91,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 Space chosenSpace = MyListedSpaces.get(position);
                 extras.putString("LISTED_SPACE_NAME", chosenSpace.getSpaceName());
-                extras.putDouble("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
+                extras.putInt("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
                 extras.putString("LISTED_SPACE_ADDRESS", chosenSpace.getStreetAddress());
                 extras.putString("LISTED_SPACE_CITY", chosenSpace.getCity());
                 extras.putString("LISTED_SPACE_STATE", chosenSpace.getState());
@@ -99,7 +99,7 @@ public class MyListedSpacesActivity extends AppCompatActivity {
                 extras.putString("LISTED_SPACE_TYPE", String.valueOf(chosenSpace.getType()));
                 extras.putString("LISTED_SPACE_POLICY", String.valueOf(chosenSpace.getPolicy()));
                 extras.putString("LISTED_SPACE_DESCRIPTION", chosenSpace.getDescription());
-                extras.putString("LISTED_SPACE_RATING", String.valueOf(chosenSpace.getSpaceRating()));
+                extras.putInt("LISTED_SPACE_RATING", chosenSpace.getSpaceRating());
                 extras.putString("LISTED_SPACE_REVIEW", chosenSpace.getSpaceReview());
                 extras.putString("LISTED_SPACE_OWNEREMAIL", chosenSpace.getOwnerEmail());
 

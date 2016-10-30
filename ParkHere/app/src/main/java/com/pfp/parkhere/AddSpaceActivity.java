@@ -167,10 +167,10 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
             String currentUserEmail = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
             listedSpace.setOwnerEmail(currentUserEmail);
             listedSpace.setType(SpaceType.valueOf(typeSpinner.getSelectedItem().toString().toUpperCase()));
-            String fullAddress = streetNumberField.getText().toString() +
-                    streetNameField.getText().toString() +
-                    cityField.getText().toString() +
-                    zipCodeField.getText().toString() +
+            String fullAddress = streetNumberField.getText().toString() + " " +
+                    streetNameField.getText().toString() + " " +
+                    cityField.getText().toString() + " " +
+                    zipCodeField.getText().toString() + " " +
                     stateField.getText().toString();
             Address address = geocoder.getFromLocationName(fullAddress, 1).get(0);
 //            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());

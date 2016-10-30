@@ -34,14 +34,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Enter your description"
-            android:layout_below="@+id/priceField"/>
+            android:layout_below="@+id/priceField"
+            android:inputType="text"/>
 
 
         <EditText android:id="@+id/streetNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Street Number"
-            android:layout_below="@id/descriptionField"/>
+            android:layout_below="@id/descriptionField"
+            android:inputType="number"/>
         <EditText android:id="@+id/streetName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +70,7 @@
             android:layout_height="wrap_content"
             android:hint="Enter Zip Code"
             android:layout_below="@+id/country"
-            android:inputType="phone" />
+            android:inputType="number" />
 
 
         <TextView
@@ -139,8 +141,8 @@
             
         <ImageView
             android:id="@+id/imageview"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_weight="1"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/spinnerForCancellation"/>

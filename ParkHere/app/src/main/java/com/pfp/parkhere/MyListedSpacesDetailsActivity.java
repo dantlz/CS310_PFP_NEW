@@ -34,7 +34,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         addressText.append(", " + extras.getString("LISTED_SPACE_ZIP"));
 
         TextView priceText = (TextView)findViewById(R.id.listed_space_price);
-        priceText.setText("Price: $" + extras.getDouble("LISTED_SPACE_PRICE") + "0");
+        priceText.setText("$" + extras.getInt("LISTED_SPACE_PRICE"));
 
         TextView typeField = (TextView) findViewById(R.id.typeField);
         typeField.setText(extras.getString("LISTED_SPACE_TYPE"));
@@ -46,7 +46,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
 
         TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
-        spaceRatingField.setText(extras.getString("LISTED_SPACE_RATING"));
+        spaceRatingField.setText(""+extras.getInt("LISTED_SPACE_RATING"));
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
         spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
