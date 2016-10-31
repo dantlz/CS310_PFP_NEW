@@ -115,6 +115,11 @@
     <string name="save_listed_space_changes">Save Changes</string>
     <string name="delete_listed_space">Delete Space</string>
 
+    <string name="cancellation_policy_agreement">I have read and agree to the terms of the Cancellation Policy</string>
+
+    <string name="card_payment">Pay with card</string>
+    <string name="paypal_payment">Pay with Paypal</string>
+
     <string-array name="cancellation_policy_choices">
         <item>Flexible</item>
         <item>Medium</item>
