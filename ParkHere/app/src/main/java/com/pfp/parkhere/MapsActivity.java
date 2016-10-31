@@ -372,6 +372,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent2.addCategory(Intent.CATEGORY_HOME);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent2);
+                //TODO Log out correctly
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -457,6 +458,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.BOTH)){
             registerAsBothItem.setEnabled(false);
 
+        }
+        if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)){
+            addSpaceItem.setEnabled(false);
         }
         return super.onCreateOptionsMenu(menu);
     }

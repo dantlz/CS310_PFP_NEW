@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Peer;
+import ObjectClasses.Status;
 
 import static com.pfp.parkhere.R.id.editButton;
 
@@ -66,6 +67,14 @@ public class ProfileActivity extends AppCompatActivity
                 System.out.println(2);
                 myListedSpacesButton.setVisibility(View.GONE);
                 mBookingButton.setVisibility(View.VISIBLE);
+            }
+
+            RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
+            rateBar.setVisibility(View.GONE);
+            if(!Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)) {
+                rateBar.setVisibility(View.VISIBLE);
+                DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
+                rateBar.setRating(Global_ParkHere_Application.getCurrentUserObject().getOwnerRating());
             }
 
             disableEditText(mEmail);

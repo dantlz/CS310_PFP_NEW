@@ -33,13 +33,14 @@ import ObjectClasses.Space;
 
 public class MyBookingsActivity extends AppCompatActivity {
     public final static String BOOKING_DETAIL_MESSAGE = "com.pfp.parkhere.BOOKINGDETAILMESSAGE";
-    ListView bookingsView;
-    LinkedList<String> myBookingIdentifiers;
-    LinkedList<Booking> myBookings;
-    String[] viewValues;
-    int ownerRating;
-    Intent intent;
-    Bundle extras;
+    private ListView bookingsView;
+    private LinkedList<String> myBookingIdentifiers;
+    private LinkedList<Booking> myBookings;
+    private String[] viewValues;
+    private int ownerRating;
+    private Intent intent;
+    private Bundle extras;
+    private Booking currBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,9 @@ public class MyBookingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_bookings);
         //get bookings list
         bookingsView = (ListView) findViewById(R.id.bookinglist);
-
-        //HARD CODED BOOKINGs
-        //get test bookings, in the future requests all the bookings from database
+        myBookingIdentifiers = new LinkedList<>();
         myBookings = new LinkedList<>();
+
         FirebaseDatabase.getInstance().getReference().child("Bookings")
                 .child(
                         Global_ParkHere_Application.reformatEmail(
@@ -75,9 +75,7 @@ public class MyBookingsActivity extends AppCompatActivity {
         //Set values displayed as a list
         viewValues = new String[myBookings.size()];
         for (int i = 0; i < myBookings.size(); i++) {
-            MyCalendar tempDate = myBookings.get(i).getStart();
-            viewValues[i] = tempDate.getHour() + " " + tempDate.getMinute() + " "
-                    +tempDate.getDay() + " " + tempDate.getMonth() + " " + tempDate.getYear();
+            viewValues[i] = myBookings.get(i).getSpaceName();
         }
 
         //Adapter to dynamically fill listview
@@ -92,73 +90,92 @@ public class MyBookingsActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                bookingClicked(view, position);
+            }
+        });
+    }
 
-                // ListView Clicked item index
-                Context context = view.getContext();
+    private void bookingClicked(View view, final int position){
+        // ListView Clicked item index
+        Context context = view.getContext();
 
-                //New intent to pass to booking details, new Bundle to attach to intent
-                intent = new Intent(context, MyBookingsDetailsActivity.class);
-                extras = new Bundle();
+        //New intent to pass to booking details, new Bundle to attach to intent
+        intent = new Intent(context, MyBookingsDetailsActivity.class);
+        extras = new Bundle();
 
-                Booking currBooking = myBookings.get(position);
+        currBooking = myBookings.get(position);
 
-                //Generate text for address
-                String ad = currBooking.getSpace().getStreetAddress()
-                + " " + currBooking.getSpace().getCity() + " " + currBooking.getSpace().getState()
-                        + " " + currBooking.getSpace().getZipCode();
-                Address bookingAddress = null;
-                try {
-                    bookingAddress = new Geocoder(MyBookingsActivity.this).getFromLocationName(ad, 1).get(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        FirebaseDatabase.getInstance().getReference().child("Spaces")
+                .child(Global_ParkHere_Application.reformatEmail(
+                        currBooking.getBookingSpaceOwnerEmail()
+                )).child(currBooking.getSpaceName()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                finishBookingClicked(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
+            }
 
-                String addressText = bookingAddress.getAddressLine(0) + "\n" +
-                        bookingAddress.getLocality() + " " + bookingAddress.getAdminArea();
-                extras.putString("ADDRESS_TEXT", addressText);
-
-                //Generate text for start and end dates
-                String endTimeText = currBooking.getEnd().getHour() + " "
-                        + currBooking.getEnd().getMinute() + " "
-                        +currBooking.getEnd().getDay() + " " + currBooking.getEnd().getMonth()
-                        + " " + currBooking.getEnd().getYear();
-                String startTimeText = currBooking.getStart().getHour() + " "
-                        + currBooking.getStart().getMinute() + " "
-                        +currBooking.getStart().getDay() + " " + currBooking.getStart().getMonth()
-                        + " " + currBooking.getStart().getYear();
-                extras.putString("START_TIME_TEXT", startTimeText);
-                extras.putString("END_TIME_TEXT", endTimeText);
-                //Generate text for owner name and email
-                extras.putString("OWNER_NAME_TEXT", myBookings.get(position).getSpace().getSpaceName());
-                extras.putString("OWNER_EMAIL_TEXT", myBookings.get(position).getSpace().getOwnerEmail());
-                extras.putString("SPACE_REVIEW_TEXT", myBookings.get(position).getSpace().getSpaceReview());
-                extras.putSerializable("IDENTIFIER", myBookingIdentifiers.get(position));
-
-                //Generate Rating and Review
-                //Get owner object to set rating
-                String bookingsSpacesOwnerEmail = myBookings.get(position).getSpace().getOwnerEmail();
-                FirebaseDatabase.getInstance()
-                        .getReference("Peers")
-                        .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                // This method is called once with the initial value and again
-                                // whenever data at this location is updated.
-
-                                Peer currentUser = dataSnapshot.getValue(Peer.class);
-                                ownerRating = ((Peer) currentUser).getOwnerRating();
-                                finishPopulate(extras);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError error) {
-                                // Failed to read value
-                            }
-                        });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+    }
+
+    private void finishBookingClicked(Space space, String identifier){
+        //Generate text for address
+        String ad = space.getStreetAddress()
+                + " " + space.getCity() + " " + space.getState()
+                + " " + space.getZipCode();
+        Address bookingAddress = null;
+        try {
+            bookingAddress = new Geocoder(MyBookingsActivity.this).getFromLocationName(ad, 1).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String addressText = bookingAddress.getAddressLine(0) + "\n" +
+                bookingAddress.getLocality() + " " + bookingAddress.getAdminArea();
+        extras.putString("ADDRESS_TEXT", addressText);
+
+        //Generate text for start and end dates
+        String endTimeText = currBooking.getEndCalendarDate().getHour() + " "
+                + currBooking.getEndCalendarDate().getMinute() + " "
+                +currBooking.getEndCalendarDate().getDay() + " " + currBooking.getEndCalendarDate().getMonth()
+                + " " + currBooking.getEndCalendarDate().getYear();
+        String startTimeText = currBooking.getStartCalendarDate().getHour() + " "
+                + currBooking.getStartCalendarDate().getMinute() + " "
+                +currBooking.getStartCalendarDate().getDay() + " " + currBooking.getStartCalendarDate().getMonth()
+                + " " + currBooking.getStartCalendarDate().getYear();
+        extras.putString("START_TIME_TEXT", startTimeText);
+        extras.putString("END_TIME_TEXT", endTimeText);
+        //Generate text for owner name and email
+        extras.putString("OWNER_NAME_TEXT", space.getSpaceName());
+        extras.putString("OWNER_EMAIL_TEXT", space.getOwnerEmail());
+        extras.putString("SPACE_REVIEW_TEXT", space.getSpaceReview());
+        extras.putSerializable("IDENTIFIER", identifier);
+
+        //Generate Rating and Review
+        //Get owner object to set rating
+        String bookingsSpacesOwnerEmail = space.getOwnerEmail();
+        FirebaseDatabase.getInstance()
+                .getReference("Peers")
+                .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+
+                        Peer currentUser = dataSnapshot.getValue(Peer.class);
+                        ownerRating = ((Peer) currentUser).getOwnerRating();
+                        finishPopulate(extras);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                    }
+                });
     }
 
     private void finishPopulate(Bundle extras){

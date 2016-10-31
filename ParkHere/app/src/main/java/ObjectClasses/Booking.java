@@ -8,12 +8,27 @@ import java.util.Date;
  */
 
 public class Booking {
-    private Space space;
+    private String spaceName;
+    private String bookingSpaceOwnerEmail;
     private MyCalendar startCalendarDate;
     private MyCalendar endCalendarDate;
-    private Date start;
-    private Date end;
     private boolean done;
+
+    public MyCalendar getStartCalendarDate() {
+        return startCalendarDate;
+    }
+
+    public void setStartCalendarDate(MyCalendar startCalendarDate) {
+        this.startCalendarDate = startCalendarDate;
+    }
+
+    public MyCalendar getEndCalendarDate() {
+        return endCalendarDate;
+    }
+
+    public void setEndCalendarDate(MyCalendar endCalendarDate) {
+        this.endCalendarDate = endCalendarDate;
+    }
 
     public boolean isDone() {
         return done;
@@ -31,30 +46,22 @@ public class Booking {
         this.repeat = repeat;
     }
 
-    public void setStart(MyCalendar start) {
-        this.startCalendarDate = start;
+
+    public String getSpaceName() {
+        return spaceName;
     }
 
-    public void setEnd(MyCalendar end) {
-        this.endCalendarDate = end;
-    }
-
-    public MyCalendar getStart() {
-        return startCalendarDate;
-    }
-
-    public MyCalendar getEnd(){
-        return endCalendarDate;
-    }
-
-    public Space getSpace() {
-        return space;
-    }
-
-    public void setSpace(Space space) {
-        this.space = space;
+    public void setSpaceName(String spaceName) {
+        this.spaceName = spaceName;
     }
 
     private boolean repeat;
 
+    public String getBookingSpaceOwnerEmail() {
+        return bookingSpaceOwnerEmail;
+    }
+
+    public void setBookingSpaceOwnerEmail(String bookingSpaceOwnerEmail) {
+        this.bookingSpaceOwnerEmail = bookingSpaceOwnerEmail;
+    }
 }

@@ -105,10 +105,11 @@ public class BookSpaceActivity extends AppCompatActivity {
 
         Bundle extras = new Bundle();
         extras.putString("OWNER_EMAIL_IDENTIFIER", selectedSpace.getOwnerEmail());
-        extras.putString("OWNER_NAME_IDENTIFIER", selectedSpace.getSpaceName());
+        extras.putString("SPACE_NAME_IDENTIFIER", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
-        context.startActivity(intent);
+        startActivity(intent);
+        finish();
     }
 
     public void payWithPaypal(View view) {
@@ -121,6 +122,7 @@ public class BookSpaceActivity extends AppCompatActivity {
         extras.putString("OWNER_NAME_IDENTIFIER", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
-        context.startActivity(intent);
+        startActivity(intent);
+        finish();
     }
 }

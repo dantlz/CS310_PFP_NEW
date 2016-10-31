@@ -39,14 +39,6 @@
         tools:textColor="@android:color/black"
         android:autoLink="email">
     </TextView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/space_rating"
-        android:textSize="12pt"
-        tools:textColor="@android:color/black"
-        android:autoLink="email">
-    </TextView>
 
     <RatingBar
         android:id="@+id/BookingDetailRatingBar"

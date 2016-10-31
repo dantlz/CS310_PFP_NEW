@@ -21,9 +21,10 @@ public class CancelActivity extends AppCompatActivity {
     public void ReturnToBookingDetail(View view){
         finish();
     }
+
     public void CancelBooking(View view){
         FirebaseDatabase.getInstance().getReference().child("Bookings")
-                .child(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress())
+                .child(Global_ParkHere_Application.reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(identifier).removeValue();
         //remove from database. If things work out right, the mybookings activity should reload from database without the deleted booking
         Intent intent = new Intent(this, MyBookingsActivity.class);

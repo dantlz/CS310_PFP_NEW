@@ -27,7 +27,8 @@
         android:text="@string/card_number"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -35,7 +36,8 @@
         android:text="@string/card_expiration_date"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -43,7 +45,8 @@
         android:text="@string/card_cardholder_name"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -51,12 +54,13 @@
         android:text="@string/card_cv_code"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/submit_card_info"
-        android:onClick=""/>
+        android:onClick="submitCardPayment"/>
 
 </LinearLayout>

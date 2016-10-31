@@ -75,6 +75,9 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        if(extras.getString("OWNEREMAIL").equals(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress())){
+            bookSpaceButton.setVisibility(View.GONE);
+        }
         //Directed from map or resultList
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +98,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
                 intent.putExtra("SPACENAME", extras.getString("SPACENAME"));
                 intent.putExtra("OWNEREMAIL", extras.getString("OWNEREMAIL"));
                 startActivity(intent);
+                finish();
             }
         });
 
