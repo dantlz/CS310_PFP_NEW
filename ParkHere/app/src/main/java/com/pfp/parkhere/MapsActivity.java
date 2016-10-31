@@ -355,7 +355,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if(myCalendarToDate(start).before(startDateTime) || myCalendarToDate(end).before(endDateTime))
                     continue;
             }
-            //TODO Create 2 lists of spaces. One is all, attached to firebase, other is search results
+
             MarkerOptions marker = new MarkerOptions();
             marker.position((LatLng)pair.getKey());
             marker.title(space.getSpaceName());
@@ -402,6 +402,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             addSpaceItem.setEnabled(true);
         filtersButton.setVisibility(View.GONE);
         resultAsListButton.setVisibility(View.GONE);
+        FirebaseDatabase.getInstance().getReference().child(Global_ParkHere_Application.reformatEmail(
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
+        )).child("preferredStatus").setValue(Status.OWNER);
     }
 
     private void seekerMode(boolean firstTime){
@@ -414,6 +417,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         filtersButton.setVisibility(View.VISIBLE);
         resultAsListButton.setVisibility(View.VISIBLE);
+        FirebaseDatabase.getInstance().getReference().child(Global_ParkHere_Application.reformatEmail(
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
+        )).child("preferredStatus").setValue(Status.SEEKER);
     }
 
 
