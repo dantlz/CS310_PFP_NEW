@@ -1,7 +1,6 @@
 package com.pfp.parkhere;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -86,8 +86,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SimpleDateFormat format = new SimpleDateFormat();
 
 
-    //TODO Make it so that if not verified the person cannot do anything
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,22 +141,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-        if(Global_ParkHere_Application.getCurrentUserObject().getPhotoID() == null
-                ||Global_ParkHere_Application.getCurrentUserObject().getPhotoID().equals("")){
+        if(Global_ParkHere_Application.getCurrentUserObject().getPhotoID() == null ||
+                Global_ParkHere_Application.getCurrentUserObject().getPhotoID().equals("")){
             Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
-                    .setTitle("Verification needed")
-                    .setMessage("You must verify your identity in order to use this app")
+                    .setTitle("Verification Needed")
+                    .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
-                            finish();
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert).create();
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .create();
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-
         }
     }
 
