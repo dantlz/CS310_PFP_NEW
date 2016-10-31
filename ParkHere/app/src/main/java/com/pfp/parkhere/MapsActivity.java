@@ -206,6 +206,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void onMapSearch(View view) {
+        //This allows search by BOTH address AND LONGITUDE LATITUDE
         EditText locationSearch = (EditText) findViewById(R.id.editText);
         String location = locationSearch.getText().toString();
         List<Address> addressList = null;
