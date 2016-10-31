@@ -15,19 +15,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/space_name_confirmation"
-        android:textSize="24sp"/>
+        android:textSize="24sp"
+        android:layout_weight="0"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/space_address_confirmation"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/space_price_confirmation"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_cancellation_policy"
+        android:textSize="22sp"
+        android:paddingTop="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +46,7 @@
             android:layout_height="wrap_content"
             android:onClick="activatePaymentButtons"
             android:id="@+id/cancellation_agreement_verifier"/>
-        <CheckedTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancellation_policy_agreement"/>
@@ -46,10 +54,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_gravity="center|bottom">
+        android:layout_gravity="bottom"
+        android:id="@+id/listing_of_payment_buttons">
 
         <Button
             android:layout_width="match_parent"
@@ -57,7 +65,8 @@
             android:text="@string/card_payment"
             android:onClick="payWithCard"
             android:enabled="false"
-            android:id="@+id/pay_with_card_button" />
+            android:id="@+id/pay_with_card_button"
+            android:layout_weight="1" />
 
         <Button
             android:layout_width="match_parent"
@@ -65,8 +74,11 @@
             android:text="@string/paypal_payment"
             android:onClick="payWithPaypal"
             android:enabled="false"
-            android:id="@+id/pay_with_paypal_button"/>
+            android:id="@+id/pay_with_paypal_button"
+            android:layout_weight="1" />
 
     </LinearLayout>
+
+
 
 </LinearLayout>
