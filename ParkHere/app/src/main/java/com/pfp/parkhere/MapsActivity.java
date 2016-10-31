@@ -402,7 +402,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             addSpaceItem.setEnabled(true);
         filtersButton.setVisibility(View.GONE);
         resultAsListButton.setVisibility(View.GONE);
-        FirebaseDatabase.getInstance().getReference().child(Global_ParkHere_Application.reformatEmail(
+        FirebaseDatabase.getInstance().getReference().child("Peers").child(Global_ParkHere_Application.reformatEmail(
                 Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
         )).child("preferredStatus").setValue(Status.OWNER);
     }
@@ -417,7 +417,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         filtersButton.setVisibility(View.VISIBLE);
         resultAsListButton.setVisibility(View.VISIBLE);
-        FirebaseDatabase.getInstance().getReference().child(Global_ParkHere_Application.reformatEmail(
+        FirebaseDatabase.getInstance().getReference().child("Peers").child(Global_ParkHere_Application.reformatEmail(
                 Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
         )).child("preferredStatus").setValue(Status.SEEKER);
     }
