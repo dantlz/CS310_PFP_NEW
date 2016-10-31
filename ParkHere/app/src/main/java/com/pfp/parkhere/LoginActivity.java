@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        findViewById(R.id.loginLoad).setVisibility(View.GONE);
 
         emailField = (EditText)findViewById(R.id.login_email_field);
         passwordField = (EditText) findViewById(R.id.login_password_field);
@@ -53,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                     //User is signed in
 
                     if(!fireBaseUser.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
+                        return;
+                    if(Global_ParkHere_Application.getCurrentUserObject() == null)
                         return;
                     
                     FirebaseDatabase.getInstance()
@@ -123,10 +126,12 @@ public class LoginActivity extends AppCompatActivity {
 
     //Firebase sign in
     private void firebaseSignIn(String email, String password){
-        mAuth.signInWithEmailAndPassword(email, password)
+        findViewById(R.id.loginLoad).setVisibility(View.VISIBLE);
+                mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        findViewById(R.id.loginLoad).setVisibility(View.GONE);
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.

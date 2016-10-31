@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -117,7 +118,6 @@ public class AddSpaceActivity extends AppCompatActivity {
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
 
-        //PICTURE CHECK NULL DOESNT WORK!!
         //Address and latlng are from above
         //Startdate starttime enddate endtime have default values
         //email is given
@@ -131,7 +131,7 @@ public class AddSpaceActivity extends AppCompatActivity {
                 zipCodeField.getText().toString().equals("") ||
                 typeSpinner.getSelectedItem().equals(null) ||
                 cancellationSpinner.getSelectedItem().equals(null)||
-                picture.getDrawable() == null) {
+                (BitmapDrawable)(picture.getDrawable()) == null) {
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("Please complete all fields")
                     .setMessage("All input fields must be completed.")

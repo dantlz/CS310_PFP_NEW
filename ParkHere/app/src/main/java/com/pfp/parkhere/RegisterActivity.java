@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -47,12 +48,17 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner statusSpinner;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Peer currentUser;
+    private int firstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // from http://viralpatel.net/blogs/pick-image-from-galary-android-app/
+        firstTime = 0;
+
+        findViewById(R.id.registerLoad).setVisibility(View.GONE);
+
         buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
             //Called when Upload Photo is clicked
@@ -100,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(dataAdapter);
 
+
         //Firebase
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -107,39 +114,58 @@ public class RegisterActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 // User is signed in
-                if (user != null) {
+
+                if (user != null && firstTime != 0) {
+                    findViewById(R.id.registerLoad).setVisibility(View.GONE);
                     //First grab the peer/seeker object form database based on user's email
                     FirebaseDatabase.getInstance()
                             .getReference("Peers")
                             .child(Global_ParkHere_Application.reformatEmail(user.getEmail()))
                             .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // This method is called once with the initial value and again
-                            // whenever data at this location is updated.
-                            Peer currentUser = dataSnapshot.getValue(Peer.class);
-                            Global_ParkHere_Application.setCurrentUserObject(currentUser);
-                            //Go to Map activity
-                            startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
-                            finish();
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                        }
-                    });
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // This method is called once with the initial value and again
+                                    // whenever data at this location is updated.
+                                    currentUser = dataSnapshot.getValue(Peer.class);
+                                    //Go to Map activity
+                                    Global_ParkHere_Application.setCurrentUserObject(currentUser);
+                                    startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+                                    finish();
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError error) {
+                                    // Failed to read value
+                                }
+                            });
                 }
-                else{
+                else if(user == null && firstTime != 0){
+                    findViewById(R.id.registerLoad).setVisibility(View.GONE);
                     // User is signed out. This would not happen here ever
+                    new AlertDialog.Builder(RegisterActivity.this)
+                            .setTitle("Registration failed")
+                            .setMessage("Something on our sever broke.")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 }
+
+                if(firstTime == 0)
+                    firstTime ++;
             }
         };
         mAuth.addAuthStateListener(mAuthListener);
     }
 
     private void confirmButtonPressed(){
+        findViewById(R.id.registerLoad).setVisibility(View.VISIBLE);
+
         String validity = allInputFieldValid();
         if(!validity.equals("")) {
+            findViewById(R.id.registerLoad).setVisibility(View.GONE);
             new AlertDialog.Builder(RegisterActivity.this)
                     .setTitle("Registration failed")
                     .setMessage(validity)
@@ -159,7 +185,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-
+                            findViewById(R.id.registerLoad).setVisibility(View.GONE);
                             //Check if email is already registered.
                             if(task.getException().getClass().equals(FirebaseAuthUserCollisionException.class)){
                                 new AlertDialog.Builder(RegisterActivity.this)
@@ -177,9 +203,9 @@ public class RegisterActivity extends AppCompatActivity {
                             return;
                         }
 
-                        Peer peer = createUserObject();
+                        currentUser = createUserObject();
                         FirebaseDatabase.getInstance().getReference().child("Peers").
-                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(peer);
+                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(currentUser);
                     }
                 });
     }
@@ -198,6 +224,7 @@ public class RegisterActivity extends AppCompatActivity {
         else{
             peer.setPreferredStatus(Status.SEEKER);
         }
+
         return peer;
     }
 
@@ -221,6 +248,8 @@ public class RegisterActivity extends AppCompatActivity {
         //Password must be at least 10 characters with upper/lower case, number(s), and special characters
         if(passwordField.getText().toString().length() < 10)
             return "Password must be at least 10 characters";
+        if((BitmapDrawable)(imageView.getDrawable()) == null)
+            return "Must set a display picture for your profile";
         for(char c: passwordField.getText().toString().toCharArray()){
             if("!@#$%^&*()_+-=".contains(String.valueOf(c)))
                 return "";
