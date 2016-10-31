@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +62,9 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
             TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
             spaceRatingField.setText("" + extras.getInt("LISTED_SPACE_RATING"));
+
+            RatingBar rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
+            rateBar.setRating(extras.getInt("LISTED_SPACE_RATING"));
 
             TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
             spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
