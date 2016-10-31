@@ -106,8 +106,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         resultAsListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, SearchFiltersActivity.class);
-//                startActivityForResult(, 123);
+//                Intent intent = new Intent(MapsActivity.this, .class);
+        //TODO  Go to RESULT LIST startActivityForResult(, 123);
             }
         });
 
@@ -277,6 +277,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             String fullDateTime = extras.getInt("STARTYEAR") + "."
                     + month + "." + day + "." + hour + "." + minute;
             System.out.println(fullDateTime);
+            //TODO Finish filtering here
 //            Date startDateTime = format.parse()
 //            MyCalendar(
 //                    startDatePicker.getYear(),
@@ -316,8 +317,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    //This allows search by BOTH address AND LONGITUDE LATITUDE
     public void onMapSearch(View view) {
-        //This allows search by BOTH address AND LONGITUDE LATITUDE
         EditText locationSearch = (EditText) findViewById(R.id.editText);
         String location = locationSearch.getText().toString();
         List<Address> addressList = null;

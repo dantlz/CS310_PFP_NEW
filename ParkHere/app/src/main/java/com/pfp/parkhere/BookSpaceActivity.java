@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Space;
 
@@ -23,26 +27,29 @@ public class BookSpaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_space);
 
-        selectedSpace = new Space();
+        FirebaseDatabase.getInstance().getReference().child("Spaces")
+                .child(Global_ParkHere_Application.reformatEmail(getIntent().getExtras().getString("OWNEREMAIL")))
+                .child(getIntent().getExtras().getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                selectedSpace = dataSnapshot.getValue(Space.class);
+                finishPopulating();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
 
-        selectedSpace.setSpaceName("USC New/North Parking");
-        selectedSpace.setStreetAddress("635 McCarthy Way");
-        selectedSpace.setCity("Los Angeles");
-        selectedSpace.setState("CA");
-        selectedSpace.setZipCode("90007");
-        selectedSpace.setPricePerHour(10);
-        selectedSpace.setOwnerEmail("bradfora@usc.edu");
-
+    private void finishPopulating(){
         TextView nameView = (TextView)findViewById(R.id.space_name_confirmation);
         nameView.setText(selectedSpace.getSpaceName() + "\n");
 
         TextView addressView = (TextView)findViewById(R.id.space_address_confirmation);
         addressView.setText(selectedSpace.getStreetAddress() + ",\n"
-            + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode() + "\n");
+                + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode() + "\n");
 
         TextView priceView = (TextView)findViewById(R.id.space_price_confirmation);
         priceView.setText("Price: $" + selectedSpace.getPricePerHour());
-
 
     }
 

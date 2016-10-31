@@ -132,6 +132,7 @@ public class ProfileActivity extends AppCompatActivity
                         mFirstName.setTextColor(Color.BLACK);
                         mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
                         mEmail.setText("Owner rating: " + owner.getOwnerRating());
+                        //TODO Make the rating into stars
                         disableEditText(mEmail);
                         mEmail.setTextColor(Color.BLACK);
                         mPhone.setInputType(InputType.TYPE_CLASS_TEXT);
