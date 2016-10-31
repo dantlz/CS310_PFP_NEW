@@ -107,7 +107,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(MapsActivity.this, .class);
-        //TODO  Go to RESULT LIST startActivityForResult(, 123);
+        //TODO Go to RESULT LIST startActivityForResult(, 123);
             }
         });
 
