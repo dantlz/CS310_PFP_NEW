@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
 
+import ObjectClasses.CancellationPolicy;
 import ObjectClasses.Space;
 
 public class BookSpaceActivity extends AppCompatActivity {
@@ -32,16 +33,20 @@ public class BookSpaceActivity extends AppCompatActivity {
         selectedSpace.setZipCode("90007");
         selectedSpace.setPricePerHour(10);
         selectedSpace.setOwnerEmail("bradfora@usc.edu");
+        selectedSpace.setPolicy(CancellationPolicy.MODERATE);
 
         TextView nameView = (TextView)findViewById(R.id.space_name_confirmation);
-        nameView.setText(selectedSpace.getSpaceName() + "\n");
+        nameView.setText(selectedSpace.getSpaceName());
 
         TextView addressView = (TextView)findViewById(R.id.space_address_confirmation);
         addressView.setText(selectedSpace.getStreetAddress() + ",\n"
-            + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode() + "\n");
+            + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode());
 
         TextView priceView = (TextView)findViewById(R.id.space_price_confirmation);
         priceView.setText("Price: $" + selectedSpace.getPricePerHour());
+
+        TextView policyView = (TextView)findViewById(R.id.display_cancellation_policy);
+        policyView.setText(Global_ParkHere_Application.getCancellationPolicy(selectedSpace.getPolicy()));
 
 
     }

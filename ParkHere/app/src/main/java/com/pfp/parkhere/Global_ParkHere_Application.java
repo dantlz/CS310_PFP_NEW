@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import ObjectClasses.CancellationPolicy;
 import ObjectClasses.Peer;
 
 /**
@@ -20,6 +21,18 @@ public class Global_ParkHere_Application extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    public static String getCancellationPolicy(CancellationPolicy policy) {
+        if (policy == CancellationPolicy.LIGHT) {
+            return "Flexible: You will receive a full refund if you cancel up to 24 hours in advance.";
+        }
+        else if (policy == CancellationPolicy.MODERATE) {
+            return "Moderate: You will receive a 50% refund if you cancel up to 24 hours in advance.";
+        }
+        else {
+            return "Strict: You will not receive a refund if you cancel your reservation.";
+        }
     }
 
     public static void addListener(){
