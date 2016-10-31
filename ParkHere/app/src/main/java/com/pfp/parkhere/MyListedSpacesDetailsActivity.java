@@ -38,6 +38,8 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
         Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
 
+        RatingBar rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
+        DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
         //My listed space detail
         if(extras.getString("SPACENAME") == null) {
@@ -65,8 +67,6 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
             spaceRatingField.setText("" + extras.getInt("LISTED_SPACE_RATING"));
 
-            RatingBar rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
-            DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
             rateBar.setRating(extras.getInt("LISTED_SPACE_RATING"));
 
             TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
