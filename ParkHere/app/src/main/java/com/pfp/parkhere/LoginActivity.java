@@ -86,6 +86,23 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String message = "";
+                if(emailField.getText().toString().equals(""))
+                    message = "Please enter an email address";
+                else if(passwordField.getText().toString().equals(""))
+                    message = "Please enter your password";
+                if(!message.equals("")){
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle("Missing email or password")
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
                 firebaseSignIn(emailField.getText().toString(), passwordField.getText().toString());
             }
         });

@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 
 import ObjectClasses.Space;
 
+//DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
     private Bundle extras;
@@ -33,6 +34,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Button ownerButton = (Button) findViewById(R.id.ownerButton);
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
         Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
+
 
         //My listed space detail
         if(extras.getString("SPACENAME") == null) {
