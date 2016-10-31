@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RatingBar;
@@ -42,6 +43,7 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         TextView ratingView = (TextView) findViewById(R.id.space_rating);
         String rating = "Rating: " + extras.getInt("SPACE_RATING_INT");
         RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
+        DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
         rateBar.setRating(extras.getInt("SPACE_RATING_INT"));
         ratingView.setText(rating);
         TextView reviewView = (TextView) findViewById(R.id.space_review);

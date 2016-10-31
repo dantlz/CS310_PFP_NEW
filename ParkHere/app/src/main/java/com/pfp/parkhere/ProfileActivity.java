@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.graphics.Color;
+import android.widget.RatingBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -133,6 +135,9 @@ public class ProfileActivity extends AppCompatActivity
                         mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
                         mEmail.setText("Owner rating: " + owner.getOwnerRating());
                         //TODO Make the rating into stars
+                        RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
+                        DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
+                        rateBar.setRating(owner.getOwnerRating());
                         disableEditText(mEmail);
                         mEmail.setTextColor(Color.BLACK);
                         mPhone.setInputType(InputType.TYPE_CLASS_TEXT);

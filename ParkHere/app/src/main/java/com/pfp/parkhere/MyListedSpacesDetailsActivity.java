@@ -2,6 +2,8 @@ package com.pfp.parkhere;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -64,6 +66,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             spaceRatingField.setText("" + extras.getInt("LISTED_SPACE_RATING"));
 
             RatingBar rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
+            DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
             rateBar.setRating(extras.getInt("LISTED_SPACE_RATING"));
 
             TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
