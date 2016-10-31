@@ -2,10 +2,13 @@ package com.pfp.parkhere;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,9 +21,11 @@ import org.w3c.dom.Text;
 
 import ObjectClasses.Space;
 
+//DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
     private Bundle extras;
+    private RatingBar rateBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,9 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Button ownerButton = (Button) findViewById(R.id.ownerButton);
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
         Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
+
+        rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
+        DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
         //My listed space detail
         if(extras.getString("SPACENAME") == null) {
@@ -57,8 +65,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
             descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
 
-            TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
-            spaceRatingField.setText("" + extras.getInt("LISTED_SPACE_RATING"));
+            rateBar.setRating(extras.getInt("LISTED_SPACE_RATING"));
 
             TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
             spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
@@ -68,7 +75,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        //Directed from map
+        //Directed from map or resultList
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,9 +86,17 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         });
         editButton.setVisibility(View.GONE);
         if(extras.getString("STATUS").equals("OWNER")){
-            bookSpaceButton.setVisibility(View.GONE
-            );
+            bookSpaceButton.setVisibility(View.GONE);
         }
+        bookSpaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, BookSpaceActivity.class);
+                intent.putExtra("SPACENAME", extras.getString("SPACENAME"));
+                intent.putExtra("OWNEREMAIL", extras.getString("OWNEREMAIL"));
+                startActivity(intent);
+            }
+        });
 
         FirebaseDatabase.getInstance().getReference().child("Spaces")
                 .child(Global_ParkHere_Application.reformatEmail(extras.getString("OWNEREMAIL")))
@@ -120,8 +135,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
         descriptionField.setText(space.getDescription());
 
-        TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
-        spaceRatingField.setText("" + space.getSpaceRating());
+        rateBar.setRating(space.getSpaceRating());
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
         spaceReviewField.setText(space.getSpaceReview());

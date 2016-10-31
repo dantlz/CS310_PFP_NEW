@@ -49,11 +49,6 @@
 
         <!-- BOOK SPACE -->
         <activity android:name=".BookSpaceActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Cancel -->
@@ -65,7 +60,13 @@
         <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- MAPS -->
         <activity
@@ -108,10 +109,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- SETTINGS -->
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- VERIFICATION -->
         <activity

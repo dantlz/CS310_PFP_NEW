@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.CancellationPolicy;
 import ObjectClasses.Space;
@@ -24,6 +28,7 @@ public class BookSpaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_space);
 
+
         selectedSpace = new Space();
 
         selectedSpace.setSpaceName("USC New/North Parking");
@@ -35,19 +40,32 @@ public class BookSpaceActivity extends AppCompatActivity {
         selectedSpace.setOwnerEmail("bradfora@usc.edu");
         selectedSpace.setPolicy(CancellationPolicy.MODERATE);
 
+        FirebaseDatabase.getInstance().getReference().child("Spaces")
+                .child(Global_ParkHere_Application.reformatEmail(getIntent().getExtras().getString("OWNEREMAIL")))
+                .child(getIntent().getExtras().getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                selectedSpace = dataSnapshot.getValue(Space.class);
+                finishPopulating();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void finishPopulating(){
         TextView nameView = (TextView)findViewById(R.id.space_name_confirmation);
         nameView.setText(selectedSpace.getSpaceName());
 
         TextView addressView = (TextView)findViewById(R.id.space_address_confirmation);
         addressView.setText(selectedSpace.getStreetAddress() + ",\n"
-            + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode());
+                + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode());
 
         TextView priceView = (TextView)findViewById(R.id.space_price_confirmation);
         priceView.setText("Price: $" + selectedSpace.getPricePerHour());
 
         TextView policyView = (TextView)findViewById(R.id.display_cancellation_policy);
         policyView.setText(Global_ParkHere_Application.getCancellationPolicy(selectedSpace.getPolicy()));
-
 
     }
 
@@ -79,6 +97,7 @@ public class BookSpaceActivity extends AppCompatActivity {
         }
     }
 
+    //TODO Finish the two payment options
     public void payWithCard(View view) {
         Context context = view.getContext();
         Intent intent = new Intent(context, PayWithCardActivity.class);
