@@ -117,6 +117,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+
         if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.OWNER)){
             ((RadioButton)findViewById(R.id.Owner)).setChecked(true);
             (findViewById(R.id.Seeker)).setEnabled(false);
@@ -502,14 +503,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 123){
-            setCurrentSearchTimeFrame(data);
-            addMarkers(data);
+            if(resultCode == 12321) {
+                setCurrentSearchTimeFrame(data);
+                addMarkers(data);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         addSpaceItem = menu.getItem(0);
@@ -521,6 +525,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)){
             addSpaceItem.setEnabled(false);
         }
+        if(userMode.equals(Status.SEEKER))
+            addSpaceItem.setEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
 

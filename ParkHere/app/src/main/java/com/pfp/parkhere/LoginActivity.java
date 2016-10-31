@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
+                    return;
                 }
                 firebaseSignIn(emailField.getText().toString(), passwordField.getText().toString());
             }

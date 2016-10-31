@@ -55,7 +55,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 intent.putExtra("ENDDAY", endDatePicker.getDayOfMonth());
                 intent.putExtra("ENDHOUR", endTimePicker.getHour());
                 intent.putExtra("ENDMINUTE", endTimePicker.getMinute());
-                setResult(0, intent);
+                setResult(12321, intent);
                 finish();
             }
         });
