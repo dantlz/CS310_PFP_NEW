@@ -80,6 +80,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button filtersButton;
     private Button resultAsListButton;
     private SupportMapFragment mapFragment;
+    private SimpleDateFormat format = new SimpleDateFormat();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,52 +245,98 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return result;
     }
 
-    public void addMarkers(Intent intent) {
+    private void setCurrentSearchTimeFrame(Intent intent){
+        Bundle extras = intent.getExtras();
+
+        MyCalendar start = new MyCalendar();
+        start.setYear(extras.getInt("STARTYEAR"));
+        start.setMonth(extras.getInt("STARTMONTH"));
+        start.setDay(extras.getInt("STARTDAY"));
+        start.setHour(extras.getInt("STARTHOUR"));
+        start.setMinute(extras.getInt("STARTMINUTE"));
+        Global_ParkHere_Application.setCurrentSearchTimeDateStart(start);
+
+        MyCalendar end = new MyCalendar();
+        end.setYear(extras.getInt("ENDYEAR"));
+        end.setMonth(extras.getInt("ENDMONTH"));
+        end.setDay(extras.getInt("ENDDAY"));
+        end.setHour(extras.getInt("ENDHOUR"));
+        end.setMinute(extras.getInt("ENDMINUTE"));
+        Global_ParkHere_Application.setCurrentSearchTimedateEnd(start);
+    }
+
+    private Date extraToDate(Bundle extras, String SoE){
+        String year, month, day, hour, minute;
+        Date dateTime;
+
+        year = String.valueOf(extras.getInt(SoE + "YEAR")).substring(2);
+        month = getDoubleDigit(extras.getInt(SoE + "MONTH"));
+        day = getDoubleDigit(extras.getInt(SoE + "DAY"));
+        hour = getDoubleDigit(extras.getInt(SoE + "HOUR"));
+        minute = getDoubleDigit(extras.getInt(SoE + "MINUTE"));
+        String fullStartDateTime = year + "."
+                + month + "." + day + "." + hour + "." + minute + ".00";
+        try {
+            dateTime = format.parse(fullStartDateTime);
+            return dateTime;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Date myCalendarToDate(MyCalendar calendar){
+        String year, month, day, hour, minute;
+        Date dateTime;
+
+        year = String.valueOf(calendar.getYear());
+        month = getDoubleDigit(calendar.getMonth());
+        day = getDoubleDigit(calendar.getDay());
+        hour = getDoubleDigit(calendar.getHour());
+        minute = getDoubleDigit(calendar.getMinute());
+        String sdt = year + "."
+                + month + "." + day + "." + hour + "." + minute + ".00";
+        try {
+            dateTime = format.parse(sdt);
+            return  dateTime;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void addMarkers(Intent intent) {
         mMap.clear();
+
+        int lowestPrice = 0, highestPrice = 0;
+        SpaceType type = null;
+        Date startDateTime = null, endDateTime = null;
 
         if(intent != null){
             Bundle extras = intent.getExtras();
-            SpaceType type = (SpaceType) extras.get("TYPE");
-            int lowestPrice = extras.getInt("LOWESTPRICE");
-            int highestPrice = extras.getInt("HIGHESTPRICE");
-            SimpleDateFormat format = new SimpleDateFormat();
-
-            String year = String.valueOf(extras.getInt("STARTYEAR")).substring(2);
-            String month = getDoubleDigit(extras.getInt("STARTMONTH"));
-            String day = getDoubleDigit(extras.getInt("STARTDAY"));
-            String hour = getDoubleDigit(extras.getInt("STARTHOUR"));
-            String minute = getDoubleDigit(extras.getInt("STARTMINUTE"));
-            String fullStartDateTime = year + "."
-                    + month + "." + day + "." + hour + "." + minute + ".00";
-            Date startDateTime;
-            try {
-                 startDateTime = format.parse(fullStartDateTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            year = String.valueOf(extras.getInt("STARTYEAR")).substring(2);
-            month = getDoubleDigit(extras.getInt("STARTMONTH"));
-            day = getDoubleDigit(extras.getInt("STARTDAY"));
-            hour = getDoubleDigit(extras.getInt("STARTHOUR"));
-            minute = getDoubleDigit(extras.getInt("STARTMINUTE"));
-            String fullEndDateTime = year + "."
-                    + month + "." + day + "." + hour + "." + minute + ".00";
-            Date endDateTime;
-            try {
-                endDateTime = format.parse(fullEndDateTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            //TODO Finish filtering here
-
+            type = (SpaceType) extras.get("TYPE");
+            lowestPrice = extras.getInt("LOWESTPRICE");
+            highestPrice = extras.getInt("HIGHESTPRICE");
+            startDateTime = extraToDate(extras, "START");
+            endDateTime = extraToDate(extras, "END");
         }
 
         Iterator it = allSpaces.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             Space space = (Space) pair.getValue();
+            //Filtering
+            if(intent != null){
+                if(!space.getType().equals(type))
+                    continue;
+                if(space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice)
+                    continue;
+                MyCalendar start = space.getAvailableStartDateAndTime();
+                MyCalendar end = space.getAvailableEndDateAndTime();
+                if(myCalendarToDate(start).before(startDateTime) || myCalendarToDate(end).before(endDateTime))
+                    continue;
+            }
+            //TODO Create 2 lists of spaces. One is all, attached to firebase, other is search results
             MarkerOptions marker = new MarkerOptions();
             marker.position((LatLng)pair.getKey());
             marker.title(space.getSpaceName());
@@ -313,7 +361,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             //TODO ALWAYS keep the zoom at 3 miles and to remove any spaces over 3 miles
-            //TODO Create 2 lists of spaces. One is all, attached to firebase, other is search results
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
     }
@@ -444,6 +491,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 123){
+            setCurrentSearchTimeFrame(data);
             addMarkers(data);
         }
         super.onActivityResult(requestCode, resultCode, data);

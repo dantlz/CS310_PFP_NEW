@@ -63,9 +63,8 @@ public class PayWithCardActivity extends AppCompatActivity {
     private void completePayment(Space space){
         booking.setSpaceName(space.getSpaceName());
         booking.setDone(false);
-        //TODO Get the start and end date
-        booking.setStartCalendarDate(new MyCalendar());
-        booking.setEndCalendarDate(new MyCalendar());
+        booking.setStartCalendarDate(Global_ParkHere_Application.getCurrentSearchTimeDateStart());
+        booking.setEndCalendarDate(Global_ParkHere_Application.getCurrentSearchTimedateEnd());
         booking.setBookingSpaceOwnerEmail(space.getOwnerEmail());
         FirebaseDatabase.getInstance().getReference().child("Bookings")
                 .child(Global_ParkHere_Application.reformatEmail(

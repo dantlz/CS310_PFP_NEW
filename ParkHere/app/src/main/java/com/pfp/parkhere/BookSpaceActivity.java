@@ -97,7 +97,6 @@ public class BookSpaceActivity extends AppCompatActivity {
         }
     }
 
-    //TODO Finish the two payment options
     public void payWithCard(View view) {
         Context context = view.getContext();
         Intent intent = new Intent(context, PayWithCardActivity.class);
