@@ -120,10 +120,6 @@
                 android:stepSize="1.0"
                 android:isIndicator="true">
             </RatingBar>
-            <TextView
-                android:id="@+id/spaceRatingField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout

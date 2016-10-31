@@ -389,7 +389,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                System.exit(0);
+                Intent intent2 = new Intent(Intent.ACTION_MAIN);
+                intent2.addCategory(Intent.CATEGORY_HOME);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent2);
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

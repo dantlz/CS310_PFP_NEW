@@ -133,8 +133,7 @@ public class ProfileActivity extends AppCompatActivity
                         disableEditText(mFirstName);
                         mFirstName.setTextColor(Color.BLACK);
                         mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        mEmail.setText("Owner rating: " + owner.getOwnerRating());
-                        //TODO Make the rating into stars
+                        mEmail.setText("Owner rating: ");
                         RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
                         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
                         rateBar.setRating(owner.getOwnerRating());

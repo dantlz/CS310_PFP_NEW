@@ -25,6 +25,7 @@ import ObjectClasses.Space;
 public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
     private Bundle extras;
+    private RatingBar rateBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
         Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
 
-        RatingBar rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
+        rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
         //My listed space detail
@@ -63,9 +64,6 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
             TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
             descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
-
-            TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
-            spaceRatingField.setText("" + extras.getInt("LISTED_SPACE_RATING"));
 
             rateBar.setRating(extras.getInt("LISTED_SPACE_RATING"));
 
@@ -137,8 +135,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
         descriptionField.setText(space.getDescription());
 
-        TextView spaceRatingField = (TextView) findViewById(R.id.spaceRatingField);
-        spaceRatingField.setText("" + space.getSpaceRating());
+        rateBar.setRating(space.getSpaceRating());
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
         spaceReviewField.setText(space.getSpaceReview());
