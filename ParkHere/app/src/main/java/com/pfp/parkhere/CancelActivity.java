@@ -27,7 +27,8 @@ public class CancelActivity extends AppCompatActivity {
                 .child(Global_ParkHere_Application.reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(identifier).removeValue();
         //remove from database. If things work out right, the mybookings activity should reload from database without the deleted booking
-        Intent intent = new Intent(this, MyBookingsActivity.class);
+        Intent intent = new Intent(CancelActivity.this, MyBookingsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }

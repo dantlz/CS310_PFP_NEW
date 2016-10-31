@@ -50,7 +50,7 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
 
     public void GoToCancel(View view){
         Intent intent = new Intent(this, CancelActivity.class);
-        intent.putExtra("identifier", identifier);
+        intent.putExtra("IDENTIFIER", identifier);
         startActivity(intent);
     }
 
