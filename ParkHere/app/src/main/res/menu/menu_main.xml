@@ -7,15 +7,11 @@
     </item>
     <item
         android:id="@+id/itemProfile"
-        android:title="Profile">
+        android:title="Profile/Setting">
     </item>
     <item
         android:id="@+id/Both"
         android:title="Register as both owner and seeker">
-    </item>
-    <item
-        android:id="@+id/itemSettings"
-        android:title="Settings">
     </item>
     <item
         android:id="@+id/logout"

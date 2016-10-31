@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 
 import ObjectClasses.Space;
 
+//DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
     private Bundle extras;
@@ -33,6 +34,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Button ownerButton = (Button) findViewById(R.id.ownerButton);
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
         Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
+
 
         //My listed space detail
         if(extras.getString("SPACENAME") == null) {
@@ -68,7 +70,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        //Directed from map
+        //Directed from map or resultList
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,9 +81,17 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         });
         editButton.setVisibility(View.GONE);
         if(extras.getString("STATUS").equals("OWNER")){
-            bookSpaceButton.setVisibility(View.GONE
-            );
+            bookSpaceButton.setVisibility(View.GONE);
         }
+        bookSpaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, BookSpaceActivity.class);
+                intent.putExtra("SPACENAME", extras.getString("SPACENAME"));
+                intent.putExtra("OWNEREMAIL", extras.getString("OWNEREMAIL"));
+                startActivity(intent);
+            }
+        });
 
         FirebaseDatabase.getInstance().getReference().child("Spaces")
                 .child(Global_ParkHere_Application.reformatEmail(extras.getString("OWNEREMAIL")))

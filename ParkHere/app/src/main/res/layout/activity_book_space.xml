@@ -1,96 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_book_space"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.pfp.parkhere.BookSpaceActivity">
 
-    <RelativeLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/white">
+        android:layout_height="wrap_content"
+        android:id="@+id/space_name_confirmation"
+        android:textSize="24sp"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
-            android:ems="10"
-            android:id="@+id/spaceAddressField"
-            android:hint="Enter space streetAddress..."
-            android:textAlignment="center"
-            android:background="@android:color/white"
-            android:layout_marginTop="24dp"
-            android:textSize="30sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/space_address_confirmation"
+        android:textSize="20sp"/>
 
-        <EditText
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/space_price_confirmation"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            android:id="@+id/fromDateInput"
-            android:hint="Date: From"
-            android:textSize="20sp"
-            android:layout_below="@+id/spaceAddressField"
-            android:layout_alignStart="@+id/fromTimeInput" />
-
-        <EditText
+            android:onClick="activatePaymentButtons"
+            android:id="@+id/cancellation_agreement_verifier"/>
+        <CheckedTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:layout_marginTop="17dp"
-            android:id="@+id/toDateInput"
-            android:hint="Date: To"
-            android:textSize="20sp"
-            android:layout_below="@+id/fromDateInput"
-            android:layout_alignStart="@+id/fromDateInput" />
+            android:text="@string/cancellation_policy_agreement"/>
+    </LinearLayout>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/fromTimeInput"
-            android:hint="Time: From"
-            android:textSize="20sp"
-            android:layout_marginTop="11dp"
-            android:layout_below="@+id/toDateInput"
-            android:layout_centerHorizontal="true" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/toTimeInput"
-            android:hint="Time: To"
-            android:textSize="20sp"
-            android:layout_marginTop="56dp"
-            android:layout_alignTop="@+id/fromTimeInput"
-            android:layout_alignStart="@+id/fromTimeInput" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_gravity="center|bottom">
 
         <Button
-            android:text="Book Space"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bookSpaceButton"
-            android:background="@android:color/black"
-            android:textColor="@android:color/white"
-            android:textSize="25sp"
-            android:textStyle="normal|bold"
-            android:layout_below="@+id/toTimeInput"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="56dp" />
+            android:text="@string/card_payment"
+            android:onClick="payWithCard"
+            android:enabled="false"
+            android:id="@+id/pay_with_card_button" />
 
-    </RelativeLayout>
-</RelativeLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/paypal_payment"
+            android:onClick="payWithPaypal"
+            android:enabled="false"
+            android:id="@+id/pay_with_paypal_button"/>
+
+    </LinearLayout>
+
+</LinearLayout>

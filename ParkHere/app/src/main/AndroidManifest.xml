@@ -48,7 +48,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- BOOK SPACE -->
-        <activity android:name=".BookSpaceActivity" />
+        <activity android:name=".BookSpaceActivity">
+        </activity>
 
         <!-- Cancel -->
         <activity android:name=".CancelActivity" />
@@ -59,7 +60,7 @@
         <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -108,17 +109,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- SETTINGS -->
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- VERIFICATION -->
         <activity
             android:name=".VerificationActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".BecomeBothOwnerAndSeeker" />
-        <activity android:name=".SearchFiltersActivity"></activity>
+        <activity android:name=".SearchFiltersActivity" />
+        <activity android:name=".PayWithCardActivity" />
+        <activity android:name=".PayWithPaypalActivity"></activity>
     </application>
 
 </manifest>
