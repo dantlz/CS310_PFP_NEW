@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +40,9 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         TextView emailView = (TextView) findViewById(R.id.owner_email);
         emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
         TextView ratingView = (TextView) findViewById(R.id.space_rating);
-        String rating = "Rating: " + extras.getString("SPACE_RATING_TEXT");
+        String rating = "Rating: " + extras.getInt("SPACE_RATING_INT");
+        RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
+        rateBar.setRating(extras.getInt("SPACE_RATING_INT"));
         ratingView.setText(rating);
         TextView reviewView = (TextView) findViewById(R.id.space_review);
         String spaceReview = "Review: " + extras.getString("SPACE_REVIEW_TEXT");

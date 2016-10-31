@@ -162,7 +162,7 @@ public class MyBookingsActivity extends AppCompatActivity {
     }
 
     private void finishPopulate(Bundle extras){
-        extras.putString("SPACE_RATING_TEXT", ownerRating + "");
+        extras.putInt("SPACE_RATING_INT", ownerRating);
 
         //Place bundle into intent and start activity
         intent.putExtras(extras);
