@@ -131,29 +131,11 @@ public class EditListedSpacesActivity extends AppCompatActivity {
         //TODO Edit start date and time end date and time
         finish();
         startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class));
+        finish();
     }
 
     public void deleteListedSpace(View view) {
         String spaceName = extras.getString("LISTED_SPACE_NAME");
-        FirebaseDatabase.getInstance().getReference().child("Spaces")
-                .child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName).removeValue();
-
-        finish();
-        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class));
     }
 
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }

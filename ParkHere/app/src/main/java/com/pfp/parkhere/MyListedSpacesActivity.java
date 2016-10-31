@@ -132,15 +132,4 @@ public class MyListedSpacesActivity extends AppCompatActivity {
 //    }
 
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }

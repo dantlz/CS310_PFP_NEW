@@ -1,7 +1,10 @@
 package com.pfp.parkhere;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -83,6 +86,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SimpleDateFormat format = new SimpleDateFormat();
 
 
+    //TODO Make it so that if not verified the person cannot do anything
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +141,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 userMode = Status.OWNER;
                 ownerMode(true);
             }
+        }
+
+        if(Global_ParkHere_Application.getCurrentUserObject().getPhotoID() == null
+                ||Global_ParkHere_Application.getCurrentUserObject().getPhotoID().equals("")){
+            Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
+                    .setTitle("Verification needed")
+                    .setMessage("You must verify your identity in order to use this app")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert).create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+
         }
     }
 
@@ -400,10 +423,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.itemProfile:
                 // User chose the "Profile" action, change to that Activity Screen
-                Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
+                intent = new Intent(MapsActivity.this, ProfileActivity.class);
                 intent.putExtra("Status", String.valueOf(userMode));
                 startActivity(intent);
                 return true;
@@ -415,30 +439,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent2 = new Intent(Intent.ACTION_MAIN);
-                intent2.addCategory(Intent.CATEGORY_HOME);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent2);
-                //TODO Log out correctly
+                intent = new Intent(MapsActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
     }
 
     @Override

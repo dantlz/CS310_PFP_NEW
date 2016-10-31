@@ -25,15 +25,4 @@ public class BecomeBothOwnerAndSeeker extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }

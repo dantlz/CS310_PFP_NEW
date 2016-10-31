@@ -121,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Global_ParkHere_Application.setCurrentUserObject(currentUser);
                             //Go to Map activity
                             startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+                            finish();
                         }
                         @Override
                         public void onCancelled(DatabaseError error) {
@@ -227,17 +228,6 @@ public class RegisterActivity extends AppCompatActivity {
         return "Password must contain at least one special character";
     }
 
-    @Override
-    protected void onDestroy() {
-        mAuth.signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        mAuth.signOut();
-        super.onStop();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

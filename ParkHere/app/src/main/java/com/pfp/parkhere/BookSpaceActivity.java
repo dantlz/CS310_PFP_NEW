@@ -69,18 +69,6 @@ public class BookSpaceActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
-
     public void activatePaymentButtons(View view) {
         CheckBox checkBox = (CheckBox)findViewById(R.id.cancellation_agreement_verifier);
 

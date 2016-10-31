@@ -168,7 +168,6 @@ public class ProfileActivity extends AppCompatActivity
         mLastName.setVisibility(View.GONE);
         mBookingButton.setVisibility(View.GONE);
         myListedSpacesButton.setVisibility(View.GONE);
-        ((Button) findViewById(R.id.verificationButton)).setVisibility(View.GONE);
     }
 
     private void populateFields() throws InterruptedException {
@@ -202,23 +201,5 @@ public class ProfileActivity extends AppCompatActivity
     {
         startActivity(new Intent(ProfileActivity.this, MyListedSpacesActivity.class));
 
-    }
-
-    public void clickedVerification(View view)
-    {
-        startActivity(new Intent(ProfileActivity.this, VerificationActivity.class));
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
     }
 }

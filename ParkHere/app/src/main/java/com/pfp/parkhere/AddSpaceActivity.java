@@ -237,7 +237,7 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , 1);
-
+        finish();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -316,17 +316,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         super.onStart();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        FirebaseAuth.getInstance().signOut();
-    }
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
 
     //To create hardcoded space
 //    private void setValues(){

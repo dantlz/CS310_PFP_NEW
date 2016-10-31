@@ -48,21 +48,11 @@ public class VerificationActivity extends AppCompatActivity {
                     .child(Global_ParkHere_Application
                             .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                     .child("photoID").setValue(selectedImage.toString());
+            startActivity(new Intent(VerificationActivity.this, MapsActivity.class));
+            finish();
         }
 
 
     }
 
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }

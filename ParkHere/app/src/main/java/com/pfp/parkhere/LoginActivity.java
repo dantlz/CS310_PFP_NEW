@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Global_ParkHere_Application.setCurrentUserObject(currentUser);
                                     Global_ParkHere_Application.addListener();
                                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                                    finish();
                                 }
                                 @Override
                                 public void onCancelled(DatabaseError error) {
@@ -146,15 +147,5 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    @Override
-    protected void onDestroy() {
-        mAuth.signOut();
-        super.onDestroy();
-    }
 
-    @Override
-    protected void onStop() {
-        mAuth.signOut();
-        super.onStop();
-    }
 }

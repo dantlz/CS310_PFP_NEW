@@ -18,11 +18,12 @@ public class CancelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cancel);
         identifier = getIntent().getExtras().getString("IDENTIFIER");
     }
-    public void ReturnToBookingDetail(View view){
+
+    public void ReturnToBookingDetail(View view) {
         finish();
     }
 
-    public void CancelBooking(View view){
+    public void CancelBooking(View view) {
         FirebaseDatabase.getInstance().getReference().child("Bookings")
                 .child(Global_ParkHere_Application.reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(identifier).removeValue();
@@ -33,15 +34,4 @@ public class CancelActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }
