@@ -43,6 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -230,6 +231,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMyLocationEnabled(true);
     }
 
+    private String getDoubleDigit(int i){
+        String result = "";
+        if(i < 10){
+            result = "0" + i;
+        }
+        else{
+            result = "" + i;
+        }
+
+        return result;
+    }
+
     public void addMarkers(Intent intent) {
         mMap.clear();
 
@@ -239,71 +252,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             int lowestPrice = extras.getInt("LOWESTPRICE");
             int highestPrice = extras.getInt("HIGHESTPRICE");
             SimpleDateFormat format = new SimpleDateFormat();
-//            "yyyy.MM.dd G 'at' HH:mm:ss z"
-//            Year2016 month 9 day 30 hour 20 minute 0
-//            2016.09.30.20.00
-            String month = "";
-            if(extras.getInt("STARTMONTH") < 10){
-                month = "0" + extras.getInt("STARTMONTH");
-            }
-            else{
-                month = "" + extras.getInt("STARTMONTH");
+
+            String year = String.valueOf(extras.getInt("STARTYEAR")).substring(2);
+            String month = getDoubleDigit(extras.getInt("STARTMONTH"));
+            String day = getDoubleDigit(extras.getInt("STARTDAY"));
+            String hour = getDoubleDigit(extras.getInt("STARTHOUR"));
+            String minute = getDoubleDigit(extras.getInt("STARTMINUTE"));
+            String fullStartDateTime = year + "."
+                    + month + "." + day + "." + hour + "." + minute + ".00";
+            Date startDateTime;
+            try {
+                 startDateTime = format.parse(fullStartDateTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
-            String day = "";
-            if(extras.getInt("STARTDAY") < 10){
-                day = "0" + extras.getInt("STARTDAY");
-            }
-            else{
-                day = "" + extras.getInt("STARTDAY");
-            }
-
-            String hour = "";
-            if(extras.getInt("STARTHOUR") < 10){
-                hour = "0" + extras.getInt("STARTHOUR");
-            }
-            else{
-                hour = "" + extras.getInt("STARTHOUR");
+            year = String.valueOf(extras.getInt("STARTYEAR")).substring(2);
+            month = getDoubleDigit(extras.getInt("STARTMONTH"));
+            day = getDoubleDigit(extras.getInt("STARTDAY"));
+            hour = getDoubleDigit(extras.getInt("STARTHOUR"));
+            minute = getDoubleDigit(extras.getInt("STARTMINUTE"));
+            String fullEndDateTime = year + "."
+                    + month + "." + day + "." + hour + "." + minute + ".00";
+            Date endDateTime;
+            try {
+                endDateTime = format.parse(fullEndDateTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
-            String minute = "";
-            if(extras.getInt("STARTMINUTE") < 10){
-                minute = "0" + extras.getInt("STARTMINUTE");
-            }
-            else{
-                minute = "" + extras.getInt("STARTMINUTE");
-            }
-
-            String fullDateTime = extras.getInt("STARTYEAR") + "."
-                    + month + "." + day + "." + hour + "." + minute;
-            System.out.println(fullDateTime);
             //TODO Finish filtering here
-//            Date startDateTime = format.parse()
-//            MyCalendar(
-//                    startDatePicker.getYear(),
-//                    startDatePicker.getMonth(),
-//                    startDatePicker.getDayOfMonth(),
-//                    startTimePicker.getHour(),
-//                    startTimePicker.getMinute()
-//            ));
-//            listedSpace.setAvailableEndDateAndTime(new MyCalendar(
-//                    endDatePicker.getYear(),
-//                    endDatePicker.getMonth(),
-//                    endDatePicker.getDayOfMonth(),
-//                    endTimePicker.getHour(),
-//                    endTimePicker.getMinute()
-//            ));
-//
-//            intent.putExtra("STARTYEAR", startDatePicker.getYear());
-//            intent.putExtra("STARTMONTH", startDatePicker.getMonth());
-//            intent.putExtra("STARTDAY", startDatePicker.getDayOfMonth());
-//            intent.putExtra("STARTHOUR", startTimePicker.getHour());
-//            intent.putExtra("STARTMINUTE", startTimePicker.getMinute());
-//            intent.putExtra("ENDYEAR", endDatePicker.getYear());
-//            intent.putExtra("ENDMONTH", endDatePicker.getMonth());
-//            intent.putExtra("ENDDAY", endDatePicker.getDayOfMonth());
-//            intent.putExtra("ENDHOUR", endTimePicker.getHour());
-//            intent.putExtra("ENDMINUTE", endTimePicker.getMinute());
+
         }
 
         Iterator it = allSpaces.entrySet().iterator();
