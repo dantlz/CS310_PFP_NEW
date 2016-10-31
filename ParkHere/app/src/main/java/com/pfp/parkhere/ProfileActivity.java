@@ -1,11 +1,9 @@
 package com.pfp.parkhere;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 import android.graphics.Color;
 import android.widget.RatingBar;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -127,8 +124,6 @@ public class ProfileActivity extends AppCompatActivity
         }
 
         String ownerEmail = extras.getString("LISTED_SPACE_OWNEREMAIL");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //Checking owner profile
         hideFields();

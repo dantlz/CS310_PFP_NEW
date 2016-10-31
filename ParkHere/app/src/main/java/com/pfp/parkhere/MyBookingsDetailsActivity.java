@@ -9,12 +9,6 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-/**
- * Created by tshih on 10/21/16.
- */
-
 public class MyBookingsDetailsActivity extends AppCompatActivity{
     String identifier;
 

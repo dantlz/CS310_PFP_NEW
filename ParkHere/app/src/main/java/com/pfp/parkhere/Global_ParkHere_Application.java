@@ -11,10 +11,6 @@ import ObjectClasses.CancellationPolicy;
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
 
-/**
- * Created by tianlinz on 10/19/16.
- */
-
 public class Global_ParkHere_Application extends Application {
 
     private static Peer currentUserObject;

@@ -1,12 +1,5 @@
 package ObjectClasses;
 
-import java.util.GregorianCalendar;
-import java.util.Date;
-
-/**
- * Created by tianlinz on 10/16/16.
- */
-
 public class Booking {
     private String spaceName;
     private String bookingSpaceOwnerEmail;

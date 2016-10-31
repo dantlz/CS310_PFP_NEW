@@ -11,7 +11,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Booking;
-import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 
 public class PayWithPaypalActivity extends AppCompatActivity {

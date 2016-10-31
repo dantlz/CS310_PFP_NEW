@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,12 +20,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import ObjectClasses.Space;
-import ObjectClasses.SpaceType;
-
 
 public class MyListedSpacesActivity extends AppCompatActivity {
 
-    public static String LISTING_SPACE_MESSAGE = "com.pfp.parkhere.LISTINGSPACEMESSAGE";
     ListView listedSpacesList;
     LinkedList<Space> MyListedSpaces;
     String [] strFormattedSpaces;

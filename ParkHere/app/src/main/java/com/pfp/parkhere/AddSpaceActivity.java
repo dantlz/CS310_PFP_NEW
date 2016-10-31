@@ -1,34 +1,21 @@
 package com.pfp.parkhere;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
@@ -40,17 +27,7 @@ import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 import ObjectClasses.SpaceType;
 
-import static com.pfp.parkhere.R.layout.cancellation_policy_popup;
-
-
-public class AddSpaceActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private PopupWindow mPopupWindow;
-
+public class AddSpaceActivity extends AppCompatActivity {
     private EditText spaceNameField;
     private EditText priceField;
     private EditText descriptionField;
@@ -74,8 +51,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_space);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         spaceNameField = (EditText) findViewById(R.id.spaceNameField);
         priceField = (EditText) findViewById(R.id.priceField);
@@ -96,10 +71,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         cancellationSpinner = (Spinner) findViewById(R.id.spinnerForCancellation);
 
         picture = (ImageView) findViewById(R.id.imageview);
-
-        // Spinner click listener
-        typeSpinner.setOnItemSelectedListener(this);
-        cancellationSpinner.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> types = new ArrayList<String>();
@@ -237,7 +208,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , 1);
-        finish();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -259,63 +229,6 @@ public class AddSpaceActivity extends AppCompatActivity implements AdapterView.O
                 break;
         }
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a typeSpinner item
-        String item = parent.getItemAtPosition(position).toString();
-
-        if (item.equals("More Information")) {
-            moreInfoClicked();
-        }
-    }
-
-    public void onNothingSelected(AdapterView<?> arg0) {}
-
-    private void moreInfoClicked() {
-//        LayoutInflater layoutInflater
-//                = (LayoutInflater)getBaseContext()
-//                .getSystemService(LAYOUT_INFLATER_SERVICE);
-//        View popupView = layoutInflater.inflate(popup, null);
-//        final PopupWindow popupWindow = new PopupWindow(
-//                popupView,
-//                RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        popupWindow.isShowing();
-        Context mContext = getApplicationContext();
-
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-        View popup = inflater.inflate(cancellation_policy_popup,null);
-
-        mPopupWindow = new PopupWindow(
-                popup,
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-        );
-        if(Build.VERSION.SDK_INT>=21){
-            mPopupWindow.setElevation(5.0f);
-        }
-        RelativeLayout mRelativeLayout = (RelativeLayout) findViewById(R.id.activity_add_space);
-        mPopupWindow.showAtLocation(mRelativeLayout, Gravity.CENTER,0,0);
-
-        Button closeButton = (Button) popup.findViewById(R.id.dismissButton);
-
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Dismiss the popup window
-                mPopupWindow.dismiss();
-            }
-        });
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
 
     //To create hardcoded space
 //    private void setValues(){

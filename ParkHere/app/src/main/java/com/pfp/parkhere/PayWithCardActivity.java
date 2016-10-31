@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ObjectClasses.Booking;
-import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 
 public class PayWithCardActivity extends AppCompatActivity {

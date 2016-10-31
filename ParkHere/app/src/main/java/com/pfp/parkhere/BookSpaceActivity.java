@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -106,7 +104,7 @@ public class BookSpaceActivity extends AppCompatActivity {
 
         Bundle extras = new Bundle();
         extras.putString("OWNER_EMAIL_IDENTIFIER", selectedSpace.getOwnerEmail());
-        extras.putString("OWNER_NAME_IDENTIFIER", selectedSpace.getSpaceName());
+        extras.putString("SPACE_NAME_IDENTIFIER", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
         startActivity(intent);

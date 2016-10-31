@@ -18,7 +18,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,8 +25,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.ShareActionProvider;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -51,7 +48,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,17 +61,9 @@ import static android.location.LocationManager.GPS_PROVIDER;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    ShareActionProvider mShareActionProvider;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private Map<LatLng, Space> allSpaces = new HashMap<>();
-    private List<LatLng> filteredSpaces = new LinkedList<>();
     private LocationManager locationManager;
     private static Status userMode;
-    private static String spaceMode = "Compact";
     private LocationListener locationListener;
     private MenuItem addSpaceItem;
     private MenuItem registerAsBothItem;
@@ -97,7 +85,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         filtersButton = (Button) findViewById(R.id.filtersButton);
         filtersButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(MapsActivity.this, .class);
-        //TODO Go to RESULT LIST startActivityForResult(, 123);
+                //TODO Go to RESULT LIST startActivityForResult(, 123);
             }
         });
 
@@ -530,4 +518,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(addSpaceMarker != null)
+            addSpaceMarker.remove();
+    }
 }

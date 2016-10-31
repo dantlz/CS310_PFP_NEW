@@ -11,28 +11,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.api.model.StringList;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
-import java.util.Locale;
 
 import ObjectClasses.Booking;
-import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
 
 public class MyBookingsActivity extends AppCompatActivity {
-    public final static String BOOKING_DETAIL_MESSAGE = "com.pfp.parkhere.BOOKINGDETAILMESSAGE";
     private ListView bookingsView;
     private LinkedList<String> myBookingIdentifiers;
     private LinkedList<Booking> myBookings;

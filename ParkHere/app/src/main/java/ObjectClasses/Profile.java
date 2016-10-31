@@ -1,9 +1,5 @@
 package ObjectClasses;
 
-/**
- * Created by clhuy on 10/29/16.
- */
-
 public class Profile {
     private String firstName, lastName, email, phone, password;
 

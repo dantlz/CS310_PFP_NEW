@@ -6,14 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-
-/**
- * Created by tianlinz on 10/16/16.
- */
 
 public class Space {
 
