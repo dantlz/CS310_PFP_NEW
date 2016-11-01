@@ -45,25 +45,29 @@
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
-            android:screenOrientation="portrait"
-            android:label="List your space"/>
+            android:label="List your space"
+            android:screenOrientation="portrait" />
 
         <!-- BOOK SPACE -->
+
 
         <activity android:name=".BookSpaceActivity"
             android:screenOrientation="portrait"
             android:label="Book a space">
         </activity>
 
+
         <!-- Cancel -->
-        <activity android:name=".CancelActivity"
-            android:screenOrientation="portrait"
-            android:label="Cancel this booking"/>
+        <activity
+            android:name=".CancelActivity"
+            android:label="Cancel this booking"
+            android:screenOrientation="portrait" />
 
         <!-- EDIT SPACE -->
-        <activity android:name=".EditListedSpacesActivity"
-            android:screenOrientation="portrait"
-            android:label="Edit this listed space"/>
+        <activity
+            android:name=".EditListedSpacesActivity"
+            android:label="Edit this listed space"
+            android:screenOrientation="portrait" />
 
         <!-- LOGIN -->
         <activity
@@ -71,19 +75,25 @@
             android:label="@string/title_activity_login">
             android:screenOrientation="portrait"
             android:label="ParkHere" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
 
         <!-- MAPS -->
         <activity
             android:name=".MapsActivity"
-            android:screenOrientation="portrait"
-            android:label="ParkHere"/>
+            android:label="ParkHere"
+            android:screenOrientation="portrait" />
 
         <!-- MY BOOKINGS -->
-        <activity android:name=".MyBookingsActivity"
-            android:screenOrientation="portrait"
-            android:label="All bookings"/>
+        <activity
+            android:name=".MyBookingsActivity"
+            android:label="All bookings"
+            android:screenOrientation="portrait" />
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
@@ -95,27 +105,27 @@
         <!-- MY LISTED SPACES -->
         <activity
             android:name=".MyListedSpacesActivity"
-            android:screenOrientation="portrait"
             android:label="All listed spaces"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <!-- MY LISTED SPACE DETAIL -->
         <activity
             android:name=".MyListedSpacesDetailsActivity"
-            android:screenOrientation="portrait"
-            android:label="Listed Space Details"/>
+            android:label="Listed Space Details"
+            android:screenOrientation="portrait" />
 
         <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
-            android:screenOrientation="portrait"
-            android:label="Profile"/>
+            android:label="Profile"
+            android:screenOrientation="portrait" />
 
         <!-- REGISTER -->
         <activity
             android:name=".RegisterActivity"
-            android:screenOrientation="portrait"
-            android:label="Register" />
+            android:label="Register"
+            android:screenOrientation="portrait" />
 
 
         <!-- VERIFICATION -->
@@ -124,11 +134,6 @@
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
         <activity android:name=".FinishBookingsActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
 
@@ -148,6 +153,8 @@
         <activity android:name=".PayWithPaypalActivity"
             android:screenOrientation="portrait"
             android:label="Paying with PayPal"/>
+
+        <activity android:name=".ResultsActivity"></activity>
     </application>
 
 </manifest>

@@ -48,6 +48,8 @@ public class AddSpaceActivity extends AppCompatActivity {
     private Spinner cancellationSpinner;
     private ImageView picture;
 
+    //TODO MoreInformation one word. It can also be set as a policy
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +133,7 @@ public class AddSpaceActivity extends AppCompatActivity {
                 zipCodeField.getText().toString().equals("") ||
                 typeSpinner.getSelectedItem().equals(null) ||
                 cancellationSpinner.getSelectedItem().equals(null)||
+                //TODO This check isnt' working
                 (BitmapDrawable)(picture.getDrawable()) == null) {
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("Please complete all fields")
@@ -155,7 +158,8 @@ public class AddSpaceActivity extends AppCompatActivity {
                     zipCodeField.getText().toString() + " " +
                     stateField.getText().toString();
             List<Address> addressResults = geocoder.getFromLocationName(fullAddress, 1);
-            if(addressResults.size() == 0){
+            //TODO This check isnt' working
+            if(addressResults.size() < 1){
                 new AlertDialog.Builder(AddSpaceActivity.this)
                         .setTitle("Location not found")
                         .setMessage("We could not find a location based on your address. Please try again")

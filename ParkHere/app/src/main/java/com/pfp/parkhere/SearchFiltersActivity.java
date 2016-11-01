@@ -9,6 +9,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 import ObjectClasses.SpaceType;
 
 public class SearchFiltersActivity extends AppCompatActivity {
@@ -24,13 +26,27 @@ public class SearchFiltersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_filters);
 
+        //Give filters very broad default values;
         lowestPriceField = (EditText) findViewById(R.id.lowestPriceField);
+        lowestPriceField.setText(0);
         highestPriceField = (EditText) findViewById(R.id.highestPriceField);
+        highestPriceField.setText("1000");
+
+        Calendar cal = Calendar.getInstance();
 
         startDatePicker = (DatePicker) findViewById(R.id.startDate);
+        startDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        cal.add(Calendar.YEAR, 1);
         endDatePicker = (DatePicker) findViewById(R.id.endDate);
+        endDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
         startTimePicker = (TimePicker) findViewById(R.id.startTime);
+        startTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
+        startTimePicker.setMinute(cal.get(Calendar.MINUTE));
+
         endTimePicker = (TimePicker) findViewById(R.id.endTime);
+        endTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
+        endTimePicker.setMinute(cal.get(Calendar.MINUTE));
 
         confirmButton = (Button) findViewById(R.id.confirmFilterButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -38,8 +54,8 @@ public class SearchFiltersActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra("TYPE", type);
-                intent.putExtra("LOWESTPRICE", lowestPriceField.getText().toString());
-                intent.putExtra("HIGHESTPRICE", highestPriceField.getText().toString());
+                intent.putExtra("LOWESTPRICE", Integer.valueOf(lowestPriceField.getText().toString()));
+                intent.putExtra("HIGHESTPRICE", Integer.valueOf(highestPriceField.getText().toString()));
                 intent.putExtra("STARTYEAR", startDatePicker.getYear());
                 intent.putExtra("STARTMONTH", startDatePicker.getMonth());
                 intent.putExtra("STARTDAY", startDatePicker.getDayOfMonth());

@@ -2,17 +2,23 @@ package com.pfp.parkhere;
 
 import android.app.Application;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import ObjectClasses.CancellationPolicy;
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
+import ObjectClasses.Space;
 
 public class Global_ParkHere_Application extends Application {
 
+
+    private static HashMap<LatLng, Space> mapOfLatLngSpacesToPass;
     private static Peer currentUserObject;
     //To ensure the dates are not null
     private static MyCalendar currentSearchTimeDateStart = new MyCalendar();
@@ -85,4 +91,11 @@ public class Global_ParkHere_Application extends Application {
         return reformattedEmail;
     }
 
+    public static HashMap<LatLng, Space> getMapOfLatLngSpacesToPass() {
+        return mapOfLatLngSpacesToPass;
+    }
+
+    public static void setMapOfLatLngSpacesToPass(HashMap<LatLng, Space> mapOfLatLngSpacesToPass) {
+        Global_ParkHere_Application.mapOfLatLngSpacesToPass = mapOfLatLngSpacesToPass;
+    }
 }
