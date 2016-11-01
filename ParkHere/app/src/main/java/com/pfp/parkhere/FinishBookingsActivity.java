@@ -23,6 +23,14 @@ import ObjectClasses.Booking;
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 
+//TODO Finish integrating this class
+//TODO Firebase - Add field to Peer: available balance
+//TODO Firebase - Add field to Space: list of Booking
+//TODO Fireabse - Remove field from Booking: done
+//TODO Add fields for review and ratings
+//TODO Create a function to get average of all ratings
+//TODO Append new review to a list of string reviews
+
 public class FinishBookingsActivity extends AppCompatActivity {
 
     private ArrayList<Booking> bookingsForSpace;

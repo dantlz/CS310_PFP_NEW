@@ -23,7 +23,7 @@ public class EditListedSpacesActivity extends AppCompatActivity {
     private EditText editName, editAddress, editPrice, editDescription;
     private Spinner typeSpinner, cancellationSpinner;
 
-    //TODO Change space picture
+    //TODO Allow user to change space's picture
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,7 +123,7 @@ public class EditListedSpacesActivity extends AppCompatActivity {
                 .child(spaceName)
                 .child("streetAddress").setValue(address.getAddressLine(0));
 
-        //TODO Change start date and time end date and time
+        //TODO Allow user to change start date/time and end date/time
         finish();
         startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class));
         finish();

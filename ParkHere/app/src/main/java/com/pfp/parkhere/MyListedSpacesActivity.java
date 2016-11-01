@@ -27,7 +27,6 @@ public class MyListedSpacesActivity extends AppCompatActivity {
     LinkedList<Space> MyListedSpaces;
     String [] strFormattedSpaces;
 
-    //TODO FinishBookingActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

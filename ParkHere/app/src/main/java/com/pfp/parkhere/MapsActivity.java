@@ -81,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Runnable handlerRunnable;
     private boolean runnableRunning;
 
+    //TODO Add progress bar/loading screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,7 +239,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     address = new Geocoder(MapsActivity.this)
                                             .getFromLocationName(space.getStreetAddress() + space.getCity()
                                                     + space.getState() + " " + space.getZipCode(), 1).get(0);
-                                    //TODO Create dialog for ALL geocoders
+                                    //TODO Create dialog for all Geocoders
                                     allSpaces.put(new LatLng(address.getLatitude(), address.getLongitude()), space);
                                     addAndFilterMarkers(null);
                                 } catch (IOException e) {
@@ -319,7 +320,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     handler.postDelayed(handlerRunnable, 2000);
                     runnableRunning = true;
                 }
-                //TODO Laggy. Add and filter called too many times initially
+                //TODO Laggy: Add and filter called too many times initially
             }
         });
         mMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
@@ -336,6 +337,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         mMap.setMyLocationEnabled(true);
+        //TODO Increase distance radius filtering if zoomed over a certain percentage
     }
 
     //This allows search by BOTH address AND LONGITUDE LATITUDE

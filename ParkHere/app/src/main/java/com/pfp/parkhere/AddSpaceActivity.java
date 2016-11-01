@@ -48,7 +48,7 @@ public class AddSpaceActivity extends AppCompatActivity {
     private Spinner cancellationSpinner;
     private ImageView picture;
 
-    //TODO MoreInformation one word. It can also be set as a policy
+    //TODO More Information can be set as a space's policy. Don't allow that
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class AddSpaceActivity extends AppCompatActivity {
         cancellationPolicies.add("Light");
         cancellationPolicies.add("Moderate");
         cancellationPolicies.add("Strict");
-        cancellationPolicies.add("MoreInformation");
+        cancellationPolicies.add("More Information");
 
 
         // Creating adapter for typeSpinner
@@ -133,7 +133,7 @@ public class AddSpaceActivity extends AppCompatActivity {
                 zipCodeField.getText().toString().equals("") ||
                 typeSpinner.getSelectedItem().equals(null) ||
                 cancellationSpinner.getSelectedItem().equals(null)||
-                //TODO This check isnt' working
+                //TODO Check ImageView null isnt' working
                 (BitmapDrawable)(picture.getDrawable()) == null) {
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("Please complete all fields")
@@ -158,7 +158,7 @@ public class AddSpaceActivity extends AppCompatActivity {
                     zipCodeField.getText().toString() + " " +
                     stateField.getText().toString();
             List<Address> addressResults = geocoder.getFromLocationName(fullAddress, 1);
-            //TODO This check isnt' working
+            //TODO Check Geocoder can decode address isnt' working
             if(addressResults.size() < 1){
                 new AlertDialog.Builder(AddSpaceActivity.this)
                         .setTitle("Location not found")
@@ -195,9 +195,6 @@ public class AddSpaceActivity extends AppCompatActivity {
                     endTimePicker.getMinute()
             ));
             listedSpace.setDPNonFireBase(picture.getDrawable());
-
-            //TODO in confirmation activity create a function to get average of all ratings
-            //TODO in confirmation append new review to a list of string reviews
 
             FirebaseDatabase.getInstance().getReference().child("Spaces")
                     .child(Global_ParkHere_Application.reformatEmail(

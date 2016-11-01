@@ -21,6 +21,7 @@ import java.util.Map;
 
 import ObjectClasses.Status;
 
+//TODO Reformat and complete this class
 public class ResultsActivity extends AppCompatActivity
 {
 
@@ -38,7 +39,6 @@ public class ResultsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        //TODO: Comment these back in when
         Bundle extra = getIntent().getExtras();
         userAddress = (LatLng)extra.get("LATLNG");
         resultsMap = Global_ParkHere_Application.getMapOfLatLngSpacesToPass();
@@ -333,7 +333,6 @@ public class ResultsActivity extends AppCompatActivity
                     String o2FullAddress = o2.getStreetAddress() + " " + o2.getCity() + " " +
                             o2.getState() + " " + o2.getZipCode();
 
-                    //TODO: Use userlocation member variable latlng, downcast floats to ints
                     int p1 = (int)calculateDistanceFromTo(latLngFromAddress(o1FullAddress), userAddress);
                     int p2 = (int)calculateDistanceFromTo(latLngFromAddress(o2FullAddress), userAddress);
 

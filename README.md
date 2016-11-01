@@ -9,3 +9,5 @@ ParkHere is a sharing economy app, similar to Uber and AirBnb in that it allows 
 Owners may post their parking spaces, provided that they include an address, description, pricing, availability by hour, and choose one of three default cancellation policies.
 
 Seekers searching get all spaces within 3 miles of their search spot and may filter by several characteristics, such as truck, handicapped, and compact. Seekers then choose from the available hours of the space to book, and the payment goes to ParkHere. Once the booking is completed and the allotted time for the booking is up, the payment is released to the owner.
+
+NOTE: Our server project (server-side) is entirely based on Firebase. Screenshot in the zip file

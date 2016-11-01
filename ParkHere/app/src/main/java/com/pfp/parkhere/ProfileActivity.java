@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
 
-    //TODO Change profile picture
+    //TODO Allow user to change profile picture
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
