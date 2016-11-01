@@ -35,6 +35,16 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         Button ownerButton = (Button) findViewById(R.id.ownerButton);
         Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
         Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
+        Button confirmBookingButton = (Button) findViewById(R.id.finishBookingsButton);
+
+        confirmBookingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, FinishBookingsActivity.class);
+
+                startActivity(intent);
+            }
+        });
 
         rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));

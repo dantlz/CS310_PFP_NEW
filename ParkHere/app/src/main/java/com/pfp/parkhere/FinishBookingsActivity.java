@@ -1,6 +1,7 @@
 package com.pfp.parkhere;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import ObjectClasses.Booking;
 import ObjectClasses.MyCalendar;
@@ -93,17 +96,21 @@ public class FinishBookingsActivity extends AppCompatActivity {
 
     public void completeBookings(View view) {
         int countOfRemovedSpaces = 0;
+        List<Booking> newBookings = new LinkedList<>();
         for (int i = 0; i < bookingsForSpace.size(); i++) {
             Booking currBooking = bookingsForSpace.get(i);
             Date endTime = myCalendarToDate(currBooking.getEndCalendarDate());
             Date currTime = new Date();
 
             if (currTime.after(endTime)) {
-                bookingsForSpace.remove(i-countOfRemovedSpaces);
+                newBookings.add(currBooking);
+//                bookingsForSpace.remove(i-countOfRemovedSpaces);
                 countOfRemovedSpaces++;
             }
 
         }
+
+        bookingsForSpace = new ArrayList<>(newBookings);
 
         AlertDialog dialog;
         AlertDialog.Builder completedDisplay = new AlertDialog.Builder(view.getContext());

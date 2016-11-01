@@ -153,5 +153,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Book this space"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/finishBookingsButton"
+            android:text="Finish existing bookings for this space"/>
     </LinearLayout>
 </ScrollView>
