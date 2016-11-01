@@ -11,13 +11,10 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import ObjectClasses.Space;
 
@@ -75,6 +72,9 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        if(extras.getString("OWNEREMAIL").equals(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress())){
+            bookSpaceButton.setVisibility(View.GONE);
+        }
         //Directed from map or resultList
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +95,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
                 intent.putExtra("SPACENAME", extras.getString("SPACENAME"));
                 intent.putExtra("OWNEREMAIL", extras.getString("OWNEREMAIL"));
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -150,15 +151,4 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }

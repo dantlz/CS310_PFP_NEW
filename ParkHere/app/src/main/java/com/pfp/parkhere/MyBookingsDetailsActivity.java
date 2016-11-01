@@ -9,12 +9,6 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-/**
- * Created by tshih on 10/21/16.
- */
-
 public class MyBookingsDetailsActivity extends AppCompatActivity{
     String identifier;
 
@@ -40,12 +34,9 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         nameView.setText(extras.getString("OWNER_NAME_TEXT"));
         TextView emailView = (TextView) findViewById(R.id.owner_email);
         emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
-        TextView ratingView = (TextView) findViewById(R.id.space_rating);
-        String rating = "Rating: " + extras.getInt("SPACE_RATING_INT");
         RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
         rateBar.setRating(extras.getInt("SPACE_RATING_INT"));
-        ratingView.setText(rating);
         TextView reviewView = (TextView) findViewById(R.id.space_review);
         String spaceReview = "Review: " + extras.getString("SPACE_REVIEW_TEXT");
         reviewView.setText(spaceReview);
@@ -59,19 +50,9 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
 
     public void GoToCancel(View view){
         Intent intent = new Intent(this, CancelActivity.class);
-        intent.putExtra("identifier", identifier);
+        intent.putExtra("IDENTIFIER", identifier);
         startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
 
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
 }

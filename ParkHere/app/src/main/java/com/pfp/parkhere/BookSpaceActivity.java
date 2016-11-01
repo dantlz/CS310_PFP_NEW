@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -69,18 +67,6 @@ public class BookSpaceActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
-    }
-
     public void activatePaymentButtons(View view) {
         CheckBox checkBox = (CheckBox)findViewById(R.id.cancellation_agreement_verifier);
 
@@ -97,7 +83,6 @@ public class BookSpaceActivity extends AppCompatActivity {
         }
     }
 
-    //TODO Finish the two payment options
     public void payWithCard(View view) {
         Context context = view.getContext();
         Intent intent = new Intent(context, PayWithCardActivity.class);
@@ -105,10 +90,11 @@ public class BookSpaceActivity extends AppCompatActivity {
 
         Bundle extras = new Bundle();
         extras.putString("OWNER_EMAIL_IDENTIFIER", selectedSpace.getOwnerEmail());
-        extras.putString("OWNER_NAME_IDENTIFIER", selectedSpace.getSpaceName());
+        extras.putString("SPACE_NAME_IDENTIFIER", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
-        context.startActivity(intent);
+        startActivity(intent);
+        finish();
     }
 
     public void payWithPaypal(View view) {
@@ -118,9 +104,10 @@ public class BookSpaceActivity extends AppCompatActivity {
 
         Bundle extras = new Bundle();
         extras.putString("OWNER_EMAIL_IDENTIFIER", selectedSpace.getOwnerEmail());
-        extras.putString("OWNER_NAME_IDENTIFIER", selectedSpace.getSpaceName());
+        extras.putString("SPACE_NAME_IDENTIFIER", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
-        context.startActivity(intent);
+        startActivity(intent);
+        finish();
     }
 }

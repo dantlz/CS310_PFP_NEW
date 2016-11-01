@@ -1,7 +1,9 @@
 package com.pfp.parkhere;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -14,8 +16,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,8 +25,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.ShareActionProvider;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,11 +43,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,17 +61,9 @@ import static android.location.LocationManager.GPS_PROVIDER;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    ShareActionProvider mShareActionProvider;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private Map<LatLng, Space> allSpaces = new HashMap<>();
-    private List<LatLng> filteredSpaces = new LinkedList<>();
     private LocationManager locationManager;
     private static Status userMode;
-    private static String spaceMode = "Compact";
     private LocationListener locationListener;
     private MenuItem addSpaceItem;
     private MenuItem registerAsBothItem;
@@ -79,6 +71,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button filtersButton;
     private Button resultAsListButton;
     private SupportMapFragment mapFragment;
+    private SimpleDateFormat format = new SimpleDateFormat();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +85,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         filtersButton = (Button) findViewById(R.id.filtersButton);
         filtersButton.setOnClickListener(new View.OnClickListener() {
@@ -107,9 +101,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(MapsActivity.this, .class);
-        //TODO Go to RESULT LIST startActivityForResult(, 123);
+                //TODO Go to RESULT LIST startActivityForResult(, 123);
             }
         });
+
 
         if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.OWNER)){
             ((RadioButton)findViewById(R.id.Owner)).setChecked(true);
@@ -133,6 +128,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 userMode = Status.OWNER;
                 ownerMode(true);
             }
+        }
+
+        if(Global_ParkHere_Application.getCurrentUserObject().getPhotoID() == null ||
+                Global_ParkHere_Application.getCurrentUserObject().getPhotoID().equals("")){
+            Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
+                    .setTitle("Verification Needed")
+                    .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
         }
     }
 
@@ -230,86 +241,110 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMyLocationEnabled(true);
     }
 
-    public void addMarkers(Intent intent) {
+    private String getDoubleDigit(int i){
+        String result = "";
+        if(i < 10){
+            result = "0" + i;
+        }
+        else{
+            result = "" + i;
+        }
+
+        return result;
+    }
+
+    private void setCurrentSearchTimeFrame(Intent intent){
+        Bundle extras = intent.getExtras();
+
+        MyCalendar start = new MyCalendar();
+        start.setYear(extras.getInt("STARTYEAR"));
+        start.setMonth(extras.getInt("STARTMONTH"));
+        start.setDay(extras.getInt("STARTDAY"));
+        start.setHour(extras.getInt("STARTHOUR"));
+        start.setMinute(extras.getInt("STARTMINUTE"));
+        Global_ParkHere_Application.setCurrentSearchTimeDateStart(start);
+
+        MyCalendar end = new MyCalendar();
+        end.setYear(extras.getInt("ENDYEAR"));
+        end.setMonth(extras.getInt("ENDMONTH"));
+        end.setDay(extras.getInt("ENDDAY"));
+        end.setHour(extras.getInt("ENDHOUR"));
+        end.setMinute(extras.getInt("ENDMINUTE"));
+        Global_ParkHere_Application.setCurrentSearchTimedateEnd(start);
+    }
+
+    private Date extraToDate(Bundle extras, String SoE){
+        String year, month, day, hour, minute;
+        Date dateTime;
+
+        year = String.valueOf(extras.getInt(SoE + "YEAR")).substring(2);
+        month = getDoubleDigit(extras.getInt(SoE + "MONTH"));
+        day = getDoubleDigit(extras.getInt(SoE + "DAY"));
+        hour = getDoubleDigit(extras.getInt(SoE + "HOUR"));
+        minute = getDoubleDigit(extras.getInt(SoE + "MINUTE"));
+        String fullStartDateTime = year + "."
+                + month + "." + day + "." + hour + "." + minute + ".00";
+        try {
+            dateTime = format.parse(fullStartDateTime);
+            return dateTime;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Date myCalendarToDate(MyCalendar calendar){
+        String year, month, day, hour, minute;
+        Date dateTime;
+
+        year = String.valueOf(calendar.getYear());
+        month = getDoubleDigit(calendar.getMonth());
+        day = getDoubleDigit(calendar.getDay());
+        hour = getDoubleDigit(calendar.getHour());
+        minute = getDoubleDigit(calendar.getMinute());
+        String sdt = year + "."
+                + month + "." + day + "." + hour + "." + minute + ".00";
+        try {
+            dateTime = format.parse(sdt);
+            return  dateTime;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void addMarkers(Intent intent) {
         mMap.clear();
+
+        int lowestPrice = 0, highestPrice = 0;
+        SpaceType type = null;
+        Date startDateTime = null, endDateTime = null;
 
         if(intent != null){
             Bundle extras = intent.getExtras();
-            SpaceType type = (SpaceType) extras.get("TYPE");
-            int lowestPrice = extras.getInt("LOWESTPRICE");
-            int highestPrice = extras.getInt("HIGHESTPRICE");
-            SimpleDateFormat format = new SimpleDateFormat();
-//            "yyyy.MM.dd G 'at' HH:mm:ss z"
-//            Year2016 month 9 day 30 hour 20 minute 0
-//            2016.09.30.20.00
-            String month = "";
-            if(extras.getInt("STARTMONTH") < 10){
-                month = "0" + extras.getInt("STARTMONTH");
-            }
-            else{
-                month = "" + extras.getInt("STARTMONTH");
-            }
-
-            String day = "";
-            if(extras.getInt("STARTDAY") < 10){
-                day = "0" + extras.getInt("STARTDAY");
-            }
-            else{
-                day = "" + extras.getInt("STARTDAY");
-            }
-
-            String hour = "";
-            if(extras.getInt("STARTHOUR") < 10){
-                hour = "0" + extras.getInt("STARTHOUR");
-            }
-            else{
-                hour = "" + extras.getInt("STARTHOUR");
-            }
-
-            String minute = "";
-            if(extras.getInt("STARTMINUTE") < 10){
-                minute = "0" + extras.getInt("STARTMINUTE");
-            }
-            else{
-                minute = "" + extras.getInt("STARTMINUTE");
-            }
-
-            String fullDateTime = extras.getInt("STARTYEAR") + "."
-                    + month + "." + day + "." + hour + "." + minute;
-            System.out.println(fullDateTime);
-            //TODO Finish filtering here
-//            Date startDateTime = format.parse()
-//            MyCalendar(
-//                    startDatePicker.getYear(),
-//                    startDatePicker.getMonth(),
-//                    startDatePicker.getDayOfMonth(),
-//                    startTimePicker.getHour(),
-//                    startTimePicker.getMinute()
-//            ));
-//            listedSpace.setAvailableEndDateAndTime(new MyCalendar(
-//                    endDatePicker.getYear(),
-//                    endDatePicker.getMonth(),
-//                    endDatePicker.getDayOfMonth(),
-//                    endTimePicker.getHour(),
-//                    endTimePicker.getMinute()
-//            ));
-//
-//            intent.putExtra("STARTYEAR", startDatePicker.getYear());
-//            intent.putExtra("STARTMONTH", startDatePicker.getMonth());
-//            intent.putExtra("STARTDAY", startDatePicker.getDayOfMonth());
-//            intent.putExtra("STARTHOUR", startTimePicker.getHour());
-//            intent.putExtra("STARTMINUTE", startTimePicker.getMinute());
-//            intent.putExtra("ENDYEAR", endDatePicker.getYear());
-//            intent.putExtra("ENDMONTH", endDatePicker.getMonth());
-//            intent.putExtra("ENDDAY", endDatePicker.getDayOfMonth());
-//            intent.putExtra("ENDHOUR", endTimePicker.getHour());
-//            intent.putExtra("ENDMINUTE", endTimePicker.getMinute());
+            type = (SpaceType) extras.get("TYPE");
+            lowestPrice = extras.getInt("LOWESTPRICE");
+            highestPrice = extras.getInt("HIGHESTPRICE");
+            startDateTime = extraToDate(extras, "START");
+            endDateTime = extraToDate(extras, "END");
         }
 
         Iterator it = allSpaces.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             Space space = (Space) pair.getValue();
+            //Filtering
+            if(intent != null){
+                if(!space.getType().equals(type))
+                    continue;
+                if(space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice)
+                    continue;
+                MyCalendar start = space.getAvailableStartDateAndTime();
+                MyCalendar end = space.getAvailableEndDateAndTime();
+                if(myCalendarToDate(start).before(startDateTime) || myCalendarToDate(end).before(endDateTime))
+                    continue;
+            }
+
             MarkerOptions marker = new MarkerOptions();
             marker.position((LatLng)pair.getKey());
             marker.title(space.getSpaceName());
@@ -334,7 +369,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             //TODO ALWAYS keep the zoom at 3 miles and to remove any spaces over 3 miles
-            //TODO Create 2 lists of spaces. One is all, attached to firebase, other is search results
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
     }
@@ -357,6 +391,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             addSpaceItem.setEnabled(true);
         filtersButton.setVisibility(View.GONE);
         resultAsListButton.setVisibility(View.GONE);
+        FirebaseDatabase.getInstance().getReference().child("Peers").child(Global_ParkHere_Application.reformatEmail(
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
+        )).child("preferredStatus").setValue(Status.OWNER);
     }
 
     private void seekerMode(boolean firstTime){
@@ -369,15 +406,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         filtersButton.setVisibility(View.VISIBLE);
         resultAsListButton.setVisibility(View.VISIBLE);
+        FirebaseDatabase.getInstance().getReference().child("Peers").child(Global_ParkHere_Application.reformatEmail(
+                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
+        )).child("preferredStatus").setValue(Status.SEEKER);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.itemProfile:
                 // User chose the "Profile" action, change to that Activity Screen
-                Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
+                intent = new Intent(MapsActivity.this, ProfileActivity.class);
                 intent.putExtra("Status", String.valueOf(userMode));
                 startActivity(intent);
                 return true;
@@ -389,29 +430,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent2 = new Intent(Intent.ACTION_MAIN);
-                intent2.addCategory(Intent.CATEGORY_HOME);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent2);
+                intent = new Intent(MapsActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
     }
 
     @Override
@@ -464,13 +491,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 123){
-            addMarkers(data);
+            if(resultCode == 12321) {
+                setCurrentSearchTimeFrame(data);
+                addMarkers(data);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         addSpaceItem = menu.getItem(0);
@@ -479,7 +510,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             registerAsBothItem.setEnabled(false);
 
         }
+        if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)){
+            addSpaceItem.setEnabled(false);
+        }
+        if(userMode.equals(Status.SEEKER))
+            addSpaceItem.setEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(addSpaceMarker != null)
+            addSpaceMarker.remove();
+    }
 }

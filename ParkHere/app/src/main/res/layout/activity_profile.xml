@@ -96,13 +96,4 @@
         android:text="Save"
         android:id="@+id/saveButton"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:text="Verification"
-        android:id="@+id/verificationButton"
-        android:onClick="clickedVerification" />
-
 </LinearLayout>

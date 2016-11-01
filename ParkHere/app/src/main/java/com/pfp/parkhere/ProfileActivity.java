@@ -1,11 +1,9 @@
 package com.pfp.parkhere;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -14,13 +12,13 @@ import android.widget.ImageView;
 import android.graphics.Color;
 import android.widget.RatingBar;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Peer;
+import ObjectClasses.Status;
 
 import static com.pfp.parkhere.R.id.editButton;
 
@@ -36,8 +34,8 @@ public class ProfileActivity extends AppCompatActivity
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-//    private GoogleApiClient client;
 
+    //TODO Change profile picture
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +64,14 @@ public class ProfileActivity extends AppCompatActivity
                 System.out.println(2);
                 myListedSpacesButton.setVisibility(View.GONE);
                 mBookingButton.setVisibility(View.VISIBLE);
+            }
+
+            RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
+            rateBar.setVisibility(View.GONE);
+            if(!Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)) {
+                rateBar.setVisibility(View.VISIBLE);
+                DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
+                rateBar.setRating(Global_ParkHere_Application.getCurrentUserObject().getOwnerRating());
             }
 
             disableEditText(mEmail);
@@ -118,8 +124,6 @@ public class ProfileActivity extends AppCompatActivity
         }
 
         String ownerEmail = extras.getString("LISTED_SPACE_OWNEREMAIL");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //Checking owner profile
         hideFields();
@@ -159,7 +163,6 @@ public class ProfileActivity extends AppCompatActivity
         mLastName.setVisibility(View.GONE);
         mBookingButton.setVisibility(View.GONE);
         myListedSpacesButton.setVisibility(View.GONE);
-        ((Button) findViewById(R.id.verificationButton)).setVisibility(View.GONE);
     }
 
     private void populateFields() throws InterruptedException {
@@ -193,23 +196,5 @@ public class ProfileActivity extends AppCompatActivity
     {
         startActivity(new Intent(ProfileActivity.this, MyListedSpacesActivity.class));
 
-    }
-
-    public void clickedVerification(View view)
-    {
-        startActivity(new Intent(ProfileActivity.this, VerificationActivity.class));
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        FirebaseAuth.getInstance().signOut();
-        super.onStop();
     }
 }

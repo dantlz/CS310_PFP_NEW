@@ -36,6 +36,4 @@
         android:text="@string/verify_paypal"
         android:onClick="verifyPaypal"/>
 
-
-
 </LinearLayout>

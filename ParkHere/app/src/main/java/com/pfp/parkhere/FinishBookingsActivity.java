@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ObjectClasses.Booking;
@@ -20,6 +23,7 @@ import ObjectClasses.Space;
 public class FinishBookingsActivity extends AppCompatActivity {
 
     private ArrayList<Booking> bookingsForSpace;
+    private SimpleDateFormat format = new SimpleDateFormat();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class FinishBookingsActivity extends AppCompatActivity {
         TextView nameOfSpace = (TextView) findViewById(R.id.space_name_for_bookings);
         if (bookingsForSpace.size() != 0) {
             nameOfSpace.setText("Showing bookings for " +
-                    bookingsForSpace.get(0).getSpace().getSpaceName());
+                    bookingsForSpace.get(0).getSpaceName());
         }
         else {
             nameOfSpace.setText("This space has no active bookings.");
@@ -50,9 +54,9 @@ public class FinishBookingsActivity extends AppCompatActivity {
 
         for (int i = 0; i < bookingsForSpace.size(); i++) {
             Booking toFormat = bookingsForSpace.get(i);
-            MyCalendar startTime = toFormat.getStart();
-            MyCalendar endTime = toFormat.getEnd();
-            strFormattedBookings[i] = toFormat.getSpace().getSpaceName() + "\n"
+            MyCalendar startTime = toFormat.getStartCalendarDate();
+            MyCalendar endTime = toFormat.getEndCalendarDate();
+            strFormattedBookings[i] = toFormat.getSpaceName() + "\n"
                     + startTime.getMonth() + "/"
                     + startTime.getDay() + "/"
                     + startTime.getYear() + " "
@@ -72,17 +76,14 @@ public class FinishBookingsActivity extends AppCompatActivity {
         ArrayList<Booking> retVal = new ArrayList<Booking>();
 
         for (int i = 0; i < 11; i++) {
-            Space spaceOfBooking = new Space();
-            spaceOfBooking.setSpaceName("My Test Space");
-
             Booking bookingToAdd = new Booking();
-            bookingToAdd.setSpace(spaceOfBooking);
+            bookingToAdd.setSpaceName("My Test Space");
 
             MyCalendar startTime = new MyCalendar(2016, 11, 4, i+1, 0);
             MyCalendar endTime = new MyCalendar(2016, 11, 4, i+2, 0);
 
-            bookingToAdd.setStart(startTime);
-            bookingToAdd.setEnd(endTime);
+            bookingToAdd.setStartCalendarDate(startTime);
+            bookingToAdd.setEndCalendarDate(endTime);
 
             retVal.add(bookingToAdd);
         }
@@ -94,14 +95,11 @@ public class FinishBookingsActivity extends AppCompatActivity {
         int countOfRemovedSpaces = 0;
         for (int i = 0; i < bookingsForSpace.size(); i++) {
             Booking currBooking = bookingsForSpace.get(i);
-            MyCalendar reformEndTime = currBooking.getEnd();
-            GregorianCalendar endTime = new GregorianCalendar(reformEndTime.getYear(),
-                        reformEndTime.getMonth(), reformEndTime.getDay(), reformEndTime.getHour(),
-                        reformEndTime.getMinute());
-            Calendar currTime = Calendar.getInstance();
+            Date endTime = myCalendarToDate(currBooking.getEndCalendarDate());
+            Date currTime = new Date();
 
-            if (!currTime.before(endTime)) {
-                bookingsForSpace.remove(i);
+            if (currTime.after(endTime)) {
+                bookingsForSpace.remove(i-countOfRemovedSpaces);
                 countOfRemovedSpaces++;
             }
 
@@ -122,5 +120,38 @@ public class FinishBookingsActivity extends AppCompatActivity {
         dialog = completedDisplay.create();
         dialog.show();
 
+    }
+
+    private Date myCalendarToDate(MyCalendar calendar){
+        String year, month, day, hour, minute;
+        Date dateTime;
+
+        year = String.valueOf(calendar.getYear());
+        month = getDoubleDigit(calendar.getMonth());
+        day = getDoubleDigit(calendar.getDay());
+        hour = getDoubleDigit(calendar.getHour());
+        minute = getDoubleDigit(calendar.getMinute());
+        String sdt = year + "."
+                + month + "." + day + "." + hour + "." + minute + ".00";
+        System.out.println(sdt);
+        try {
+            dateTime = format.parse(sdt);
+            return  dateTime;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getDoubleDigit(int i){
+        String result = "";
+        if(i < 10){
+            result = "0" + i;
+        }
+        else{
+            result = "" + i;
+        }
+
+        return result;
     }
 }

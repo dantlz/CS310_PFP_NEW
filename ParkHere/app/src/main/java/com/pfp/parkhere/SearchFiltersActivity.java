@@ -3,18 +3,13 @@ package com.pfp.parkhere;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import java.util.Date;
-
-import ObjectClasses.MyCalendar;
 import ObjectClasses.SpaceType;
-import ObjectClasses.Status;
 
 public class SearchFiltersActivity extends AppCompatActivity {
 
@@ -55,7 +50,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 intent.putExtra("ENDDAY", endDatePicker.getDayOfMonth());
                 intent.putExtra("ENDHOUR", endTimePicker.getHour());
                 intent.putExtra("ENDMINUTE", endTimePicker.getMinute());
-                setResult(0, intent);
+                setResult(12321, intent);
                 finish();
             }
         });

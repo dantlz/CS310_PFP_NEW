@@ -2,7 +2,6 @@ package ObjectClasses;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
@@ -10,10 +9,6 @@ import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by tianlinz on 10/16/16.
- */
 
 public class Peer {
     private String emailAddress;

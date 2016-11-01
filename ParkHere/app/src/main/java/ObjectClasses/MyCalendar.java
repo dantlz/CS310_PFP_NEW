@@ -1,9 +1,5 @@
 package ObjectClasses;
 
-/**
- * Created by tianlinz on 10/29/16.
- */
-
 public class MyCalendar {
     int year;
     int month;

@@ -32,6 +32,7 @@
         android:hint="i.e. 0000111122223333"
         android:id="@+id/card_number_value"/>
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
         android:hint="mmyy i.e. 0122"
         android:id="@+id/card_date_value"/>
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_name_value"/>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -69,5 +72,6 @@
         android:text="@string/submit_card_info"
         android:onClick="finishPayment"
         android:id="@+id/submit_card_button"/>
+
 
 </LinearLayout>

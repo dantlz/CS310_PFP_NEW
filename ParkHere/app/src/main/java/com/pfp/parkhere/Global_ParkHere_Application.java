@@ -8,15 +8,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.CancellationPolicy;
+import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
-
-/**
- * Created by tianlinz on 10/19/16.
- */
 
 public class Global_ParkHere_Application extends Application {
 
     private static Peer currentUserObject;
+    //To ensure the dates are not null
+    private static MyCalendar currentSearchTimeDateStart = new MyCalendar();
+    private static MyCalendar currentSearchTimedateEnd = new MyCalendar();
+
+    public static MyCalendar getCurrentSearchTimeDateStart() {
+        return currentSearchTimeDateStart;
+    }
+
+    public static void setCurrentSearchTimeDateStart(MyCalendar currentSearchTimeDateStart) {
+        currentSearchTimeDateStart = currentSearchTimeDateStart;
+    }
+
+    public static MyCalendar getCurrentSearchTimedateEnd() {
+        return currentSearchTimedateEnd;
+    }
+
+    public static void setCurrentSearchTimedateEnd(MyCalendar currentSearchTimedateEnd) {
+        currentSearchTimedateEnd = currentSearchTimedateEnd;
+    }
 
     @Override
     public void onCreate() {
