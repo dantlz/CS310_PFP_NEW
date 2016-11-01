@@ -17,7 +17,8 @@
         android:text="@string/paypal_username"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/paypal_username_field"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -26,13 +27,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:id="@+id/paypal_password_field"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/verify_paypal"
-        android:onClick=""/>
+        android:onClick="verifyPaypal"/>
 
 
 
