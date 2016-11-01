@@ -228,6 +228,7 @@ public class ResultsActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
     }
 
+    //TODO Optimizie the sort distance speed
     public void sortByDistance(View view) {
 //        //1 = distanceSort the spaceList
 //        sortSpaceList(1);

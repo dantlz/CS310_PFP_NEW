@@ -637,6 +637,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         addSpaceItem = menu.getItem(0);
+        addSpaceItem.setEnabled(false);
         registerAsBothItem = menu.getItem(2);
         if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.BOTH)){
             registerAsBothItem.setEnabled(false);
