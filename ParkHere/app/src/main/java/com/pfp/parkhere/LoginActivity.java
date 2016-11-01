@@ -55,8 +55,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(!fireBaseUser.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                         return;
-                    if(Global_ParkHere_Application.getCurrentUserObject() == null)
-                        return;
                     
                     FirebaseDatabase.getInstance()
                             .getReference("Peers")

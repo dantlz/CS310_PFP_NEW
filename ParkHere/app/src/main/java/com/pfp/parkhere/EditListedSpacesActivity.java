@@ -113,10 +113,11 @@ public class EditListedSpacesActivity extends AppCompatActivity {
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
                 .child("state").setValue(address.getAdminArea());
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
-                .child("country").setValue(address.getCountryName());
+        //Uncomment this when the database/space object has a country field.
+//        ref.child("Spaces").child(Global_ParkHere_Application
+//                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
+//                .child(spaceName)
+//                .child("country").setValue(address.getCountryName());
         ref.child("Spaces").child(Global_ParkHere_Application
                 .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
                 .child(spaceName)
@@ -130,6 +131,12 @@ public class EditListedSpacesActivity extends AppCompatActivity {
 
     public void deleteListedSpace(View view) {
         String spaceName = extras.getString("LISTED_SPACE_NAME");
+        String ownerEmail = extras.getString("OWNEREMAIL");
+        FirebaseDatabase.getInstance().getReference().child("Spaces").child(
+                Global_ParkHere_Application.reformatEmail(ownerEmail)
+        ).child(spaceName).removeValue();
+        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        finish();
     }
 
 }

@@ -48,6 +48,8 @@ public class AddSpaceActivity extends AppCompatActivity {
     private Spinner cancellationSpinner;
     private ImageView picture;
 
+    //TODO MoreInformation one word. It can also be set as a policy
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

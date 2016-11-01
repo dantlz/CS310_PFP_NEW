@@ -2,6 +2,8 @@ package com.pfp.parkhere;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.os.Handler;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,8 +28,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LogRecord;
 
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
@@ -72,7 +73,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button resultAsListButton;
     private SupportMapFragment mapFragment;
     private SimpleDateFormat format = new SimpleDateFormat();
-
+    private LatLng currentCameraOrZoomLatLng;
+    private Intent currentFiltersIntent;
+    private boolean cameraMovedAgain;
+    private boolean refreshedAlready;
+    private Handler handler;
+    private Runnable handlerRunnable;
+    private boolean runnableRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        handler = new Handler() {
+            public void publish(LogRecord record) {}
+
+            public void flush() {}
+
+            public void close() throws SecurityException {}
+        };
+
+        handlerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                addAndFilterMarkers(currentFiltersIntent);
+            }
+        };
+        runnableRunning = false;
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -130,6 +153,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
+        //Must verify
         if(Global_ParkHere_Application.getCurrentUserObject().getPhotoID() == null ||
                 Global_ParkHere_Application.getCurrentUserObject().getPhotoID().equals("")){
             Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
@@ -150,7 +174,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        currentCameraOrZoomLatLng = mMap.getCameraPosition().target;
         FirebaseDatabase.getInstance().getReference().child("Spaces").addValueEventListener(
                 new ValueEventListener() {
                     @Override
@@ -164,7 +188,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             .getFromLocationName(space.getStreetAddress() + space.getCity()
                                                     + space.getState() + " " + space.getZipCode(), 1).get(0);
                                     allSpaces.put(new LatLng(address.getLatitude(), address.getLongitude()), space);
-                                    addMarkers(null);
+                                    addAndFilterMarkers(null);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -234,11 +258,55 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                currentCameraOrZoomLatLng = mMap.getCameraPosition().target;
+
+                if(handler != null && !runnableRunning) {
+                    handler.postDelayed(handlerRunnable, 2000);
+                    runnableRunning = true;
+                }
+            }
+        });
+        mMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+            @Override
+            public void onCameraMoveStarted(int i) {
+                handler.removeCallbacks(handlerRunnable);
+                runnableRunning = false;
+            }
+        });
+
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(34, -118) , 4.0f) );
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mMap.setMyLocationEnabled(true);
+    }
+
+    //This allows search by BOTH address AND LONGITUDE LATITUDE
+    public void onMapSearch(View view) {
+        EditText locationSearch = (EditText) findViewById(R.id.editText);
+        //No text entered to search bar
+        if(locationSearch.getText().toString().equals("")){
+            return;
+        }
+        String location = locationSearch.getText().toString();
+        List<Address> addressList = null;
+        Geocoder geocoder;
+        if (location != null || !location.equals("")) {
+            geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
     }
 
     private String getDoubleDigit(int i){
@@ -313,7 +381,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return null;
     }
 
-    private void addMarkers(Intent intent) {
+    private void addAndFilterMarkers(Intent intent) {
         mMap.clear();
 
         int lowestPrice = 0, highestPrice = 0;
@@ -345,6 +413,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     continue;
             }
 
+            String fullAddress = space.getStreetAddress() + " " + space.getCity() + " "
+                    + space.getState() + " " + space.getZipCode();
+            try {
+                Address address = new Geocoder(this).getFromLocationName(fullAddress, 1).get(0);
+                LatLng spaceLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+                if (!checkThreeMileRadius(currentCameraOrZoomLatLng, spaceLatLng)) {
+                    continue;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             MarkerOptions marker = new MarkerOptions();
             marker.position((LatLng)pair.getKey());
             marker.title(space.getSpaceName());
@@ -352,26 +432,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //This allows search by BOTH address AND LONGITUDE LATITUDE
-    public void onMapSearch(View view) {
-        EditText locationSearch = (EditText) findViewById(R.id.editText);
-        String location = locationSearch.getText().toString();
-        List<Address> addressList = null;
-        Geocoder geocoder;
-        if (location != null || !location.equals("")) {
-            geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
+    public boolean checkThreeMileRadius(LatLng here, LatLng dist) {
+//        System.out.println("At: " + here);
+//        System.out.println("Checking: " + dist );
+        boolean withinRadius;
+        float[] results = new float[1];
+        Location.distanceBetween(here.latitude, here.longitude,
+                dist.latitude, dist.longitude,
+                results);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            //TODO ALWAYS keep the zoom at 3 miles and to remove any spaces over 3 miles
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        if (results[0] <= 4828.03) {
+            withinRadius = true;
         }
+        else {
+            withinRadius = false;
+        }
+        return withinRadius;
     }
+
 
     public void onRadioButtonClicked(View view) {
         // Check which radio button was clicked
@@ -493,7 +571,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(requestCode == 123){
             if(resultCode == 12321) {
                 setCurrentSearchTimeFrame(data);
-                addMarkers(data);
+                currentFiltersIntent = data;
+                addAndFilterMarkers(data);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
