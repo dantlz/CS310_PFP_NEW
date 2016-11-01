@@ -31,7 +31,6 @@ public class ResultsActivity extends AppCompatActivity
     private ListView list;
     private ArrayList<ObjectClasses.Space> spaceList;
     private ArrayList<Integer> priceList = new ArrayList<Integer>();
-    private ArrayList<Integer> distanceList = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -90,19 +89,14 @@ public class ResultsActivity extends AppCompatActivity
 
             //POPULATE PriceList using the spaceMap
             priceList.add(spacex.getPricePerHour());
-
         }
     }
-
-
 
     public void addItems(String x)
     {
         viewValues.add(x);
         adapter.notifyDataSetChanged();
     }
-
-
 
 //    public void populateMapDummy()
 //    {
@@ -234,28 +228,62 @@ public class ResultsActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
     }
 
-    public void sortByDistance(View view)
-    {
-        //1 = distanceSort the spaceList
-        sortSpaceList(1);
-        ArrayList<String> newViewValues = new ArrayList<String>();
-        for(int i =0; i<spaceList.size(); i++)
-        {
-            for(int j=0; j<viewValues.size(); j++)
-            {
-                String email = "";
-                String vv = viewValues.get(j);
-                int toindex = vv.indexOf('$')-1;
-                email = vv.substring(0, toindex);
-                if(email.matches(spaceList.get(i).getOwnerEmail()))
-                {
-                    newViewValues.add(vv);
-                }
-            }
-        }
+    public void sortByDistance(View view) {
+//        //1 = distanceSort the spaceList
+//        sortSpaceList(1);
+//        ArrayList<String> newViewValues = new ArrayList<String>();
+//        for(int i =0; i<spaceList.size(); i++)
+//        {
+//            for(int j=0; j<viewValues.size(); j++)
+//            {
+//                String email = "";
+//                String vv = viewValues.get(j);
+//                int toindex = vv.indexOf('$')-1;
+//                email = vv.substring(0, toindex);
+//                if(email.matches(spaceList.get(i).getOwnerEmail()))
+//                {
+//                    newViewValues.add(vv);
+//                }
+//            }
+//        }
+//
+//
+//
+//        viewValues = new ArrayList<>(newViewValues);
+//        adapter.notifyDataSetChanged();
 
-        viewValues = new ArrayList<>(newViewValues);
+        Collections.sort(viewValues, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+//                addItems(spacex.getOwnerEmail() + " $" + spacex.getPricePerHour() + " - " + (int)calculateDistanceFromTo(latlng, userAddress) + " miles");
+                //"emal $5 - one after the hyphen
+                String distance1 = "";
+                String distance2 = "";
+                distance1 = o1.substring(o1.indexOf('-') + 2, o1.indexOf("miles") - 1);
+                distance2 = o2.substring(o2.indexOf('-') + 2, o2.indexOf("miles") - 1);
+
+                int x = Integer.parseInt(distance1);
+                int y = Integer.parseInt(distance2);
+
+                if (x == y) {
+                    return 0;
+                }
+                if (x > y) {
+                    return 1;
+                }
+                if (x < y) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
+
+        sortSpaceList(1);
         adapter.notifyDataSetChanged();
+
+
+
+
 
     }
 
