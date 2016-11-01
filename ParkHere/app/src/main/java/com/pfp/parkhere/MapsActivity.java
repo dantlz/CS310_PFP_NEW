@@ -123,8 +123,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         resultAsListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MapsActivity.this, .class);
-                //TODO Go to RESULT LIST startActivityForResult(, 123);
+                Intent intent = new Intent(MapsActivity.this, ResultsActivity.class);
+                intent.putExtra("LATLNG", currentCameraOrZoomLatLng);
+                Global_ParkHere_Application.setMapOfLatLngSpacesToPass(filterForResultsList(currentFiltersIntent));
+                startActivity(intent);
             }
         });
 
@@ -171,6 +173,55 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private HashMap<LatLng, Space> filterForResultsList(Intent intent) {
+        HashMap<LatLng, Space> result = new HashMap<>();
+        int lowestPrice = 0, highestPrice = 0;
+        SpaceType type = null;
+        Date startDateTime = null, endDateTime = null;
+
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            type = (SpaceType) extras.get("TYPE");
+            lowestPrice = extras.getInt("LOWESTPRICE");
+            highestPrice = extras.getInt("HIGHESTPRICE");
+            startDateTime = extraToDate(extras, "START");
+            endDateTime = extraToDate(extras, "END");
+        }
+
+        Iterator it = allSpaces.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Space space = (Space) pair.getValue();
+            //Filtering
+            if (intent != null) {
+                if (!space.getType().equals(type))
+                    continue;
+                if (space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice)
+                    continue;
+                MyCalendar start = space.getAvailableStartDateAndTime();
+                MyCalendar end = space.getAvailableEndDateAndTime();
+                if (myCalendarToDate(start).before(startDateTime) || myCalendarToDate(end).before(endDateTime))
+                    continue;
+            }
+
+            String fullAddress = space.getStreetAddress() + " " + space.getCity() + " "
+                    + space.getState() + " " + space.getZipCode();
+            try {
+                Address address = new Geocoder(this).getFromLocationName(fullAddress, 1).get(0);
+                LatLng spaceLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+                if (!checkThreeMileRadius(currentCameraOrZoomLatLng, spaceLatLng)) {
+                    continue;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            result.put((LatLng) pair.getKey(), (Space) pair.getValue());
+        }
+
+        return result;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -187,6 +238,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     address = new Geocoder(MapsActivity.this)
                                             .getFromLocationName(space.getStreetAddress() + space.getCity()
                                                     + space.getState() + " " + space.getZipCode(), 1).get(0);
+                                    //TODO Create dialog for ALL geocoders
                                     allSpaces.put(new LatLng(address.getLatitude(), address.getLongitude()), space);
                                     addAndFilterMarkers(null);
                                 } catch (IOException e) {
@@ -267,6 +319,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     handler.postDelayed(handlerRunnable, 2000);
                     runnableRunning = true;
                 }
+                //TODO Laggy. Add and filter called too many times initially
             }
         });
         mMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
