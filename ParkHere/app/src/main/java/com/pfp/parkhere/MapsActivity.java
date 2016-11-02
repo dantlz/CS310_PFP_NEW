@@ -414,7 +414,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         day = getDoubleDigit(extras.getInt(SoE + "DAY"));
         hour = getDoubleDigit(extras.getInt(SoE + "HOUR"));
         minute = getDoubleDigit(extras.getInt(SoE + "MINUTE"));
-        String fullStartDateTime = year + month + day + hour + minute + "00-0";
+        String fullStartDateTime = year + month + day + hour + minute + "00-0700";
         System.out.println(fullStartDateTime);
         try {
             dateTime = format.parse(fullStartDateTime);
@@ -434,7 +434,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         day = getDoubleDigit(calendar.getDay());
         hour = getDoubleDigit(calendar.getHour());
         minute = getDoubleDigit(calendar.getMinute());
-        String sdt = year + month + day + hour + minute + "00";
+        String sdt = year + month + day + hour + minute + "00-0700";
         try {
             dateTime = format.parse(sdt);
             return  dateTime;
