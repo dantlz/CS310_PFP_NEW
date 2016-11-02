@@ -81,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Runnable handlerRunnable;
     private boolean runnableRunning;
     private boolean onlyThreeMileRadius;
+    private int counter = 0;
 
     //TODO Add progress bar/loading screen
     @Override
@@ -104,6 +105,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         handlerRunnable = new Runnable() {
             @Override
             public void run() {
+                //On initial map load we don't have to search because Firebase initial listener does that
+                if(counter == 0) {
+                    counter++;
+                    return;
+                }
                 //If the camera is zoomed in enough, display only results in 3 miles
                 if(mMap.getCameraPosition().zoom > 13.505731){
                     onlyThreeMileRadius = true;
@@ -214,21 +220,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     continue;
             }
 
-            String fullAddress = space.getStreetAddress() + " " + space.getCity() + " "
-                    + space.getState() + " " + space.getZipCode();
-            try {
-                Address address = new Geocoder(this).getFromLocationName(fullAddress, 1).get(0);
-                LatLng spaceLatLng = new LatLng(address.getLatitude(), address.getLongitude());
-                if (!checkThreeMileRadius(currentCameraOrZoomLatLng, spaceLatLng)) {
+            if (onlyThreeMileRadius) {
+                if (!checkThreeMileRadius(currentCameraOrZoomLatLng, (LatLng) pair.getKey()))
                     continue;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
             result.put((LatLng) pair.getKey(), (Space) pair.getValue());
         }
-
         return result;
     }
 
@@ -253,12 +251,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     if(addressList.size() < 1)
                                         continue;
                                     allSpaces.put(new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude()), space);
-                                    addAndFilterMarkers(null);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }
+                        addAndFilterMarkers(null);
                     }
 
                     @Override
@@ -330,7 +328,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 //This could potentially have the map refreshed too often, causing lags and crashes
                 if(handler != null && !runnableRunning) {
-                    handler.postDelayed(handlerRunnable, 1800);
+                    handler.postDelayed(handlerRunnable, 1300);
                     runnableRunning = true;
                 }
             }
@@ -481,12 +479,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             if(onlyThreeMileRadius) {
-                Toast.makeText(getApplicationContext(), "Search Radius: 3 Miles", Toast.LENGTH_SHORT).show();
                 if (!checkThreeMileRadius(currentCameraOrZoomLatLng, (LatLng) pair.getKey()))
                     continue;
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "Search Radius: Unlimited", Toast.LENGTH_SHORT).show();
             }
 
             MarkerOptions marker = new MarkerOptions();
@@ -494,6 +488,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             marker.title(space.getSpaceName());
             mMap.addMarker(marker);
         }
+
+        if(onlyThreeMileRadius)
+            Toast.makeText(getApplicationContext(), "Search Radius: 3 Miles", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "Search Radius: Unlimited", Toast.LENGTH_SHORT).show();
 
     }
 
