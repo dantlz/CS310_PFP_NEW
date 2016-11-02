@@ -10,7 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class MyBookingsDetailsActivity extends AppCompatActivity{
-    String identifier;
+    private String identifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

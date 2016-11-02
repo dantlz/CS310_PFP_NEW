@@ -49,13 +49,11 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Peer currentUser;
-    private int firstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        firstTime = 0;
 
         findViewById(R.id.registerLoad).setVisibility(View.GONE);
 
@@ -102,10 +100,9 @@ public class RegisterActivity extends AppCompatActivity {
         List<String> types = new ArrayList<String>();
         types.add("Owner");
         types.add("Seeker");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
+        final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(dataAdapter);
-
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -113,32 +110,29 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                // User is signed in
 
-                if (user != null && firstTime != 0) {
+                if (user != null) {
                     findViewById(R.id.registerLoad).setVisibility(View.GONE);
-                    //First grab the peer/seeker object form database based on user's email
-                    FirebaseDatabase.getInstance()
-                            .getReference("Peers")
-                            .child(Global_ParkHere_Application.reformatEmail(user.getEmail()))
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    // This method is called once with the initial value and again
-                                    // whenever data at this location is updated.
-                                    currentUser = dataSnapshot.getValue(Peer.class);
-                                    //Go to Map activity
-                                    Global_ParkHere_Application.setCurrentUserObject(currentUser);
-                                    startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
-                                    finish();
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError error) {
-                                    // Failed to read value
-                                }
-                            });
+
+                    Global.peers().child(Global.reformatEmail(user.getEmail())).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            currentUser = dataSnapshot.getValue(Peer.class);
+                            if(currentUser == null)
+                                return;
+                            Global.setCurUser(currentUser);
+                            startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+                            finish();
+                            return;
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-                else if(user == null && firstTime != 0){
+                else {
                     findViewById(R.id.registerLoad).setVisibility(View.GONE);
                     // User is signed out. This would not happen here ever
                     new AlertDialog.Builder(RegisterActivity.this)
@@ -151,10 +145,8 @@ public class RegisterActivity extends AppCompatActivity {
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
+                    return;
                 }
-
-                if(firstTime == 0)
-                    firstTime ++;
             }
         };
         mAuth.addAuthStateListener(mAuthListener);
@@ -204,8 +196,8 @@ public class RegisterActivity extends AppCompatActivity {
                         }
 
                         currentUser = createUserObject();
-                        FirebaseDatabase.getInstance().getReference().child("Peers").
-                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(currentUser);
+                        Global.setCurUser(currentUser);
+                        Global.peers().child(Global.reformatEmail(emailField.getText().toString())).setValue(currentUser);
                     }
                 });
     }
@@ -213,6 +205,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Peer createUserObject(){
         Peer peer = new Peer();
         peer.setEmailAddress(emailField.getText().toString());
+        peer.setReformattedEmail(Global.reformatEmail(emailField.getText().toString()));
         peer.setFirstName(firstNameField.getText().toString());
         peer.setLastName(lastNameField.getText().toString());
         peer.setPhoneNumber(phoneNumberField.getText().toString());

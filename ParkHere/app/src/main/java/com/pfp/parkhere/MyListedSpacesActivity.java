@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -23,9 +24,9 @@ import ObjectClasses.Space;
 
 public class MyListedSpacesActivity extends AppCompatActivity {
 
-    ListView listedSpacesList;
-    LinkedList<Space> MyListedSpaces;
-    String [] strFormattedSpaces;
+    private ListView listedSpacesList;
+    private LinkedList<Space> MyListedSpaces;
+    private String [] strFormattedSpaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +37,20 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         listedSpacesList = (ListView) findViewById(R.id.listed_spaces_list);
         MyListedSpaces = new LinkedList<Space>();
 
-        String currentUserEmail = Global_ParkHere_Application.getCurrentUserObject().getEmailAddress();
+        String currentUserEmail = Global.getCurUser().getEmailAddress();
         //Retrieve all the current user's actual space objects
-        FirebaseDatabase.getInstance().getReference().child("Spaces")
-                .child(Global_ParkHere_Application.reformatEmail(currentUserEmail))
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                            MyListedSpaces.add(postSnapshot.getValue(Space.class));
-                        }
-                        populate();
-                    }
+        Global.spaces().child(Global.reformatEmail(currentUserEmail)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                    MyListedSpaces.add(postSnapshot.getValue(Space.class));
+                }
+                populate();
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     private void populate(){

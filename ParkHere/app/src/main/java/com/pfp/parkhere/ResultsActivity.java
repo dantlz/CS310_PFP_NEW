@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 
 import ObjectClasses.Status;
@@ -41,7 +40,7 @@ public class ResultsActivity extends AppCompatActivity
 
         Bundle extra = getIntent().getExtras();
         userAddress = (LatLng)extra.get("LATLNG");
-        resultsMap = Global_ParkHere_Application.getMapOfLatLngSpacesToPass();
+        resultsMap = Global.getMapOfLatLngSpacesToPass();
 
         list = (ListView) findViewById(R.id.resultsListView);
         viewValues = new ArrayList<String>();

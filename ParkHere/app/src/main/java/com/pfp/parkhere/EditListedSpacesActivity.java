@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -78,26 +79,16 @@ public class EditListedSpacesActivity extends AppCompatActivity {
 
     public void saveListedSpaceDetails(View view) {
         String spaceName = extras.getString("LISTED_SPACE_NAME");
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("spaceName").setValue(editName.getText().toString());
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("pricePerHour").setValue(Integer.valueOf(editPrice.getText().toString()));
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("type").setValue(typeSpinner.getSelectedItem().toString().toUpperCase());
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("policy").setValue(cancellationSpinner.getSelectedItem().toString().toUpperCase());
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("description").setValue(editDescription.getText().toString());
         Address address = null;
         try {
@@ -105,36 +96,21 @@ public class EditListedSpacesActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("city").setValue(address.getLocality());
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("state").setValue(address.getAdminArea());
-        //Uncomment this when the database/space object has a country field.
-//        ref.child("Spaces").child(Global_ParkHere_Application
-//                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-//                .child(spaceName)
-//                .child("country").setValue(address.getCountryName());
-        ref.child("Spaces").child(Global_ParkHere_Application
-                .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(spaceName)
+        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("streetAddress").setValue(address.getAddressLine(0));
 
         //TODO Allow user to change start date/time and end date/time
-        finish();
-        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class));
         finish();
     }
 
     public void deleteListedSpace(View view) {
         String spaceName = extras.getString("LISTED_SPACE_NAME");
         String ownerEmail = extras.getString("OWNEREMAIL");
-        FirebaseDatabase.getInstance().getReference().child("Spaces").child(
-                Global_ParkHere_Application.reformatEmail(ownerEmail)
-        ).child(spaceName).removeValue();
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).removeValue();
         startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }

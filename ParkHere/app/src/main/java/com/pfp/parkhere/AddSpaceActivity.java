@@ -3,13 +3,13 @@ package com.pfp.parkhere;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
@@ -72,8 +73,18 @@ public class AddSpaceActivity extends AppCompatActivity {
 
         typeSpinner = (Spinner) findViewById(R.id.typeSpinner);
         cancellationSpinner = (Spinner) findViewById(R.id.spinnerForCancellation);
+        cancellationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //TODO Complete more information pop out and such
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         picture = (ImageView) findViewById(R.id.imageview);
+        picture.setImageDrawable(null);
 
         // Spinner Drop down elements
         List<String> types = new ArrayList<String>();
@@ -85,7 +96,7 @@ public class AddSpaceActivity extends AppCompatActivity {
         cancellationPolicies.add("Light");
         cancellationPolicies.add("Moderate");
         cancellationPolicies.add("Strict");
-        cancellationPolicies.add("More Information");
+//        cancellationPolicies.add("More Information"); Add this back in once the listener is completed
 
 
         // Creating adapter for typeSpinner
@@ -132,9 +143,7 @@ public class AddSpaceActivity extends AppCompatActivity {
                 countryField.getText().toString().equals("") ||
                 zipCodeField.getText().toString().equals("") ||
                 typeSpinner.getSelectedItem().equals(null) ||
-                cancellationSpinner.getSelectedItem().equals(null)||
-                //TODO Check ImageView null isnt' working
-                (BitmapDrawable)(picture.getDrawable()) == null) {
+                cancellationSpinner.getSelectedItem().equals(null)) {
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("Please complete all fields")
                     .setMessage("All input fields must be completed.")
@@ -145,20 +154,34 @@ public class AddSpaceActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            return;
+        }
+
+        if((picture.getDrawable()) == null){
+            new AlertDialog.Builder(AddSpaceActivity.this)
+                    .setTitle("No picture loaded")
+                    .setMessage("Your space must have a picture.")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return;
         }
 
         try {
             Space listedSpace = new Space();
             listedSpace.setSpaceName(spaceNameField.getText().toString());
-            String currentUserEmail = ((Global_ParkHere_Application) getApplication()).getCurrentUserObject().getEmailAddress();
-            listedSpace.setOwnerEmail(currentUserEmail);
+            listedSpace.setOwnerEmail(Global.getCurUser().getReformattedEmail());
             listedSpace.setType(SpaceType.valueOf(typeSpinner.getSelectedItem().toString().toUpperCase()));
             String fullAddress = streetAddressField.getText().toString() + " " +
                     cityField.getText().toString() + " " +
                     zipCodeField.getText().toString() + " " +
                     stateField.getText().toString();
             List<Address> addressResults = geocoder.getFromLocationName(fullAddress, 1);
-            //TODO Check Geocoder can decode address isnt' working
+            //Check if entered full address can be located by Geocoder because all subsequent locating is done with Geocoders
             if(addressResults.size() < 1){
                 new AlertDialog.Builder(AddSpaceActivity.this)
                         .setTitle("Location not found")
@@ -196,9 +219,7 @@ public class AddSpaceActivity extends AppCompatActivity {
             ));
             listedSpace.setDPNonFireBase(picture.getDrawable());
 
-            FirebaseDatabase.getInstance().getReference().child("Spaces")
-                    .child(Global_ParkHere_Application.reformatEmail(
-                            currentUserEmail)).child(spaceNameField.getText().toString()).setValue(listedSpace);
+            Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceNameField.getText().toString()).setValue(listedSpace);
             finish();
         } catch (IOException e) {
             e.printStackTrace();

@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -75,17 +77,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SimpleDateFormat format = new SimpleDateFormat();
     private LatLng currentCameraOrZoomLatLng;
     private Intent currentFiltersIntent;
-    private boolean cameraMovedAgain;
-    private boolean refreshedAlready;
     private Handler handler;
     private Runnable handlerRunnable;
     private boolean runnableRunning;
+    private boolean onlyThreeMileRadius;
 
     //TODO Add progress bar/loading screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -102,6 +104,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         handlerRunnable = new Runnable() {
             @Override
             public void run() {
+                //If the camera is zoomed in enough, display only results in 3 miles
+                if(mMap.getCameraPosition().zoom > 13.505731){
+                    onlyThreeMileRadius = true;
+                }
+                else{
+                    onlyThreeMileRadius = false;
+                }
                 addAndFilterMarkers(currentFiltersIntent);
             }
         };
@@ -126,18 +135,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, ResultsActivity.class);
                 intent.putExtra("LATLNG", currentCameraOrZoomLatLng);
-                Global_ParkHere_Application.setMapOfLatLngSpacesToPass(filterForResultsList(currentFiltersIntent));
+                Global.setMapOfLatLngSpacesToPass(filterForResultsList(currentFiltersIntent));
                 startActivity(intent);
             }
         });
 
 
-        if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.OWNER)){
+        if(Global.getCurUser().getStatus().equals(Status.OWNER)){
             ((RadioButton)findViewById(R.id.Owner)).setChecked(true);
             (findViewById(R.id.Seeker)).setEnabled(false);
             ownerMode(true);
         }
-        else if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)){
+        else if(Global.getCurUser().getStatus().equals(Status.SEEKER)){
             ((RadioButton)findViewById(R.id.Seeker)).setChecked(true);
             (findViewById(R.id.Owner)).setEnabled(false);
             seekerMode(true);
@@ -145,7 +154,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         else{
             //Registered as both owner and seeker
             //Remember last time's preferred status
-            if(Global_ParkHere_Application.getCurrentUserObject().getPreferredStatus().equals(Status.SEEKER)) {
+            if(Global.getCurUser().getPreferredStatus().equals(Status.SEEKER)) {
                 ((RadioButton) findViewById(R.id.Seeker)).setChecked(true);
                 seekerMode(true);
             }
@@ -157,8 +166,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         //Must verify
-        if(Global_ParkHere_Application.getCurrentUserObject().getPhotoID() == null ||
-                Global_ParkHere_Application.getCurrentUserObject().getPhotoID().equals("")){
+        if(Global.getCurUser().getPhotoID() == null ||
+                Global.getCurUser().getPhotoID().equals("")){
             Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
                     .setTitle("Verification Needed")
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
@@ -227,20 +236,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         currentCameraOrZoomLatLng = mMap.getCameraPosition().target;
-        FirebaseDatabase.getInstance().getReference().child("Spaces").addValueEventListener(
+
+        //All markers are refreshed each time something about spaces is changed on Firebase. This may cause lag
+        Global.spaces().addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot peer : dataSnapshot.getChildren()) {
                             for (DataSnapshot spce : peer.getChildren()) {
                                 Space space = spce.getValue(Space.class);
-                                Address address = null;
                                 try {
-                                    address = new Geocoder(MapsActivity.this)
+                                    List<Address> addressList = new Geocoder(MapsActivity.this)
                                             .getFromLocationName(space.getStreetAddress() + space.getCity()
-                                                    + space.getState() + " " + space.getZipCode(), 1).get(0);
-                                    //TODO Create dialog for all Geocoders
-                                    allSpaces.put(new LatLng(address.getLatitude(), address.getLongitude()), space);
+                                                    + space.getState() + " " + space.getZipCode(), 1);
+                                    //If the space's LatLng could not be located, just skip it to avoid crashes or lags
+                                    if(addressList.size() < 1)
+                                        continue;
+                                    allSpaces.put(new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude()), space);
                                     addAndFilterMarkers(null);
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -316,11 +328,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCameraIdle() {
                 currentCameraOrZoomLatLng = mMap.getCameraPosition().target;
 
+                //This could potentially have the map refreshed too often, causing lags and crashes
                 if(handler != null && !runnableRunning) {
-                    handler.postDelayed(handlerRunnable, 2000);
+                    handler.postDelayed(handlerRunnable, 1800);
                     runnableRunning = true;
                 }
-                //TODO Laggy: Add and filter called too many times initially
             }
         });
         mMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
@@ -337,7 +349,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         mMap.setMyLocationEnabled(true);
-        //TODO Increase distance radius filtering if zoomed over a certain percentage
     }
 
     //This allows search by BOTH address AND LONGITUDE LATITUDE
@@ -385,7 +396,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         start.setDay(extras.getInt("STARTDAY"));
         start.setHour(extras.getInt("STARTHOUR"));
         start.setMinute(extras.getInt("STARTMINUTE"));
-        Global_ParkHere_Application.setCurrentSearchTimeDateStart(start);
+        Global.setCurrentSearchTimeDateStart(start);
 
         MyCalendar end = new MyCalendar();
         end.setYear(extras.getInt("ENDYEAR"));
@@ -393,7 +404,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         end.setDay(extras.getInt("ENDDAY"));
         end.setHour(extras.getInt("ENDHOUR"));
         end.setMinute(extras.getInt("ENDMINUTE"));
-        Global_ParkHere_Application.setCurrentSearchTimedateEnd(start);
+        Global.setCurrentSearchTimedateEnd(start);
     }
 
     private Date extraToDate(Bundle extras, String SoE){
@@ -437,6 +448,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addAndFilterMarkers(Intent intent) {
+        System.out.println("Adding and filtering markers");
         mMap.clear();
 
         int lowestPrice = 0, highestPrice = 0;
@@ -468,16 +480,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     continue;
             }
 
-            String fullAddress = space.getStreetAddress() + " " + space.getCity() + " "
-                    + space.getState() + " " + space.getZipCode();
-            try {
-                Address address = new Geocoder(this).getFromLocationName(fullAddress, 1).get(0);
-                LatLng spaceLatLng = new LatLng(address.getLatitude(), address.getLongitude());
-                if (!checkThreeMileRadius(currentCameraOrZoomLatLng, spaceLatLng)) {
+            if(onlyThreeMileRadius) {
+                Toast.makeText(getApplicationContext(), "Search Radius: 3 Miles", Toast.LENGTH_SHORT).show();
+                if (!checkThreeMileRadius(currentCameraOrZoomLatLng, (LatLng) pair.getKey()))
                     continue;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Search Radius: Unlimited", Toast.LENGTH_SHORT).show();
             }
 
             MarkerOptions marker = new MarkerOptions();
@@ -485,11 +494,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             marker.title(space.getSpaceName());
             mMap.addMarker(marker);
         }
+
     }
 
     public boolean checkThreeMileRadius(LatLng here, LatLng dist) {
-//        System.out.println("At: " + here);
-//        System.out.println("Checking: " + dist );
         boolean withinRadius;
         float[] results = new float[1];
         Location.distanceBetween(here.latitude, here.longitude,
@@ -524,9 +532,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             addSpaceItem.setEnabled(true);
         filtersButton.setVisibility(View.GONE);
         resultAsListButton.setVisibility(View.GONE);
-        FirebaseDatabase.getInstance().getReference().child("Peers").child(Global_ParkHere_Application.reformatEmail(
-                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
-        )).child("preferredStatus").setValue(Status.OWNER);
+        Global.curUserRef().child("preferredStatus").setValue(Status.OWNER);
     }
 
     private void seekerMode(boolean firstTime){
@@ -539,9 +545,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         filtersButton.setVisibility(View.VISIBLE);
         resultAsListButton.setVisibility(View.VISIBLE);
-        FirebaseDatabase.getInstance().getReference().child("Peers").child(Global_ParkHere_Application.reformatEmail(
-                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()
-        )).child("preferredStatus").setValue(Status.SEEKER);
+        Global.curUserRef().child("preferredStatus").setValue(Status.SEEKER);
     }
 
 
@@ -572,6 +576,45 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Result from selecting filters
+        if(requestCode == 123){
+            if(resultCode == 12321) {
+                setCurrentSearchTimeFrame(data);
+                currentFiltersIntent = data;
+                addAndFilterMarkers(data);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        addSpaceItem = menu.getItem(0);
+        registerAsBothItem = menu.getItem(2);
+        if(Global.getCurUser().getStatus().equals(Status.BOTH)){
+            registerAsBothItem.setEnabled(false);
+
+        }
+        if(Global.getCurUser().getStatus().equals(Status.SEEKER)){
+            addSpaceItem.setEnabled(false);
+        }
+        if(userMode.equals(Status.SEEKER))
+            addSpaceItem.setEnabled(false);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(addSpaceMarker != null)
+            addSpaceMarker.remove();
     }
 
     @Override
@@ -619,44 +662,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 locationManager.requestLocationUpdates(GPS_PROVIDER, 0, 0, locationListener);
             }
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 123){
-            if(resultCode == 12321) {
-                setCurrentSearchTimeFrame(data);
-                currentFiltersIntent = data;
-                addAndFilterMarkers(data);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        addSpaceItem = menu.getItem(0);
-        addSpaceItem.setEnabled(false);
-        registerAsBothItem = menu.getItem(2);
-        if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.BOTH)){
-            registerAsBothItem.setEnabled(false);
-
-        }
-        if(Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)){
-            addSpaceItem.setEnabled(false);
-        }
-        if(userMode.equals(Status.SEEKER))
-            addSpaceItem.setEnabled(false);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(addSpaceMarker != null)
-            addSpaceMarker.remove();
     }
 }

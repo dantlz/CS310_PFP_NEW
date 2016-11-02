@@ -82,7 +82,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        if(extras.getString("OWNEREMAIL").equals(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress())){
+        if(extras.getString("OWNEREMAIL").equals(Global.getCurUser().getEmailAddress())){
             bookSpaceButton.setVisibility(View.GONE);
         }
         //Directed from map or resultList
@@ -109,8 +109,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseDatabase.getInstance().getReference().child("Spaces")
-                .child(Global_ParkHere_Application.reformatEmail(extras.getString("OWNEREMAIL")))
+        Global.spaces().child(Global.reformatEmail(extras.getString("OWNEREMAIL")))
                 .child(extras.getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

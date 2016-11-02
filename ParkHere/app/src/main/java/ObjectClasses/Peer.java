@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Peer {
     private String emailAddress;
-//    Password
+    private String reformattedEmail;
     private PaymentInfo paymentInfo;
     private String firstName;
     private String lastName;
@@ -167,6 +167,14 @@ public class Peer {
         this.preferredStatus = preferredStatus;
     }
 
+    public String getReformattedEmail() {
+        return reformattedEmail;
+    }
+
+    public void setReformattedEmail(String reformattedEmail) {
+        this.reformattedEmail = reformattedEmail;
+    }
+
     public void setIDNonFirebaseRelated(Drawable dpDrawable) {
         Bitmap copySelectedImage = getResizedBitmap(((BitmapDrawable) dpDrawable).getBitmap(), 500);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -180,6 +188,5 @@ public class Peer {
         Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         return bitmap;
     }
-
 }
 

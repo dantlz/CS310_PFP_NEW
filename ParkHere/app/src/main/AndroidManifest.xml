@@ -17,7 +17,7 @@
     <uses-feature android:name="android.hardware.camera2" />
 
     <application
-        android:name=".Global_ParkHere_Application"
+        android:name=".Global"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="ParkHere"

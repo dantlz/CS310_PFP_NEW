@@ -39,10 +39,7 @@ public class VerificationActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            FirebaseDatabase.getInstance().getReference().child("Peers")
-                    .child(Global_ParkHere_Application
-                            .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                    .child("photoID").setValue(selectedImage.toString());
+            Global.curUserRef().child("photoID").setValue(selectedImage.toString());
             startActivity(new Intent(VerificationActivity.this, MapsActivity.class));
             finish();
         }

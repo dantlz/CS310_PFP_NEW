@@ -2,6 +2,7 @@ package com.pfp.parkhere;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +34,7 @@ import ObjectClasses.Space;
 //TODO Add fields for review and ratings
 //TODO Create a function to get average of all ratings
 //TODO Append new review to a list of string reviews
-
+//TODO Finish booking activity doesn't check owner status, doesn't check owner owns this.
 public class FinishBookingsActivity extends AppCompatActivity {
 
     private ArrayList<Booking> bookingsForSpace;
@@ -42,9 +46,6 @@ public class FinishBookingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_finish_bookings);
 
         bookingsForSpace = generateBookings();
-
-        System.out.println(bookingsForSpace.size());
-
         updateDisplay();
     }
 
@@ -117,6 +118,8 @@ public class FinishBookingsActivity extends AppCompatActivity {
             }
 
         }
+
+        //TODO Delete Booking from firebase
 
         bookingsForSpace = new ArrayList<>(newBookings);
 

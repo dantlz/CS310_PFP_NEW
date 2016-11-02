@@ -21,16 +21,20 @@ public class Space {
     private int pricePerHour;
     private CancellationPolicy policy;
     private String description;
-    //TODO Make this a list of images
     private MyCalendar availableStartDateAndTime;
     private MyCalendar availableEndDateAndTime;
+    //TODO Make this a list of images
     private String picture;
 
-    private List<MyCalendar> bookingStartDates;
-    private List<MyCalendar> bookingEndDates;
     private int spaceRating;
     //TODO Make this a list of reviews
     private String spaceReview;
+
+    //The key is currentBookingOwnerEmails, the value is a list of currentBookingsIdentifiers
+    private List<String> currentBookingOwnerEmails;
+    private List<MyCalendar> bookingStartDates;
+    private List<MyCalendar> bookingEndDates;
+
 
     public String getSpaceName() {
         return spaceName;
@@ -198,4 +202,11 @@ public class Space {
         this.spaceReview = spaceReview;
     }
 
+    public List<String> getCurrentBookingOwnerEmails() {
+        return currentBookingOwnerEmails;
+    }
+
+    public void setCurrentBookingOwnerEmails(List<String> currentBookingOwnerEmails) {
+        this.currentBookingOwnerEmails = currentBookingOwnerEmails;
+    }
 }

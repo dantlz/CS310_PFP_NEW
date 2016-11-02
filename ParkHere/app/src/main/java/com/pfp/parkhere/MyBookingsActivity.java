@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -38,28 +39,25 @@ public class MyBookingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_bookings);
+
         //get bookings list
         bookingsView = (ListView) findViewById(R.id.bookinglist);
         myBookingIdentifiers = new LinkedList<>();
         myBookings = new LinkedList<>();
 
-        FirebaseDatabase.getInstance().getReference().child("Bookings")
-                .child(
-                        Global_ParkHere_Application.reformatEmail(
-                                Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                            myBookingIdentifiers.add(postSnapshot.getKey());
-                            myBookings.add(postSnapshot.getValue(Booking.class));
-                        }
-                        populate();
-                    }
+        Global.bookings().child(Global.getCurUser().getReformattedEmail()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                    myBookingIdentifiers.add(postSnapshot.getKey());
+                    myBookings.add(postSnapshot.getValue(Booking.class));
+                }
+                populate();
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
 
@@ -97,10 +95,8 @@ public class MyBookingsActivity extends AppCompatActivity {
 
         currBooking = myBookings.get(position);
 
-        FirebaseDatabase.getInstance().getReference().child("Spaces")
-                .child(Global_ParkHere_Application.reformatEmail(
-                        currBooking.getBookingSpaceOwnerEmail()
-                )).child(currBooking.getSpaceName()).addValueEventListener(new ValueEventListener() {
+        Global.spaces().child(Global.reformatEmail(currBooking.getBookingSpaceOwnerEmail()))
+                .child(currBooking.getSpaceName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 finishBookingClicked(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
@@ -149,25 +145,22 @@ public class MyBookingsActivity extends AppCompatActivity {
         //Generate Rating and Review
         //Get owner object to set rating
         String bookingsSpacesOwnerEmail = space.getOwnerEmail();
-        FirebaseDatabase.getInstance()
-                .getReference("Peers")
-                .child(Global_ParkHere_Application.reformatEmail(bookingsSpacesOwnerEmail))
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
+        Global.peers().child(Global.reformatEmail(bookingsSpacesOwnerEmail)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
 
-                        Peer currentUser = dataSnapshot.getValue(Peer.class);
-                        ownerRating = ((Peer) currentUser).getOwnerRating();
-                        finishPopulate(extras);
-                    }
+                Peer currentUser = dataSnapshot.getValue(Peer.class);
+                ownerRating = ((Peer) currentUser).getOwnerRating();
+                finishPopulate(extras);
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                    }
-                });
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
     }
 
     private void finishPopulate(Bundle extras){

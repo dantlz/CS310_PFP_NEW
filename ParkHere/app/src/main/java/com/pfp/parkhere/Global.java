@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -15,11 +16,12 @@ import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
-public class Global_ParkHere_Application extends Application {
+public class Global extends Application {
 
 
     private static HashMap<LatLng, Space> mapOfLatLngSpacesToPass;
     private static Peer currentUserObject;
+
     //To ensure the dates are not null
     private static MyCalendar currentSearchTimeDateStart = new MyCalendar();
     private static MyCalendar currentSearchTimedateEnd = new MyCalendar();
@@ -40,11 +42,6 @@ public class Global_ParkHere_Application extends Application {
         currentSearchTimedateEnd = currentSearchTimedateEnd;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     public static String getCancellationPolicy(CancellationPolicy policy) {
         if (policy == CancellationPolicy.LIGHT) {
             return "Flexible: You will receive a full refund if you cancel up to 24 hours in advance.";
@@ -59,11 +56,11 @@ public class Global_ParkHere_Application extends Application {
 
     public static void addListener(){
         FirebaseDatabase.getInstance().getReference().child("Peers")
-                .child(Global_ParkHere_Application.reformatEmail(currentUserObject.getEmailAddress()))
+                .child(Global.reformatEmail(currentUserObject.getEmailAddress()))
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        setCurrentUserObject(dataSnapshot.getValue(Peer.class));
+                        setCurUser(dataSnapshot.getValue(Peer.class));
                     }
 
                     @Override
@@ -73,11 +70,11 @@ public class Global_ParkHere_Application extends Application {
                 });
     }
 
-    public static Peer getCurrentUserObject() {
+    public static Peer getCurUser() {
         return currentUserObject;
     }
 
-    public static void setCurrentUserObject(Peer obj) {
+    public static void setCurUser(Peer obj) {
         currentUserObject = obj;
     }
 
@@ -96,6 +93,22 @@ public class Global_ParkHere_Application extends Application {
     }
 
     public static void setMapOfLatLngSpacesToPass(HashMap<LatLng, Space> mapOfLatLngSpacesToPass) {
-        Global_ParkHere_Application.mapOfLatLngSpacesToPass = mapOfLatLngSpacesToPass;
+        Global.mapOfLatLngSpacesToPass = mapOfLatLngSpacesToPass;
+    }
+
+    public static DatabaseReference peers(){
+        return FirebaseDatabase.getInstance().getReference().child("peers");
+    }
+
+    public static DatabaseReference spaces(){
+        return FirebaseDatabase.getInstance().getReference().child("spaces");
+    }
+
+    public static DatabaseReference bookings(){
+        return FirebaseDatabase.getInstance().getReference().child("bookings");
+    }
+
+    public static DatabaseReference curUserRef(){
+        return Global.peers().child(Global.getCurUser().getReformattedEmail());
     }
 }

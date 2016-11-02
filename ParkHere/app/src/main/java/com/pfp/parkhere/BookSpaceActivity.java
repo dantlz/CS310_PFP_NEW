@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -19,13 +20,12 @@ import ObjectClasses.Space;
 
 public class BookSpaceActivity extends AppCompatActivity {
 
-    Space selectedSpace;
+    private Space selectedSpace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_space);
-
 
         selectedSpace = new Space();
 
@@ -38,8 +38,7 @@ public class BookSpaceActivity extends AppCompatActivity {
         selectedSpace.setOwnerEmail("bradfora@usc.edu");
         selectedSpace.setPolicy(CancellationPolicy.MODERATE);
 
-        FirebaseDatabase.getInstance().getReference().child("Spaces")
-                .child(Global_ParkHere_Application.reformatEmail(getIntent().getExtras().getString("OWNEREMAIL")))
+        Global.spaces().child(Global.reformatEmail(getIntent().getExtras().getString("OWNEREMAIL")))
                 .child(getIntent().getExtras().getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -63,7 +62,7 @@ public class BookSpaceActivity extends AppCompatActivity {
         priceView.setText("Price: $" + selectedSpace.getPricePerHour());
 
         TextView policyView = (TextView)findViewById(R.id.display_cancellation_policy);
-        policyView.setText(Global_ParkHere_Application.getCancellationPolicy(selectedSpace.getPolicy()));
+        policyView.setText(Global.getCancellationPolicy(selectedSpace.getPolicy()));
 
     }
 

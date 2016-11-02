@@ -5,7 +5,7 @@ public class Booking {
     private String bookingSpaceOwnerEmail;
     private MyCalendar startCalendarDate;
     private MyCalendar endCalendarDate;
-    private boolean done;
+    //Bookings are deleted from the database once the end date is passed and the owner confirms finish booking
 
     public MyCalendar getStartCalendarDate() {
         return startCalendarDate;
@@ -23,23 +23,6 @@ public class Booking {
         this.endCalendarDate = endCalendarDate;
     }
 
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
-    public boolean isRepeat() {
-        return repeat;
-    }
-
-    public void setRepeat(boolean repeat) {
-        this.repeat = repeat;
-    }
-
-
     public String getSpaceName() {
         return spaceName;
     }
@@ -47,8 +30,6 @@ public class Booking {
     public void setSpaceName(String spaceName) {
         this.spaceName = spaceName;
     }
-
-    private boolean repeat;
 
     public String getBookingSpaceOwnerEmail() {
         return bookingSpaceOwnerEmail;

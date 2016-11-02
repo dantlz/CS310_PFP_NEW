@@ -68,10 +68,10 @@ public class ProfileActivity extends AppCompatActivity
 
             RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
             rateBar.setVisibility(View.GONE);
-            if(!Global_ParkHere_Application.getCurrentUserObject().getStatus().equals(Status.SEEKER)) {
+            if(!Global.getCurUser().getStatus().equals(Status.SEEKER)) {
                 rateBar.setVisibility(View.VISIBLE);
                 DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
-                rateBar.setRating(Global_ParkHere_Application.getCurrentUserObject().getOwnerRating());
+                rateBar.setRating(Global.getCurUser().getOwnerRating());
             }
 
             disableEditText(mEmail);
@@ -100,18 +100,9 @@ public class ProfileActivity extends AppCompatActivity
                     disableEditText(mLastName);
                     disableEditText(mEmail);
 
-                    FirebaseDatabase.getInstance().getReference().child("Peers")
-                            .child(Global_ParkHere_Application
-                                    .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                            .child("phoneNumber").setValue(mPhone.getText().toString());
-                    FirebaseDatabase.getInstance().getReference().child("Peers")
-                            .child(Global_ParkHere_Application
-                                    .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                            .child("firstName").setValue(mFirstName.getText().toString());
-                    FirebaseDatabase.getInstance().getReference().child("Peers")
-                            .child(Global_ParkHere_Application
-                                    .reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                            .child("lastName").setValue(mLastName.getText().toString());
+                    Global.curUserRef().child("phoneNumber").setValue(mPhone.getText().toString());
+                    Global.curUserRef().child("firstName").setValue(mFirstName.getText().toString());
+                    Global.curUserRef().child("lastName").setValue(mLastName.getText().toString());
                 }
             });
 
@@ -127,9 +118,7 @@ public class ProfileActivity extends AppCompatActivity
 
         //Checking owner profile
         hideFields();
-        FirebaseDatabase.getInstance().getReference().child("Peers")
-                .child(Global_ParkHere_Application.reformatEmail(ownerEmail))
-                .addValueEventListener(new ValueEventListener() {
+        Global.curUserRef().addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Peer owner = dataSnapshot.getValue(Peer.class);
@@ -166,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     private void populateFields() throws InterruptedException {
-        Peer currentUser = Global_ParkHere_Application.getCurrentUserObject();
+        Peer currentUser = Global.getCurUser();
         mImageView.setImageBitmap(currentUser.retrieveDPBitmap());
         mFirstName.setText(currentUser.getFirstName());
         mLastName.setText(currentUser.getLastName());

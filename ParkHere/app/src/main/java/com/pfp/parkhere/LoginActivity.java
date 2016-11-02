@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -32,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordField;
     private Button loginButton;
     private Button goToRegisterButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(!fireBaseUser.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                         return;
                     
-                    FirebaseDatabase.getInstance()
-                            .getReference("Peers")
-                            .child(Global_ParkHere_Application.reformatEmail(fireBaseUser.getEmail()))
+                    Global.peers().child(Global.reformatEmail(fireBaseUser.getEmail()))
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,10 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                                     if(currentUser == null){
                                         return;
                                     }
-                                    Global_ParkHere_Application.setCurrentUserObject(currentUser);
-                                    Global_ParkHere_Application.addListener();
+                                    Global.setCurUser(currentUser);
                                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));
                                     finish();
+                                    return;
                                 }
                                 @Override
                                 public void onCancelled(DatabaseError error) {

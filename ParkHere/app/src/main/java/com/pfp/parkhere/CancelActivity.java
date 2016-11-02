@@ -1,10 +1,12 @@
 package com.pfp.parkhere;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CancelActivity extends AppCompatActivity {
@@ -15,6 +17,7 @@ public class CancelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel);
+
         identifier = getIntent().getExtras().getString("IDENTIFIER");
     }
 
@@ -23,15 +26,10 @@ public class CancelActivity extends AppCompatActivity {
     }
 
     public void CancelBooking(View view) {
-        FirebaseDatabase.getInstance().getReference().child("Bookings")
-                .child(Global_ParkHere_Application.reformatEmail(Global_ParkHere_Application.getCurrentUserObject().getEmailAddress()))
-                .child(identifier).removeValue();
-        //remove from database. If things work out right, the mybookings activity should reload from database without the deleted booking
+        Global.bookings().child(Global.getCurUser().getReformattedEmail()).child(identifier).removeValue();
         Intent intent = new Intent(CancelActivity.this, MyBookingsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
-
-
 }
