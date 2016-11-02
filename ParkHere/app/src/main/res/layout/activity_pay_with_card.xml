@@ -71,7 +71,8 @@
         android:layout_height="wrap_content"
         android:text="@string/submit_card_info"
         android:onClick="finishPayment"
-        android:id="@+id/submit_card_button"/>
+        android:id="@+id/submit_card_button"
+        android:elevation="16dp" />
 
 
 </LinearLayout>

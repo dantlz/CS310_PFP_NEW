@@ -133,18 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                 }
                 else {
-                    findViewById(R.id.registerLoad).setVisibility(View.GONE);
-                    // User is signed out. This would not happen here ever
-                    new AlertDialog.Builder(RegisterActivity.this)
-                            .setTitle("Registration failed")
-                            .setMessage("Something on our sever broke.")
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //Do nothing
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+
                     return;
                 }
             }

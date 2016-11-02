@@ -1,5 +1,7 @@
 package com.pfp.parkhere;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -92,7 +94,20 @@ public class EditListedSpacesActivity extends AppCompatActivity {
                 .child("description").setValue(editDescription.getText().toString());
         Address address = null;
         try {
-            address = new Geocoder(getApplicationContext()).getFromLocationName(editAddress.getText().toString(), 1).get(0);
+            List<Address> addressList = new Geocoder(getApplicationContext()).getFromLocationName(editAddress.getText().toString(), 1);
+            if (addressList.size() < 1){
+                new AlertDialog.Builder(EditListedSpacesActivity.this)
+                        .setTitle("Location not found")
+                        .setMessage("We could not find a location based on your address. Please try again")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

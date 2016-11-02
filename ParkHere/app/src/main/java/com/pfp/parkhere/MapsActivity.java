@@ -74,7 +74,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button filtersButton;
     private Button resultAsListButton;
     private SupportMapFragment mapFragment;
-    private SimpleDateFormat format = new SimpleDateFormat();
+    private SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmssZ");
     private LatLng currentCameraOrZoomLatLng;
     private Intent currentFiltersIntent;
     private Handler handler;
@@ -414,8 +414,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         day = getDoubleDigit(extras.getInt(SoE + "DAY"));
         hour = getDoubleDigit(extras.getInt(SoE + "HOUR"));
         minute = getDoubleDigit(extras.getInt(SoE + "MINUTE"));
-        String fullStartDateTime = year + "."
-                + month + "." + day + "." + hour + "." + minute + ".00";
+        String fullStartDateTime = year + month + day + hour + minute + "00-0";
+        System.out.println(fullStartDateTime);
         try {
             dateTime = format.parse(fullStartDateTime);
             return dateTime;
@@ -434,8 +434,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         day = getDoubleDigit(calendar.getDay());
         hour = getDoubleDigit(calendar.getHour());
         minute = getDoubleDigit(calendar.getMinute());
-        String sdt = year + "."
-                + month + "." + day + "." + hour + "." + minute + ".00";
+        String sdt = year + month + day + hour + minute + "00";
         try {
             dateTime = format.parse(sdt);
             return  dateTime;

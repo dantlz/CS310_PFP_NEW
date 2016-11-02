@@ -149,9 +149,7 @@ public class FinishBookingsActivity extends AppCompatActivity {
         day = getDoubleDigit(calendar.getDay());
         hour = getDoubleDigit(calendar.getHour());
         minute = getDoubleDigit(calendar.getMinute());
-        String sdt = year + "."
-                + month + "." + day + "." + hour + "." + minute + ".00";
-        System.out.println(sdt);
+        String sdt = year + month + day + hour + minute + "00-0700";
         try {
             dateTime = format.parse(sdt);
             return  dateTime;

@@ -29,19 +29,15 @@ public class PayWithPaypalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_with_paypal);
 
+        booking = new Booking();
+
         spaceName = getIntent().getExtras().getString("SPACE_NAME_IDENTIFIER");
-        ownerEmailReformatted = Global.reformatEmail(
-                getIntent().getExtras().getString("OWNER_EMAIL_IDENTIFIER"));
+        ownerEmailReformatted = Global.reformatEmail(getIntent().getExtras().getString("OWNER_EMAIL_IDENTIFIER"));
     }
 
 
-    public void submitPaypalPayment(View view) {
-        booking = new Booking();
-        FirebaseDatabase.getInstance().getReference().child("Spaces")
-                .child(Global.reformatEmail(
-                        getIntent().getExtras().getString("OWNER_EMAIL_IDENTIFIER")))
-                .child(getIntent().getExtras().getString("SPACE_NAME_IDENTIFIER"))
-                .addValueEventListener(new ValueEventListener() {
+    public void verifyPaypal(View view) {
+        Global.spaces().child(ownerEmailReformatted).child(spaceName).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Space space = dataSnapshot.getValue(Space.class);
@@ -60,7 +56,6 @@ public class PayWithPaypalActivity extends AppCompatActivity {
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
         booking.setEndCalendarDate(Global.getCurrentSearchTimedateEnd());
         booking.setBookingSpaceOwnerEmail(space.getOwnerEmail());
-        //TODO Check for reformat usages
         Global.bookings().child(Global.getCurUser().getReformattedEmail()).push().setValue(booking);
         Global.bookings().child(Global.getCurUser().getReformattedEmail()).addChildEventListener(new ChildEventListener() {
             @Override

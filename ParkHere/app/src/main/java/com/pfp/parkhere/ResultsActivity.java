@@ -1,8 +1,6 @@
 package com.pfp.parkhere;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

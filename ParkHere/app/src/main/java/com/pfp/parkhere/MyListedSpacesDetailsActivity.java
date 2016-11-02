@@ -49,7 +49,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
-        //My listed space detail
+        //Came from my listed space detail
         if(extras.getString("SPACENAME") == null) {
             TextView nameText = (TextView) findViewById(R.id.listed_space_name);
             nameText.setText(extras.getString("LISTED_SPACE_NAME"));
@@ -82,9 +82,27 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        //Can't book my own space or look at myself, but can confirm/edit space
         if(extras.getString("OWNEREMAIL").equals(Global.getCurUser().getEmailAddress())){
             bookSpaceButton.setVisibility(View.GONE);
+            ownerButton.setVisibility(View.GONE);
         }
+        //Can book or look at someone else, but can't modify their stuff
+        else{
+            confirmBookingButton.setVisibility(View.GONE);
+            editButton.setVisibility(View.GONE);
+        }
+
+        //Owners can't book space, but can view other owners, confirm/edit his own
+        if(extras.getString("STATUS").equals("OWNER")){
+            bookSpaceButton.setVisibility(View.GONE);
+        }
+        //Seekers can book space or look at owner, but can't confirm or edit.
+        else{
+            confirmBookingButton.setVisibility(View.GONE);
+            editButton.setVisibility(View.GONE);
+        }
+
         //Directed from map or resultList
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,9 +113,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             }
         });
         editButton.setVisibility(View.GONE);
-        if(extras.getString("STATUS").equals("OWNER")){
-            bookSpaceButton.setVisibility(View.GONE);
-        }
+
         bookSpaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

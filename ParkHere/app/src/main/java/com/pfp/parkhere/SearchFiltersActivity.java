@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -26,9 +27,13 @@ public class SearchFiltersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_filters);
 
+        RadioButton rad = (RadioButton) findViewById(R.id.compactRadioButton);
+        rad.setChecked(true);
+
+
         //Give filters very broad default values;
         lowestPriceField = (EditText) findViewById(R.id.lowestPriceField);
-        lowestPriceField.setText(0);
+        lowestPriceField.setText("0");
         highestPriceField = (EditText) findViewById(R.id.highestPriceField);
         highestPriceField.setText("1000");
 
