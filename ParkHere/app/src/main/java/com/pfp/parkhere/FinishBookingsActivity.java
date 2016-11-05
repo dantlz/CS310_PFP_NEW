@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.ContactsContract;
@@ -8,18 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,48 +31,93 @@ import ObjectClasses.Booking;
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 
-//TODO Finish integrating this class
 //TODO Firebase - Add field to Peer: available balance
-//TODO Firebase - Add field to Space: list of Booking
-//TODO Fireabse - Remove field from Booking: done
 //TODO Add fields for review and ratings
 //TODO Create a function to get average of all ratings
 //TODO Append new review to a list of string reviews
-//TODO Finish booking activity doesn't check owner status, doesn't check owner owns this.
 public class FinishBookingsActivity extends AppCompatActivity {
 
-    private ArrayList<Booking> bookingsForSpace;
-    private SimpleDateFormat format = new SimpleDateFormat();
+    private SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmssZ");
+    private String spaceName;
+    private String ownerEmail;
+    private List<String> listOfBookingIdentifiers;
+    private List<String> listOfBookingSeekerEmails;
+    private List<Booking> allBookings;
+    private Button finishButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish_bookings);
 
-        bookingsForSpace = generateBookings();
-        updateDisplay();
+        finishButton = (Button) findViewById(R.id.finish_bookings_button);
+
+        allBookings = new LinkedList<>();
+        listOfBookingIdentifiers = new LinkedList<>();
+        listOfBookingSeekerEmails = new LinkedList<>();
+
+        spaceName = getIntent().getExtras().getString("SPACE_NAME");
+        ownerEmail = getIntent().getExtras().getString("SPACE_OWNEREMAIL");
+
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for(DataSnapshot id: dataSnapshot.getChildren()){
+                            listOfBookingIdentifiers.add(id.getKey());
+                            listOfBookingSeekerEmails.add(id.getValue(String.class));
+                        }
+
+                        generateBookings();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
     }
 
-    private void updateDisplay() {
+    private void generateBookings() {
+
+        Global.bookings().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(int i = 0; i < listOfBookingSeekerEmails.size(); i ++){
+                    String email = listOfBookingSeekerEmails.get(i);
+                    String bookingIdentifier = listOfBookingIdentifiers.get(i);
+                    Booking booking = dataSnapshot.child(Global.reformatEmail(email)).child(bookingIdentifier).getValue(Booking.class);
+                    allBookings.add(booking);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        populateFields();
+    }
+
+    private void populateFields() {
 
         TextView nameOfSpace = (TextView) findViewById(R.id.space_name_for_bookings);
-        if (bookingsForSpace.size() != 0) {
-            nameOfSpace.setText("Showing bookings for " +
-                    bookingsForSpace.get(0).getSpaceName());
+        if (allBookings.size() != 0) {
+            nameOfSpace.setText(spaceName);
         }
         else {
             nameOfSpace.setText("This space has no active bookings.");
+            finishButton.setEnabled(false);
+            return;
         }
 
+
         ListView bookingsDisplay = (ListView)findViewById(R.id.list_of_bookings);
+        String [] bookingItemDisplayText = new String[allBookings.size()];
 
-        String [] strFormattedBookings = new String[bookingsForSpace.size()];
-
-        for (int i = 0; i < bookingsForSpace.size(); i++) {
-            Booking toFormat = bookingsForSpace.get(i);
-            MyCalendar startTime = toFormat.getStartCalendarDate();
-            MyCalendar endTime = toFormat.getEndCalendarDate();
-            strFormattedBookings[i] = toFormat.getSpaceName() + "\n"
+        for (int i = 0; i < allBookings.size(); i++) {
+            Booking booking = allBookings.get(i);
+            MyCalendar startTime = booking.getStartCalendarDate();
+            MyCalendar endTime = booking.getEndCalendarDate();
+            bookingItemDisplayText[i] = booking.getSpaceName() + "\n"
                     + startTime.getMonth() + "/"
                     + startTime.getDay() + "/"
                     + startTime.getYear() + " "
@@ -79,65 +128,40 @@ public class FinishBookingsActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> adapterForBookings = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, strFormattedBookings);
+                android.R.layout.simple_list_item_1, android.R.id.text1, bookingItemDisplayText);
 
         bookingsDisplay.setAdapter(adapterForBookings);
     }
 
-    private ArrayList<Booking> generateBookings () {
-        ArrayList<Booking> retVal = new ArrayList<Booking>();
-
-        for (int i = 0; i < 11; i++) {
-            Booking bookingToAdd = new Booking();
-            bookingToAdd.setSpaceName("My Test Space");
-
-            MyCalendar startTime = new MyCalendar(2016, 11, 4, i+1, 0);
-            MyCalendar endTime = new MyCalendar(2016, 11, 4, i+2, 0);
-
-            bookingToAdd.setStartCalendarDate(startTime);
-            bookingToAdd.setEndCalendarDate(endTime);
-
-            retVal.add(bookingToAdd);
-        }
-
-        return retVal;
-    }
-
     public void completeBookings(View view) {
         int countOfRemovedSpaces = 0;
-        List<Booking> newBookings = new LinkedList<>();
-        for (int i = 0; i < bookingsForSpace.size(); i++) {
-            Booking currBooking = bookingsForSpace.get(i);
-            Date endTime = myCalendarToDate(currBooking.getEndCalendarDate());
+
+        int counter = 0;
+        for (Iterator<Booking> iterator = allBookings.iterator(); iterator.hasNext();) {
+            Booking booking = iterator.next();
+            String curEmail = listOfBookingSeekerEmails.get(counter);
+            String curIdentifier = listOfBookingIdentifiers.get(counter);
+            Date endTime = myCalendarToDate(booking.getEndCalendarDate());
             Date currTime = new Date();
 
             if (currTime.after(endTime)) {
-                newBookings.add(currBooking);
-//                bookingsForSpace.remove(i-countOfRemovedSpaces);
-                countOfRemovedSpaces++;
+                Global.bookings().child(curEmail).child(curIdentifier).removeValue();
+                iterator.remove();
             }
-
         }
 
-        //TODO Delete Booking from firebase
 
-        bookingsForSpace = new ArrayList<>(newBookings);
+        new AlertDialog.Builder(FinishBookingsActivity.this)
+                .setTitle("Success!")
+                .setMessage("Finished " + countOfRemovedSpaces + " bookings.")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {}
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create().show();
 
-        AlertDialog dialog;
-        AlertDialog.Builder completedDisplay = new AlertDialog.Builder(view.getContext());
-        completedDisplay.setTitle("Success!")
-                .setMessage("Finished " + countOfRemovedSpaces + " bookings.");
-        completedDisplay.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                updateDisplay();
-                dialog.dismiss();
-            }
-        });
-
-        dialog = completedDisplay.create();
-        dialog.show();
-
+        populateFields();
+        finishButton.setEnabled(false);
     }
 
     private Date myCalendarToDate(MyCalendar calendar){

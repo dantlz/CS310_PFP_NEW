@@ -49,10 +49,8 @@ public class ResultsActivity extends AppCompatActivity {
                 int n = position;
                 ObjectClasses.Space spx = spaceList.get(n);
                 Intent intent = new Intent(ResultsActivity.this, MyListedSpacesDetailsActivity.class);
-                intent.putExtra("SPACENAME", spx.getSpaceName());
-                intent.putExtra("OWNEREMAIL", spx.getOwnerEmail());
-                intent.putExtra("STATUS", String.valueOf(Status.SEEKER));
-
+                intent.putExtra("SPACE_NAME", spx.getSpaceName());
+                intent.putExtra("SPACE_OWNEREMAIL", spx.getOwnerEmail());
                 startActivity(intent);
             }
         });
@@ -161,15 +159,6 @@ public class ResultsActivity extends AppCompatActivity {
             Collections.sort(spaceList, new Comparator<ObjectClasses.Space>() {
                 @Override
                 public int compare(ObjectClasses.Space o1, ObjectClasses.Space o2) {
-
-//                    String o1FullAddress = o1.getStreetAddress() + " " + o1.getCity() + " " +
-//                            o1.getState() + " " + o1.getZipCode();
-//                    String o2FullAddress = o2.getStreetAddress() + " " + o2.getCity() + " " +
-//                            o2.getState() + " " + o2.getZipCode();
-
-//                    int p1 = (int)calculateDistanceFromTo(latLngFromAddress(o1FullAddress), userLatLng);
-//                    int p2 = (int)calculateDistanceFromTo(latLngFromAddress(o2FullAddress), userLatLng);
-
                     LatLng o1LatLng = null, o2LatLng = null;
                     for (Map.Entry<LatLng, Space> e : spacesLatLng.entrySet()) {
                         if(e.getValue().equals(o1))
@@ -201,7 +190,7 @@ public class ResultsActivity extends AppCompatActivity {
                 to.latitude, to.longitude,
                 results);
 
-        distanceMiles = (float) results[0]/(float)0.00062137;
+        distanceMiles = results[0]/(float)0.00062137;
 
         return distanceMiles;
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -20,9 +21,7 @@ import ObjectClasses.Space;
 public class PayWithPaypalActivity extends AppCompatActivity {
 
     private Booking booking;
-    private String ownerEmailReformatted;
-    private String spaceName;
-    private String bookingID;
+    private String ownerEmail, ownerEmailReformatted, spaceName, bookingID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,9 @@ public class PayWithPaypalActivity extends AppCompatActivity {
 
         booking = new Booking();
 
-        spaceName = getIntent().getExtras().getString("SPACE_NAME_IDENTIFIER");
-        ownerEmailReformatted = Global.reformatEmail(getIntent().getExtras().getString("OWNER_EMAIL_IDENTIFIER"));
+        spaceName = getIntent().getExtras().getString("SPACE_NAME");
+        ownerEmail = getIntent().getExtras().getString("SPACE_OWNEREMAIL");
+        ownerEmailReformatted = Global.reformatEmail(ownerEmail);
     }
 
 
@@ -52,29 +52,17 @@ public class PayWithPaypalActivity extends AppCompatActivity {
     }
 
     private void completePayment(Space space) {
+
         booking.setSpaceName(space.getSpaceName());
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
         booking.setEndCalendarDate(Global.getCurrentSearchTimedateEnd());
         booking.setBookingSpaceOwnerEmail(space.getOwnerEmail());
-        Global.bookings().child(Global.getCurUser().getReformattedEmail()).push().setValue(booking);
-        Global.bookings().child(Global.getCurUser().getReformattedEmail()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                bookingID = dataSnapshot.getKey();
-            }
+        DatabaseReference addedBookingRef = Global.bookings().child(Global.getCurUser().getReformattedEmail()).push();
+        addedBookingRef.setValue(booking);
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-        Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingsOwnerEmails").child(ownerEmailReformatted).push().setValue(bookingID);
+        bookingID = addedBookingRef.getKey();
+        Global.spaces().child(ownerEmailReformatted).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         startActivity(new Intent(PayWithPaypalActivity.this, MapsActivity.class));
-        finish();
         //Maybe add unavailable times to space obejct too?
 //        FirebaseDatabase.getInstance().getReference().child("Spaces")
 //                .child(Global.reformatEmail(

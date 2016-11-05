@@ -21,36 +21,30 @@ import ObjectClasses.Space;
 public class BookSpaceActivity extends AppCompatActivity {
 
     private Space selectedSpace;
+    private String spaceName;
+    private String ownerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_space);
 
-        selectedSpace = new Space();
+        Bundle extras = getIntent().getExtras();
+        spaceName = extras.getString("SPACE_NAME");
+        ownerEmail = extras.getString("SPACE_OWNEREMAIL");
 
-        selectedSpace.setSpaceName("USC New/North Parking");
-        selectedSpace.setStreetAddress("635 McCarthy Way");
-        selectedSpace.setCity("Los Angeles");
-        selectedSpace.setState("CA");
-        selectedSpace.setZipCode("90007");
-        selectedSpace.setPricePerHour(10);
-        selectedSpace.setOwnerEmail("bradfora@usc.edu");
-        selectedSpace.setPolicy(CancellationPolicy.MODERATE);
-
-        Global.spaces().child(Global.reformatEmail(getIntent().getExtras().getString("OWNEREMAIL")))
-                .child(getIntent().getExtras().getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 selectedSpace = dataSnapshot.getValue(Space.class);
-                finishPopulating();
+                populateFields();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
 
-    private void finishPopulating(){
+    private void populateFields(){
         TextView nameView = (TextView)findViewById(R.id.space_name_confirmation);
         nameView.setText(selectedSpace.getSpaceName());
 
@@ -86,10 +80,9 @@ public class BookSpaceActivity extends AppCompatActivity {
         Context context = view.getContext();
         Intent intent = new Intent(context, PayWithCardActivity.class);
 
-
         Bundle extras = new Bundle();
-        extras.putString("OWNER_EMAIL_IDENTIFIER", selectedSpace.getOwnerEmail());
-        extras.putString("SPACE_NAME_IDENTIFIER", selectedSpace.getSpaceName());
+        extras.putString("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
+        extras.putString("SPACE_NAME", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
         startActivity(intent);
@@ -100,10 +93,9 @@ public class BookSpaceActivity extends AppCompatActivity {
         Context context = view.getContext();
         Intent intent = new Intent(context, PayWithPaypalActivity.class);
 
-
         Bundle extras = new Bundle();
-        extras.putString("OWNER_EMAIL_IDENTIFIER", selectedSpace.getOwnerEmail());
-        extras.putString("SPACE_NAME_IDENTIFIER", selectedSpace.getSpaceName());
+        extras.putString("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
+        extras.putString("SPACE_NAME", selectedSpace.getSpaceName());
 
         intent.putExtras(extras);
         startActivity(intent);

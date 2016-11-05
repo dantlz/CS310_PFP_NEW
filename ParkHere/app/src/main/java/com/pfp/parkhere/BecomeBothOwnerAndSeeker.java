@@ -17,7 +17,7 @@ public class BecomeBothOwnerAndSeeker extends AppCompatActivity {
         setContentView(R.layout.activity_become_both_owner_and_seeker);
     }
 
-    public void changeStatus(View view){
+    public void onChangeStatusClicked(View view){
         Global.curUserRef().child("status").setValue(Status.BOTH);
         finish();
     }

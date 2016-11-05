@@ -122,10 +122,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         };
         runnableRunning = false;
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
         filtersButton = (Button) findViewById(R.id.filtersButton);
         filtersButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +182,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .create();
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        if(Global.getCurUser().getPhotoID() == null ||
+                Global.getCurUser().getPhotoID().equals("")){
+            Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
+                    .setTitle("Verification Needed")
+                    .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+        super.onResume();
     }
 
     private HashMap<LatLng, Space> filterForResultsList(Intent intent) {
@@ -281,9 +299,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if(allSpaces.get(marker.getPosition()) != null) {
                     Space selectedSpace = allSpaces.get(marker.getPosition());
                     Intent intent = new Intent(MapsActivity.this, MyListedSpacesDetailsActivity.class);
-                    intent.putExtra("SPACENAME", selectedSpace.getSpaceName());
-                    intent.putExtra("OWNEREMAIL", selectedSpace.getOwnerEmail());
-                    intent.putExtra("STATUS", String.valueOf(userMode));
+                    intent.putExtra("SPACE_NAME", selectedSpace.getSpaceName());
+                    intent.putExtra("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
                     startActivity(intent);
                 }
                 //This is an owner listing a new space
@@ -373,18 +390,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private String getDoubleDigit(int i){
-        String result = "";
-        if(i < 10){
-            result = "0" + i;
-        }
-        else{
-            result = "" + i;
-        }
-
-        return result;
-    }
-
     private void setCurrentSearchTimeFrame(Intent intent){
         Bundle extras = intent.getExtras();
 
@@ -403,6 +408,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         end.setHour(extras.getInt("ENDHOUR"));
         end.setMinute(extras.getInt("ENDMINUTE"));
         Global.setCurrentSearchTimedateEnd(start);
+    }
+
+    private String getDoubleDigit(int i){
+        String result = "";
+        if(i < 10){
+            result = "0" + i;
+        }
+        else{
+            result = "" + i;
+        }
+
+        return result;
     }
 
     private Date extraToDate(Bundle extras, String SoE){
@@ -429,7 +446,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String year, month, day, hour, minute;
         Date dateTime;
 
-        year = String.valueOf(calendar.getYear());
+        year = String.valueOf(calendar.getYear()).substring(2);
         month = getDoubleDigit(calendar.getMonth());
         day = getDoubleDigit(calendar.getDay());
         hour = getDoubleDigit(calendar.getHour());
@@ -511,7 +528,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return withinRadius;
     }
 
-
     public void onRadioButtonClicked(View view) {
         // Check which radio button was clicked
         switch (view.getId()) {
@@ -546,7 +562,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Global.curUserRef().child("preferredStatus").setValue(Status.SEEKER);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -554,7 +569,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.itemProfile:
                 // User chose the "Profile" action, change to that Activity Screen
                 intent = new Intent(MapsActivity.this, ProfileActivity.class);
-                intent.putExtra("Status", String.valueOf(userMode));
+                intent.putExtra("USER_STATUS", String.valueOf(userMode));
                 startActivity(intent);
                 return true;
             case R.id.itemAddSpace:

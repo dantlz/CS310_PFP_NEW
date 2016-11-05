@@ -10,7 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class MyBookingsDetailsActivity extends AppCompatActivity{
-    private String identifier;
+    private String bookingIdentifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,26 +22,26 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         Bundle extras = intent.getExtras();
         TextView addressView = (TextView) findViewById(R.id.streetAddress);
         addressView.setTextColor(Color.BLACK);
-        addressView.setText(extras.getString("ADDRESS_TEXT"));
+        addressView.setText(extras.getString("SPACE_ADDRESS"));
 
         //set start and end times
-        String times = "START: " + extras.getString("START_TIME_TEXT") + "\n"+ "END: " + extras.getString("END_TIME_TEXT");
+        String times = "START: " + extras.getString("SPACE_STARTTIME") + "\n"+ "END: " + extras.getString("SPACE_ENDTIME");
         TextView timesView = (TextView) findViewById(R.id.start_end_time);
         timesView.setTextColor(Color.BLACK);
         timesView.setText(times);
 
         TextView nameView = (TextView) findViewById(R.id.owner_name);
-        nameView.setText(extras.getString("OWNER_NAME_TEXT"));
+        nameView.setText(extras.getString("SPACE_OWNERNAME"));
         TextView emailView = (TextView) findViewById(R.id.owner_email);
-        emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
+        emailView.setText(extras.getString("SPACE_OWNEREMAIL"));
         RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
-        rateBar.setRating(extras.getInt("SPACE_RATING_INT"));
+        rateBar.setRating(extras.getInt("SPACE_RATING"));
         TextView reviewView = (TextView) findViewById(R.id.space_review);
-        String spaceReview = "Review: " + extras.getString("SPACE_REVIEW_TEXT");
+        String spaceReview = "Review: " + extras.getString("SPACE_REVIEW");
         reviewView.setText(spaceReview);
 
-        identifier = extras.getString("IDENTIFIER");
+        bookingIdentifier = extras.getString("BOOKING_IDENTIFIER");
     }
 
     public void ReturnToBookings(View view){
@@ -50,7 +50,7 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
 
     public void GoToCancel(View view){
         Intent intent = new Intent(this, CancelActivity.class);
-        intent.putExtra("IDENTIFIER", identifier);
+        intent.putExtra("BOOKING_IDENTIFIER", bookingIdentifier);
         startActivity(intent);
     }
 

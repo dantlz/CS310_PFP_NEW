@@ -13,8 +13,6 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
@@ -99,7 +97,7 @@ public class MyBookingsActivity extends AppCompatActivity {
                 .child(currBooking.getSpaceName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                finishBookingClicked(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
+                bookingClickedContinued(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
             }
 
             @Override
@@ -109,7 +107,7 @@ public class MyBookingsActivity extends AppCompatActivity {
         });
     }
 
-    private void finishBookingClicked(Space space, String identifier){
+    private void bookingClickedContinued(Space space, String bookingIdentifier){
         //Generate text for address
         String ad = space.getStreetAddress()
                 + " " + space.getCity() + " " + space.getState()
@@ -123,7 +121,7 @@ public class MyBookingsActivity extends AppCompatActivity {
 
         String addressText = bookingAddress.getAddressLine(0) + "\n" +
                 bookingAddress.getLocality() + " " + bookingAddress.getAdminArea();
-        extras.putString("ADDRESS_TEXT", addressText);
+        extras.putString("SPACE_ADDRESS", addressText);
 
         //Generate text for start and end dates
         String endTimeText = currBooking.getEndCalendarDate().getHour() + " "
@@ -134,13 +132,14 @@ public class MyBookingsActivity extends AppCompatActivity {
                 + currBooking.getStartCalendarDate().getMinute() + " "
                 +currBooking.getStartCalendarDate().getDay() + " " + currBooking.getStartCalendarDate().getMonth()
                 + " " + currBooking.getStartCalendarDate().getYear();
-        extras.putString("START_TIME_TEXT", startTimeText);
-        extras.putString("END_TIME_TEXT", endTimeText);
+        extras.putString("BOOKING_STARTTIME", startTimeText);
+        extras.putString("BOOKING_ENDTIME", endTimeText);
         //Generate text for owner name and email
-        extras.putString("OWNER_NAME_TEXT", space.getSpaceName());
-        extras.putString("OWNER_EMAIL_TEXT", space.getOwnerEmail());
-        extras.putString("SPACE_REVIEW_TEXT", space.getSpaceReview());
-        extras.putSerializable("IDENTIFIER", identifier);
+        extras.putString("SPACE_OWNERNAME", space.getSpaceName());
+        extras.putString("SPACE_OWNEREMAIL", space.getOwnerEmail());
+        extras.putString("SPACE_REVIEW", space.getSpaceReview());
+        extras.putString("BOOKING_IDENTIFIER", bookingIdentifier);
+        extras.putInt("SPACE_RATING", ownerRating);
 
         //Generate Rating and Review
         //Get owner object to set rating
@@ -164,9 +163,6 @@ public class MyBookingsActivity extends AppCompatActivity {
     }
 
     private void finishPopulate(Bundle extras){
-        extras.putInt("SPACE_RATING_INT", ownerRating);
-
-        //Place bundle into intent and start activity
         intent.putExtras(extras);
         startActivity(intent);
     }

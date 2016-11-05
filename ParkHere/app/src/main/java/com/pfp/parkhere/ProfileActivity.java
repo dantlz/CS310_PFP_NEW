@@ -54,8 +54,8 @@ public class ProfileActivity extends AppCompatActivity
         myListedSpacesButton = (Button) findViewById(R.id.myListedSpacesButton);
 
         //User's own profile
-        if(extras.get("LISTED_SPACE_OWNEREMAIL") == null) {
-            if(extras.get("Status").equals("OWNER")){
+        if(extras.get("SPACE_OWNEREMAIL") == null) {
+            if(extras.get("USER_STATUS").equals("OWNER")){
                 System.out.println(1);
                 mBookingButton.setVisibility(View.GONE);
                 myListedSpacesButton.setVisibility(View.VISIBLE);
@@ -114,11 +114,11 @@ public class ProfileActivity extends AppCompatActivity
             return;
         }
 
-        String ownerEmail = extras.getString("LISTED_SPACE_OWNEREMAIL");
+        String ownerEmail = extras.getString("SPACE_OWNEREMAIL");
 
         //Checking owner profile
         hideFields();
-        Global.curUserRef().addValueEventListener(new ValueEventListener() {
+        Global.peers().child(Global.reformatEmail(ownerEmail)).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Peer owner = dataSnapshot.getValue(Peer.class);

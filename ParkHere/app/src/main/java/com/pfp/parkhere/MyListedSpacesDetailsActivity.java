@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Space;
+import ObjectClasses.Status;
 
 //DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends AppCompatActivity {
@@ -24,112 +25,97 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
     private Bundle extras;
     private RatingBar rateBar;
 
+    private String spaceName;
+    private String ownerEmail;
+
+    private Button ownerButton, editButton, bookSpaceButton, finishBookingButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listed_spaces_details);
 
-        Intent intent = getIntent();
-        extras = intent.getExtras();
-
-        Button ownerButton = (Button) findViewById(R.id.ownerButton);
-        Button editButton = (Button) findViewById(R.id.edit_listed_space_button);
-        Button bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
-        Button confirmBookingButton = (Button) findViewById(R.id.finishBookingsButton);
-
-        confirmBookingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, FinishBookingsActivity.class);
-
-                startActivity(intent);
-            }
-        });
+        ownerButton = (Button) findViewById(R.id.ownerButton);
+        editButton = (Button) findViewById(R.id.edit_listed_space_button);
+        bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
+        finishBookingButton = (Button) findViewById(R.id.finishBookingsButton);
 
         rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
-        //Came from my listed space detail
-        if(extras.getString("SPACENAME") == null) {
-            TextView nameText = (TextView) findViewById(R.id.listed_space_name);
-            nameText.setText(extras.getString("LISTED_SPACE_NAME"));
-
-            TextView addressText = (TextView) findViewById(R.id.listed_space_address);
-            addressText.setText(extras.getString("LISTED_SPACE_ADDRESS"));
-            addressText.append(",\n" + extras.getString("LISTED_SPACE_CITY"));
-            addressText.append(", " + extras.getString("LISTED_SPACE_STATE"));
-            addressText.append(", " + extras.getString("LISTED_SPACE_ZIP"));
-
-            TextView priceText = (TextView) findViewById(R.id.listed_space_price);
-            priceText.setText("$" + extras.getInt("LISTED_SPACE_PRICE"));
-
-            TextView typeField = (TextView) findViewById(R.id.typeField);
-            typeField.setText(extras.getString("LISTED_SPACE_TYPE"));
-
-            TextView policyField = (TextView) findViewById(R.id.policyField);
-            policyField.setText(extras.getString("LISTED_SPACE_POLICY"));
-
-            TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
-            descriptionField.setText(extras.getString("LISTED_SPACE_DESCRIPTION"));
-
-            rateBar.setRating(extras.getInt("LISTED_SPACE_RATING"));
-
-            TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
-            spaceReviewField.setText(extras.getString("LISTED_SPACE_REVIEW"));
-            ownerButton.setVisibility(View.GONE);
-            bookSpaceButton.setVisibility(View.GONE);
-
-            return;
-        }
+        Intent intent = getIntent();
+        extras = intent.getExtras();
+        spaceName = extras.getString("SPACE_NAME");
+        ownerEmail = extras.getString("SPACE_OWNEREMAIL");
 
         //Can't book my own space or look at myself, but can confirm/edit space
-        if(extras.getString("OWNEREMAIL").equals(Global.getCurUser().getEmailAddress())){
+        if(ownerEmail.equals(Global.getCurUser().getEmailAddress())){
             bookSpaceButton.setVisibility(View.GONE);
             ownerButton.setVisibility(View.GONE);
         }
         //Can book or look at someone else, but can't modify their stuff
         else{
-            confirmBookingButton.setVisibility(View.GONE);
+            finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
+            System.out.println(1);
         }
 
         //Owners can't book space, but can view other owners, confirm/edit his own
-        if(extras.getString("STATUS").equals("OWNER")){
+        if(Global.getCurUser().getPreferredStatus().equals(Status.OWNER)){
             bookSpaceButton.setVisibility(View.GONE);
         }
         //Seekers can book space or look at owner, but can't confirm or edit.
         else{
-            confirmBookingButton.setVisibility(View.GONE);
+            finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
+            System.out.println(2);
         }
 
-        //Directed from map or resultList
+        System.out.println(Global.getCurUser().getPreferredStatus());
+
+        finishBookingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, FinishBookingsActivity.class);
+                intent.putExtra("SPACE_NAME", spaceName);
+                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
+                startActivity(intent);
+            }
+        });
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyListedSpacesDetailsActivity.this, ProfileActivity.class);
-                intent.putExtra("LISTED_SPACE_OWNEREMAIL", extras.getString("OWNEREMAIL"));
+                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
             }
         });
-        editButton.setVisibility(View.GONE);
 
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, EditListedSpacesActivity.class);
+                intent.putExtra("SPACENAME", spaceName);
+                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
+                intent.putExtras(extras);
+                startActivity(intent);            }
+        });
         bookSpaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyListedSpacesDetailsActivity.this, BookSpaceActivity.class);
-                intent.putExtra("SPACENAME", extras.getString("SPACENAME"));
-                intent.putExtra("OWNEREMAIL", extras.getString("OWNEREMAIL"));
+                intent.putExtra("SPACENAME", spaceName);
+                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
                 finish();
             }
         });
 
-        Global.spaces().child(Global.reformatEmail(extras.getString("OWNEREMAIL")))
-                .child(extras.getString("SPACENAME")).addValueEventListener(new ValueEventListener() {
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                populateNotMySpaceDetails(dataSnapshot.getValue(Space.class));
+                Space space = dataSnapshot.getValue(Space.class);
+                onCreateContinued(space);
             }
 
             @Override
@@ -139,7 +125,9 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void populateNotMySpaceDetails(Space space){
+    private void onCreateContinued(Space space){
+
+        //Came from my listed space detail
         TextView nameText = (TextView) findViewById(R.id.listed_space_name);
         nameText.setText(space.getSpaceName());
 
@@ -147,7 +135,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         addressText.setText(space.getStreetAddress());
         addressText.append(",\n" + space.getCity());
         addressText.append(", " + space.getState());
-        addressText.append(", " + space.getState());
+        addressText.append(", " + space.getZipCode());
 
         TextView priceText = (TextView) findViewById(R.id.listed_space_price);
         priceText.setText("$" + space.getPricePerHour());
@@ -165,15 +153,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
         spaceReviewField.setText(space.getSpaceReview());
+
     }
-
-    public void onEditListedSpaceClicked(View view) {
-        Context context = view.getContext();
-        Intent intent = new Intent(context, EditListedSpacesActivity.class);
-
-        intent.putExtras(extras);
-        context.startActivity(intent);
-    }
-
 
 }

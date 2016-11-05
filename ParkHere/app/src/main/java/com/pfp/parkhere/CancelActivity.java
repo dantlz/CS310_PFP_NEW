@@ -11,14 +11,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CancelActivity extends AppCompatActivity {
 
-    private String identifier;
+    private String bookingIdentifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel);
 
-        identifier = getIntent().getExtras().getString("IDENTIFIER");
+        bookingIdentifier = getIntent().getExtras().getString("BOOKING_IDENTIFIER");
     }
 
     public void ReturnToBookingDetail(View view) {
@@ -26,7 +26,8 @@ public class CancelActivity extends AppCompatActivity {
     }
 
     public void CancelBooking(View view) {
-        Global.bookings().child(Global.getCurUser().getReformattedEmail()).child(identifier).removeValue();
+        //TODO NOWW Take out identifier from space object as well
+        Global.bookings().child(Global.getCurUser().getReformattedEmail()).child(bookingIdentifier).removeValue();
         Intent intent = new Intent(CancelActivity.this, MyBookingsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

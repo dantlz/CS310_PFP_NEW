@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ObjectClasses.CancellationPolicy;
@@ -157,6 +158,7 @@ public class AddSpaceActivity extends AppCompatActivity {
             return;
         }
 
+        //Check if no picture is uploaded
         if((picture.getDrawable()) == null){
             new AlertDialog.Builder(AddSpaceActivity.this)
                     .setTitle("No picture loaded")
@@ -174,7 +176,7 @@ public class AddSpaceActivity extends AppCompatActivity {
         try {
             Space listedSpace = new Space();
             listedSpace.setSpaceName(spaceNameField.getText().toString());
-            listedSpace.setOwnerEmail(Global.getCurUser().getReformattedEmail());
+            listedSpace.setOwnerEmail(Global.getCurUser().getEmailAddress());
             listedSpace.setType(SpaceType.valueOf(typeSpinner.getSelectedItem().toString().toUpperCase()));
             String fullAddress = streetAddressField.getText().toString() + " " +
                     cityField.getText().toString() + " " +

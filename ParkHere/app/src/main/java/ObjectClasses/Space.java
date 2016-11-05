@@ -31,7 +31,6 @@ public class Space {
     private String spaceReview;
 
     //The key is currentBookingOwnerEmails, the value is a list of currentBookingsIdentifiers
-    private List<String> currentBookingOwnerEmails;
     private List<MyCalendar> bookingStartDates;
     private List<MyCalendar> bookingEndDates;
 
@@ -202,11 +201,4 @@ public class Space {
         this.spaceReview = spaceReview;
     }
 
-    public List<String> getCurrentBookingOwnerEmails() {
-        return currentBookingOwnerEmails;
-    }
-
-    public void setCurrentBookingOwnerEmails(List<String> currentBookingOwnerEmails) {
-        this.currentBookingOwnerEmails = currentBookingOwnerEmails;
-    }
 }

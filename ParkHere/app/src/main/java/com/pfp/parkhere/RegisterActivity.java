@@ -200,6 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
         peer.setPhoneNumber(phoneNumberField.getText().toString());
         peer.setDPNonFirebaseRelated(imageView.getDrawable());
         peer.setStatus(Status.valueOf(statusSpinner.getSelectedItem().toString().toUpperCase()));
+        peer.setPhotoID("");
         if(peer.getStatus().equals(Status.OWNER)) {
             peer.setPreferredStatus(Status.OWNER);
         }

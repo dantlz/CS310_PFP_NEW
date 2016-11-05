@@ -27,6 +27,7 @@ import ObjectClasses.Space;
 public class PayWithCardActivity extends AppCompatActivity {
 
     private Booking booking;
+    private String ownerEmail;
     private String ownerEmailReformatted;
     private String spaceName;
     private String bookingID;
@@ -38,8 +39,9 @@ public class PayWithCardActivity extends AppCompatActivity {
 
         booking = new Booking();
 
-        spaceName = getIntent().getExtras().getString("SPACE_NAME_IDENTIFIER");
-        ownerEmailReformatted = Global.reformatEmail(getIntent().getExtras().getString("OWNER_EMAIL_IDENTIFIER"));
+        spaceName = getIntent().getExtras().getString("SPACE_NAME");
+        ownerEmail = getIntent().getExtras().getString("SPACE_OWNEREMAIL");
+        ownerEmailReformatted = Global.reformatEmail(ownerEmail);
 
         List<String> cardTypeText = new ArrayList<String>();
         cardTypeText.add("Visa");
@@ -120,25 +122,14 @@ public class PayWithCardActivity extends AppCompatActivity {
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
         booking.setEndCalendarDate(Global.getCurrentSearchTimedateEnd());
         booking.setBookingSpaceOwnerEmail(space.getOwnerEmail());
-        Global.bookings().child(Global.getCurUser().getReformattedEmail()).push().setValue(booking);
-        Global.bookings().child(Global.getCurUser().getReformattedEmail()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                bookingID = dataSnapshot.getKey();
-            }
+        DatabaseReference addedBookingRef = Global.bookings().child(Global.getCurUser().getReformattedEmail()).push();
+        addedBookingRef.setValue(booking);
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-        Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingsOwnerEmails").child(ownerEmailReformatted).push().setValue(bookingID);
+        bookingID = addedBookingRef.getKey();
+        Global.spaces().child(ownerEmailReformatted).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         startActivity(new Intent(PayWithCardActivity.this, MapsActivity.class));
         finish();
+
         //Maybe add unavailable times to space object too?
 //        FirebaseDatabase.getInstance().getReference().child("Spaces")
 //                .child(Global.reformatEmail(

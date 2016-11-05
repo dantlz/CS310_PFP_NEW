@@ -135,19 +135,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <Button
             android:id="@+id/ownerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go to owner"
-            />
-
+            android:text="Go to owner" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit"
-            android:id="@+id/edit_listed_space_button"
-            android:onClick="onEditListedSpaceClicked"/>
+            android:id="@+id/edit_listed_space_button"/>
         <Button
             android:id="@+id/bookSpaceButton"
             android:layout_width="match_parent"

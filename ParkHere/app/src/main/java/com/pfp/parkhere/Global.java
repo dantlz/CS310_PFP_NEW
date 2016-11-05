@@ -30,16 +30,16 @@ public class Global extends Application {
         return currentSearchTimeDateStart;
     }
 
-    public static void setCurrentSearchTimeDateStart(MyCalendar currentSearchTimeDateStart) {
-        currentSearchTimeDateStart = currentSearchTimeDateStart;
+    public static void setCurrentSearchTimeDateStart(MyCalendar searchStart) {
+        currentSearchTimeDateStart = searchStart;
     }
 
     public static MyCalendar getCurrentSearchTimedateEnd() {
         return currentSearchTimedateEnd;
     }
 
-    public static void setCurrentSearchTimedateEnd(MyCalendar currentSearchTimedateEnd) {
-        currentSearchTimedateEnd = currentSearchTimedateEnd;
+    public static void setCurrentSearchTimedateEnd(MyCalendar searchEnd) {
+        currentSearchTimedateEnd = searchEnd;
     }
 
     public static String getCancellationPolicy(CancellationPolicy policy) {
@@ -52,22 +52,6 @@ public class Global extends Application {
         else {
             return "Strict: You will not receive a refund if you cancel your reservation.";
         }
-    }
-
-    public static void addListener(){
-        FirebaseDatabase.getInstance().getReference().child("Peers")
-                .child(Global.reformatEmail(currentUserObject.getEmailAddress()))
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        setCurUser(dataSnapshot.getValue(Peer.class));
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     public static Peer getCurUser() {
@@ -97,15 +81,15 @@ public class Global extends Application {
     }
 
     public static DatabaseReference peers(){
-        return FirebaseDatabase.getInstance().getReference().child("peers");
+        return FirebaseDatabase.getInstance().getReference().child("Peers");
     }
 
     public static DatabaseReference spaces(){
-        return FirebaseDatabase.getInstance().getReference().child("spaces");
+        return FirebaseDatabase.getInstance().getReference().child("Spaces");
     }
 
     public static DatabaseReference bookings(){
-        return FirebaseDatabase.getInstance().getReference().child("bookings");
+        return FirebaseDatabase.getInstance().getReference().child("Bookings");
     }
 
     public static DatabaseReference curUserRef(){

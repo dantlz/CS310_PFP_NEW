@@ -79,25 +79,14 @@ public class MyListedSpacesActivity extends AppCompatActivity {
         listedSpacesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, MyListedSpacesDetailsActivity.class);
+                Intent intent = new Intent(MyListedSpacesActivity.this, MyListedSpacesDetailsActivity.class);
                 Bundle extras = new Bundle();
                 Space chosenSpace = MyListedSpaces.get(position);
-                extras.putString("LISTED_SPACE_NAME", chosenSpace.getSpaceName());
-                extras.putInt("LISTED_SPACE_PRICE", chosenSpace.getPricePerHour());
-                extras.putString("LISTED_SPACE_ADDRESS", chosenSpace.getStreetAddress());
-                extras.putString("LISTED_SPACE_CITY", chosenSpace.getCity());
-                extras.putString("LISTED_SPACE_STATE", chosenSpace.getState());
-                extras.putString("LISTED_SPACE_ZIP", chosenSpace.getZipCode());
-                extras.putString("LISTED_SPACE_TYPE", String.valueOf(chosenSpace.getType()));
-                extras.putString("LISTED_SPACE_POLICY", String.valueOf(chosenSpace.getPolicy()));
-                extras.putString("LISTED_SPACE_DESCRIPTION", chosenSpace.getDescription());
-                extras.putInt("LISTED_SPACE_RATING", chosenSpace.getSpaceRating());
-                extras.putString("LISTED_SPACE_REVIEW", chosenSpace.getSpaceReview());
-                extras.putString("LISTED_SPACE_OWNEREMAIL", chosenSpace.getOwnerEmail());
-
+                extras.putString("SPACE_NAME", chosenSpace.getSpaceName());
+                extras.putString("SPACE_OWNEREMAIL", chosenSpace.getOwnerEmail());
+                intent.putExtra("FROM", "MYLIST");
                 intent.putExtras(extras);
-                context.startActivity(intent);
+                startActivity(intent);
             }
         });
     }
