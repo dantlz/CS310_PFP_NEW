@@ -287,6 +287,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                handler.removeCallbacks(handlerRunnable);
+                runnableRunning = false;
+
                 marker.showInfoWindow();
                 return false;
             }
@@ -295,6 +298,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+                handler.removeCallbacks(handlerRunnable);
+                runnableRunning = false;
+
                 //This is a listed space marker
                 if(allSpaces.get(marker.getPosition()) != null) {
                     Space selectedSpace = allSpaces.get(marker.getPosition());
@@ -315,6 +321,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
+                handler.removeCallbacks(handlerRunnable);
+                runnableRunning = false;
+
                 //Only owners can drop new pins
                 if(!userMode.equals(Status.OWNER)){
                     return;
@@ -333,6 +342,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                handler.removeCallbacks(handlerRunnable);
+                runnableRunning = false;
+
                 if(addSpaceMarker != null){
                     addSpaceMarker.remove();
                 }
@@ -432,7 +444,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         hour = getDoubleDigit(extras.getInt(SoE + "HOUR"));
         minute = getDoubleDigit(extras.getInt(SoE + "MINUTE"));
         String fullStartDateTime = year + month + day + hour + minute + "00-0700";
-        System.out.println(fullStartDateTime);
         try {
             dateTime = format.parse(fullStartDateTime);
             return dateTime;
@@ -462,7 +473,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addAndFilterMarkers(Intent intent) {
-        System.out.println("Adding and filtering markers");
         mMap.clear();
 
         int lowestPrice = 0, highestPrice = 0;

@@ -22,11 +22,13 @@ public class PayWithPaypalActivity extends AppCompatActivity {
 
     private Booking booking;
     private String ownerEmail, ownerEmailReformatted, spaceName, bookingID;
+    private boolean firstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_with_paypal);
+        firstTime = true;
 
         booking = new Booking();
 
@@ -52,6 +54,10 @@ public class PayWithPaypalActivity extends AppCompatActivity {
     }
 
     private void completePayment(Space space) {
+        if(!firstTime){
+            return;
+        }
+        firstTime = false;
 
         booking.setSpaceName(space.getSpaceName());
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
@@ -61,8 +67,9 @@ public class PayWithPaypalActivity extends AppCompatActivity {
         addedBookingRef.setValue(booking);
 
         bookingID = addedBookingRef.getKey();
-        Global.spaces().child(ownerEmailReformatted).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
+        Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         startActivity(new Intent(PayWithPaypalActivity.this, MapsActivity.class));
+        finish();
         //Maybe add unavailable times to space obejct too?
 //        FirebaseDatabase.getInstance().getReference().child("Spaces")
 //                .child(Global.reformatEmail(
