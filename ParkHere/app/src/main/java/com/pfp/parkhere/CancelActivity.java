@@ -11,26 +11,25 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CancelActivity extends AppCompatActivity {
 
-    private String bookingIdentifier;
+    private String bookingIdentifier, ownerEmail, spaceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel);
 
-        bookingIdentifier = getIntent().getExtras().getString("BOOKING_IDENTIFIER");
-    }
+        Bundle extras = getIntent().getExtras();
 
-    public void ReturnToBookingDetail(View view) {
-        finish();
+        bookingIdentifier = extras.getString("BOOKING_IDENTIFIER");
+        ownerEmail = extras.getString("SPACE_OWNEREMAIL");
+        spaceName = extras.getString("SPACE_NAME");
     }
 
     public void CancelBooking(View view) {
-        //TODO NOWW Take out identifier from space object as well
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers").child(bookingIdentifier).removeValue();
         Global.bookings().child(Global.getCurUser().getReformattedEmail()).child(bookingIdentifier).removeValue();
-        Intent intent = new Intent(CancelActivity.this, MyBookingsActivity.class);
+        Intent intent = new Intent(CancelActivity.this, MapsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
     }
 }

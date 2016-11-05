@@ -138,6 +138,7 @@ public class MyBookingsActivity extends AppCompatActivity {
         extras.putString("SPACE_OWNERNAME", space.getSpaceName());
         extras.putString("SPACE_OWNEREMAIL", space.getOwnerEmail());
         extras.putString("SPACE_REVIEW", space.getSpaceReview());
+        extras.putString("SPACE_NAME", space.getSpaceName());
         extras.putString("BOOKING_IDENTIFIER", bookingIdentifier);
         extras.putInt("SPACE_RATING", ownerRating);
 

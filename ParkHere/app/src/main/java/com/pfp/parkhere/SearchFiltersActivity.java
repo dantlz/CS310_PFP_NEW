@@ -27,31 +27,32 @@ public class SearchFiltersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_filters);
 
+        type = SpaceType.COMPACT;
+
         RadioButton rad = (RadioButton) findViewById(R.id.compactRadioButton);
         rad.setChecked(true);
 
 
         //Give filters very broad default values;
         lowestPriceField = (EditText) findViewById(R.id.lowestPriceField);
-        lowestPriceField.setText("0");
         highestPriceField = (EditText) findViewById(R.id.highestPriceField);
-        highestPriceField.setText("1000");
-
         Calendar cal = Calendar.getInstance();
-
         startDatePicker = (DatePicker) findViewById(R.id.startDate);
-        startDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        cal.add(Calendar.YEAR, 1);
         endDatePicker = (DatePicker) findViewById(R.id.endDate);
-        endDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-
         startTimePicker = (TimePicker) findViewById(R.id.startTime);
-        startTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
-        startTimePicker.setMinute(cal.get(Calendar.MINUTE));
-
         endTimePicker = (TimePicker) findViewById(R.id.endTime);
-        endTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
-        endTimePicker.setMinute(cal.get(Calendar.MINUTE));
+
+        if(getIntent().getExtras() != null) {
+            lowestPriceField.setText("0");
+            highestPriceField.setText("1000");
+            startDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+            cal.add(Calendar.YEAR, 1);
+            endDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+            startTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
+            startTimePicker.setMinute(cal.get(Calendar.MINUTE));
+            endTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
+            endTimePicker.setMinute(cal.get(Calendar.MINUTE));
+        }
 
         confirmButton = (Button) findViewById(R.id.confirmFilterButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {
