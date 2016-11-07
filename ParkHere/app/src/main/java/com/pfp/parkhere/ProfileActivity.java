@@ -56,12 +56,10 @@ public class ProfileActivity extends AppCompatActivity
         //User's own profile
         if(extras.get("SPACE_OWNEREMAIL") == null) {
             if(extras.get("USER_STATUS").equals("OWNER")){
-                System.out.println(1);
                 mBookingButton.setVisibility(View.GONE);
                 myListedSpacesButton.setVisibility(View.VISIBLE);
             }
             else{
-                System.out.println(2);
                 myListedSpacesButton.setVisibility(View.GONE);
                 mBookingButton.setVisibility(View.VISIBLE);
             }

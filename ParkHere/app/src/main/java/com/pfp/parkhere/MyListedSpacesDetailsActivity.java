@@ -30,10 +30,13 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
 
     private Button ownerButton, editButton, bookSpaceButton, finishBookingButton;
 
+    private boolean firstTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_listed_spaces_details);
+        firstTime = true;
 
         ownerButton = (Button) findViewById(R.id.ownerButton);
         editButton = (Button) findViewById(R.id.edit_listed_space_button);
@@ -57,7 +60,6 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         else{
             finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
-            System.out.println(1);
         }
 
         //Owners can't book space, but can view other owners, confirm/edit his own
@@ -68,10 +70,7 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
         else{
             finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
-            System.out.println(2);
         }
-
-        System.out.println(Global.getCurUser().getPreferredStatus());
 
         finishBookingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,23 +94,25 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyListedSpacesDetailsActivity.this, EditListedSpacesActivity.class);
-                intent.putExtra("SPACENAME", spaceName);
+                intent.putExtra("SPACE_NAME", spaceName);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
-                intent.putExtras(extras);
-                startActivity(intent);            }
+                startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                finish();
+                return;
+            }
         });
         bookSpaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyListedSpacesDetailsActivity.this, BookSpaceActivity.class);
-                intent.putExtra("SPACENAME", spaceName);
+                intent.putExtra("SPACE_NAME", spaceName);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
                 finish();
             }
         });
 
-        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
+        ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Space space = dataSnapshot.getValue(Space.class);
@@ -122,10 +123,16 @@ public class MyListedSpacesDetailsActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(listener);
     }
 
     private void onCreateContinued(Space space){
+        if(!firstTime){
+            return;
+        }
+        firstTime = false;
 
         //Came from my listed space detail
         TextView nameText = (TextView) findViewById(R.id.listed_space_name);

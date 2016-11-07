@@ -10,7 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class MyBookingsDetailsActivity extends AppCompatActivity{
-    private String bookingIdentifier;
+    private String bookingIdentifier, ownerEmail, spaceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,9 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         //get information passed from mybookings activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+        ownerEmail = extras.getString("SPACE_OWNEREMAIL");
+        spaceName = extras.getString("SPACE_NAME");
+
         TextView addressView = (TextView) findViewById(R.id.streetAddress);
         addressView.setTextColor(Color.BLACK);
         addressView.setText(extras.getString("SPACE_ADDRESS"));
@@ -33,7 +36,7 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         TextView nameView = (TextView) findViewById(R.id.owner_name);
         nameView.setText(extras.getString("SPACE_OWNERNAME"));
         TextView emailView = (TextView) findViewById(R.id.owner_email);
-        emailView.setText(extras.getString("SPACE_OWNEREMAIL"));
+        emailView.setText(ownerEmail);
         RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
         rateBar.setRating(extras.getInt("SPACE_RATING"));
@@ -51,6 +54,8 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
     public void GoToCancel(View view){
         Intent intent = new Intent(this, CancelActivity.class);
         intent.putExtra("BOOKING_IDENTIFIER", bookingIdentifier);
+        intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
+        intent.putExtra("SPACE_NAME", spaceName);
         startActivity(intent);
     }
 

@@ -33,6 +33,7 @@ public class EditListedSpacesActivity extends AppCompatActivity {
     private String spaceName;
     private String ownerEmail;
     private List<String> cancellationPolicies, types;
+    private boolean firstTime = true;
 
     //TODO Allow user to change space's picture
     @Override
@@ -42,6 +43,8 @@ public class EditListedSpacesActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         extras = intent.getExtras();
+
+        findViewById(R.id.editName).setEnabled(false);
 
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
@@ -86,7 +89,11 @@ public class EditListedSpacesActivity extends AppCompatActivity {
     }
 
     private void onCreateContinued(Space space){
+        if(!firstTime){
+            return;
+        }
 
+        firstTime = false;
 
         editAddress.setText(space.getStreetAddress());
         editPrice.setText(String.valueOf(space.getPricePerHour()));
@@ -125,8 +132,6 @@ public class EditListedSpacesActivity extends AppCompatActivity {
         }
 
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
-                .child("spaceName").setValue(editName.getText().toString());
-        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("pricePerHour").setValue(Integer.valueOf(editPrice.getText().toString()));
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("type").setValue(typeSpinner.getSelectedItem().toString().toUpperCase());
@@ -142,7 +147,7 @@ public class EditListedSpacesActivity extends AppCompatActivity {
                 .child("streetAddress").setValue(address.getAddressLine(0));
 
         //TODO Allow user to change start date/time and end date/time
-        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class));
+        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }
 

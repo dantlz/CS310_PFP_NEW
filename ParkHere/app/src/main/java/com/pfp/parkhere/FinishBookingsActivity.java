@@ -44,11 +44,13 @@ public class FinishBookingsActivity extends AppCompatActivity {
     private List<String> listOfBookingSeekerEmails;
     private List<Booking> allBookings;
     private Button finishButton;
+    private boolean firstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish_bookings);
+        firstTime = true;
 
         finishButton = (Button) findViewById(R.id.finish_bookings_button);
 
@@ -78,6 +80,9 @@ public class FinishBookingsActivity extends AppCompatActivity {
     }
 
     private void generateBookings() {
+        if(!firstTime){
+            return;
+        }
 
         Global.bookings().addValueEventListener(new ValueEventListener() {
             @Override
@@ -88,16 +93,20 @@ public class FinishBookingsActivity extends AppCompatActivity {
                     Booking booking = dataSnapshot.child(Global.reformatEmail(email)).child(bookingIdentifier).getValue(Booking.class);
                     allBookings.add(booking);
                 }
+                populateFields();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        populateFields();
     }
 
     private void populateFields() {
+        if(!firstTime){
+            return;
+        }
+        firstTime = false;
 
         TextView nameOfSpace = (TextView) findViewById(R.id.space_name_for_bookings);
         if (allBookings.size() != 0) {
@@ -115,6 +124,7 @@ public class FinishBookingsActivity extends AppCompatActivity {
 
         for (int i = 0; i < allBookings.size(); i++) {
             Booking booking = allBookings.get(i);
+
             MyCalendar startTime = booking.getStartCalendarDate();
             MyCalendar endTime = booking.getEndCalendarDate();
             bookingItemDisplayText[i] = booking.getSpaceName() + "\n"
@@ -145,23 +155,14 @@ public class FinishBookingsActivity extends AppCompatActivity {
             Date currTime = new Date();
 
             if (currTime.after(endTime)) {
-                Global.bookings().child(curEmail).child(curIdentifier).removeValue();
+                Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers").child(curIdentifier).removeValue();
+                Global.bookings().child(Global.reformatEmail(curEmail)).child(curIdentifier).removeValue();
+
                 iterator.remove();
             }
         }
 
-
-        new AlertDialog.Builder(FinishBookingsActivity.this)
-                .setTitle("Success!")
-                .setMessage("Finished " + countOfRemovedSpaces + " bookings.")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {}
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .create().show();
-
-        populateFields();
-        finishButton.setEnabled(false);
+        finish();
     }
 
     private Date myCalendarToDate(MyCalendar calendar){

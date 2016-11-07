@@ -31,11 +31,13 @@ public class PayWithCardActivity extends AppCompatActivity {
     private String ownerEmailReformatted;
     private String spaceName;
     private String bookingID;
+    private boolean firstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_with_card);
+        firstTime = true;
 
         booking = new Booking();
 
@@ -71,6 +73,11 @@ public class PayWithCardActivity extends AppCompatActivity {
     }
 
     private void completePayment(Space space){
+        if(!firstTime){
+            return;
+        }
+        firstTime = false;
+
         String error = "";
 
         EditText cardNumberField = (EditText)findViewById(R.id.card_number_value);
@@ -126,7 +133,7 @@ public class PayWithCardActivity extends AppCompatActivity {
         addedBookingRef.setValue(booking);
 
         bookingID = addedBookingRef.getKey();
-        Global.spaces().child(ownerEmailReformatted).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
+        Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         startActivity(new Intent(PayWithCardActivity.this, MapsActivity.class));
         finish();
 
