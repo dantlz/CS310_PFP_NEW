@@ -31,8 +31,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
 
-    private static final String EMAIL = "email@email.com";
-
     @Rule public final ActivityTestRule<LoginActivity> loginActivity = new ActivityTestRule<>(LoginActivity.class);
 
     //Test to check that LoginActivity is the first to be displayed
@@ -45,7 +43,6 @@ public class LoginActivityTest {
     public void typedInEmailField() {
 
 //        onView(withId(R.id.login_email_field)).perform(typeText("email@email.com"), closeSoftKeyboard());
-//        onView(withId(R.id.login_email_field)).perform(typeText(EMAIL), closeSoftKeyboard()); //line 1
 
     }
 }
