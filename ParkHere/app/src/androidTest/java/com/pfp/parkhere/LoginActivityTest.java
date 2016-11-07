@@ -32,6 +32,17 @@ public class LoginActivityTest {
         onView(withId(R.id.login_email_field)).check(matches(isDisplayed()));
     }
 
+    //Test to make sure if the text fields are empty when the login button is clicked nothing happens
+    @Test
+    public void shouldStayOnLogin() {
+        //Locate and click register button
+        onView(withId(R.id.loginButton)).perform(click());
+
+        //Check if popup message is displayed
+        onView(withText("Missing email or password")).check(matches(isDisplayed()));
+    }
+
+    //Checks to see an email can be typed in and is saved
     @Test
     public void shouldEditEmailText() {
         //Type in a email address
@@ -39,6 +50,15 @@ public class LoginActivityTest {
         onView(withId(R.id.login_email_field)).check(matches(withText("email@email.com")));
     }
 
+    //Checks whether password is valid
+    @Test
+    public void shouldNotAcceptPassword() {
+        onView(withId(R.id.login_password_field)).perform(typeText("password"));
+        onView(withId(R.id.loginButton)).perform(click());
+        onView(withText("Missing email or password")).check(matches(isDisplayed()));
+    }
+
+    //Checks to make sure a password can be typed in and is saved
     @Test
     public void shouldEditPasswordText() {
         //Type in a password
@@ -46,6 +66,7 @@ public class LoginActivityTest {
         onView(withId(R.id.login_password_field)).check(matches(withText("password12@Q")));
     }
 
+    //Checks that the registration button leads to the registration page
     @Test
     public void clickRegistrationButton() {
         //Locate and click register button
@@ -55,12 +76,18 @@ public class LoginActivityTest {
         onView(withId(R.id.activity_register)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void clickLoginButton() {
-        //Locate and click login button
-        onView(withId(R.id.loginButton)).perform(click());
-
-        //Check if map screen is displayed
-        onView(withId(R.id.activity_maps)).check(matches(isDisplayed()));
-    }
+//    //Checks to see if the loginbutton works and goes to the map screen
+//    @Test
+//    public void clickLoginButton() {
+//        //Set login and password
+//        onView(withId(R.id.login_email_field)).perform(typeText(email));
+//        onView(withId(R.id.login_password_field)).perform(typeText(password));
+//
+//
+//        //Locate and click login button
+//        onView(withId(R.id.loginButton)).perform(click());
+//
+//        //Check if map screen is displayed
+//        onView(withId(R.id.activity_maps)).check(matches(isDisplayed()));
+//    }
 }
