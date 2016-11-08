@@ -35,7 +35,7 @@ public class MyCalendarTest {
         assertEquals(30,resultMin);
     }
     @Test
-    public void myCalendarInvalidInputConstructorTest() {
+    public void myCalendarInvalidConstructorTest() {
         // near Y2k
         MyCalendar calendarUnderTest = new MyCalendar(-2000,13,300, 27,700);
 
