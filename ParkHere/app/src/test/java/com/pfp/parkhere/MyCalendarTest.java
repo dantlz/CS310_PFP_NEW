@@ -1,7 +1,5 @@
 package com.pfp.parkhere;
 
-import android.content.Context;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
