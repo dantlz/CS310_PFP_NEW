@@ -26,6 +26,7 @@ public class RegisterActivityTest {
     private String password = "Password123!";
     private String phone_number = "1234567";
 
+
     @Rule
     public final ActivityTestRule<RegisterActivity> registerActivity = new ActivityTestRule<>(RegisterActivity.class);
 
@@ -34,7 +35,7 @@ public class RegisterActivityTest {
     public void shouldNotRegister() {
         //Click confirm with no fields filled in
         onView(withId(R.id.confirmButton)).perform(click());
-        onView(withText("Registration failed")).check(matches(isDisplayed()));
+        onView(withText("Registration faWiled")).check(matches(isDisplayed()));
 
         //Click confirm with some but not all fields filled in
         onView(withId(R.id.first_name_field)).perform(typeText(first_name));

@@ -23,7 +23,6 @@ public class LoginActivityTest {
     String email = "email@email.com";
     String password = "password12@Q";
 
-
     @Rule public final ActivityTestRule<LoginActivity> loginActivity = new ActivityTestRule<>(LoginActivity.class);
 
     //Test to check that LoginActivity is the first to be displayed
@@ -76,18 +75,18 @@ public class LoginActivityTest {
         onView(withId(R.id.activity_register)).check(matches(isDisplayed()));
     }
 
-//    //Checks to see if the loginbutton works and goes to the map screen
-//    @Test
-//    public void clickLoginButton() {
-//        //Set login and password
-//        onView(withId(R.id.login_email_field)).perform(typeText(email));
-//        onView(withId(R.id.login_password_field)).perform(typeText(password));
-//
-//
-//        //Locate and click login button
-//        onView(withId(R.id.loginButton)).perform(click());
-//
-//        //Check if map screen is displayed
-//        onView(withId(R.id.activity_maps)).check(matches(isDisplayed()));
-//    }
+    //Checks to see if the loginbutton works and goes to the map screen
+    @Test
+    public void clickLoginButton() {
+        //Set login and password
+        onView(withId(R.id.login_email_field)).perform(typeText(email));
+        onView(withId(R.id.login_password_field)).perform(typeText(password));
+
+
+        //Locate and click login button
+        onView(withId(R.id.loginButton)).perform(click());
+
+        //Check if map screen is displayed
+        onView(withId(R.id.activity_maps)).check(matches(isDisplayed()));
+    }
 }
