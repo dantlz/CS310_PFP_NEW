@@ -124,14 +124,32 @@ public class MyBookingsActivity extends AppCompatActivity {
         extras.putString("SPACE_ADDRESS", addressText);
 
         //Generate text for start and end dates
-        String endTimeText = currBooking.getEndCalendarDate().getHour() + " "
-                + currBooking.getEndCalendarDate().getMinute() + " "
-                +currBooking.getEndCalendarDate().getDay() + " " + currBooking.getEndCalendarDate().getMonth()
-                + " " + currBooking.getEndCalendarDate().getYear();
-        String startTimeText = currBooking.getStartCalendarDate().getHour() + " "
-                + currBooking.getStartCalendarDate().getMinute() + " "
-                +currBooking.getStartCalendarDate().getDay() + " " + currBooking.getStartCalendarDate().getMonth()
-                + " " + currBooking.getStartCalendarDate().getYear();
+        String startMinute;
+        int sMinuteInt = currBooking.getStartCalendarDate().getMinute();
+        if(sMinuteInt < 10){
+            startMinute = "0" + sMinuteInt;
+        }
+        else{
+            startMinute = sMinuteInt + "";
+        }
+        String endMinute;
+        int eMinuteInt = currBooking.getEndCalendarDate().getMinute();
+        if(eMinuteInt < 10){
+            endMinute = "0" + eMinuteInt;
+        }
+        else{
+            endMinute = eMinuteInt + "";
+        }
+        String endTimeText = currBooking.getEndCalendarDate().getHour() + ":"
+                + startMinute + " "
+                + currBooking.getEndCalendarDate().getMonth() + "/"
+                + currBooking.getEndCalendarDate().getDay() + "/"
+                + currBooking.getEndCalendarDate().getYear();
+        String startTimeText = currBooking.getStartCalendarDate().getHour() + ":"
+                + endMinute + " "
+                + currBooking.getStartCalendarDate().getMonth()+ "/"
+                + currBooking.getStartCalendarDate().getDay() + "/"
+                + currBooking.getStartCalendarDate().getYear();
         extras.putString("BOOKING_STARTTIME", startTimeText);
         extras.putString("BOOKING_ENDTIME", endTimeText);
         //Generate text for owner name and email
