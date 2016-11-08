@@ -11,14 +11,26 @@
         app:srcCompat="@drawable/cast_album_art_placeholder"
         android:id="@+id/imageView" />
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:hint="Name"
-        android:ems="10"
-        android:id="@+id/nameLabel" />
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Firstname"
+            android:ems="10"
+            android:id="@+id/firstNameLabel"
+            android:layout_marginRight="20dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Lastname"
+            android:ems="10"
+            android:id="@+id/lastNameLabel" />
+    </LinearLayout>
 
     <EditText
         android:layout_width="match_parent"
@@ -29,17 +41,15 @@
         android:text="Email"
         android:hint="Email"
         />
-
-    <EditText
-        android:layout_width="match_parent"
+    <RatingBar
+        android:id="@+id/ProfileRatingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/passwordLabel"
-        android:text="password"
-        android:hint="Password"
-        />
-
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:isIndicator="true">
+    </RatingBar>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,24 +61,35 @@
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="My Bookings"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:onClick="clickedMyBookings"
         android:id="@+id/bookingButton" />
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="My Listed Spaces"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:id="@+id/myListedSpacesButton"
+        android:onClick="clickedMyListedSpaces" />
+
+    <Button
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:text="Edit Profile"
-        android:id="@+id/editButton" />
+        android:id="@+id/editButton"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"

@@ -3,18 +3,18 @@ package com.pfp.parkhere;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,8 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ObjectClasses.Peer;
-import ObjectClasses.Seeker;
+import ObjectClasses.Status;
 
 public class RegisterActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
@@ -40,15 +43,20 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText phoneNumberField;
     private EditText passwordField;
     private EditText repeatPasswordField;
-
+    private Button gotoLoginButton;
+    private ImageView imageView;
+    private Spinner statusSpinner;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Peer currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // from http://viralpatel.net/blogs/pick-image-from-galary-android-app/
+
+        findViewById(R.id.registerLoad).setVisibility(View.GONE);
+
         buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
             //Called when Upload Photo is clicked
@@ -74,6 +82,27 @@ public class RegisterActivity extends AppCompatActivity {
         phoneNumberField = (EditText) findViewById(R.id.phone_field);
         passwordField = (EditText) findViewById(R.id.password_field);
         repeatPasswordField = (EditText) findViewById(R.id.repeat_password_field);
+        gotoLoginButton = (Button) findViewById(R.id.goToLoginButton);
+        gotoLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imageView = (ImageView) findViewById(R.id.imgView);
+        statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
+
+
+        // Spinner Drop down elements
+        List<String> types = new ArrayList<String>();
+        types.add("Owner");
+        types.add("Seeker");
+        final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(dataAdapter);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -81,31 +110,31 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                // User is signed in
+
                 if (user != null) {
-                    //First grab the peer/seeker object form database based on user's email
-                    FirebaseDatabase.getInstance()
-                            .getReference("Seekers")
-                            .child(Global_ParkHere_Application.reformatEmail(user.getEmail()))
-                            .addValueEventListener(new ValueEventListener() {
+                    findViewById(R.id.registerLoad).setVisibility(View.GONE);
+
+                    Global.peers().child(Global.reformatEmail(user.getEmail())).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            // This method is called once with the initial value and again
-                            // whenever data at this location is updated.
-                            //TODO Seekers AND owners
-                            Peer currentUser = dataSnapshot.getValue(Peer.class);
-                            ((Global_ParkHere_Application) getApplication()).setCurrentUserObject(currentUser);
-                            //Go to Map activity
+                            currentUser = dataSnapshot.getValue(Peer.class);
+                            if(currentUser == null)
+                                return;
+                            Global.setCurUser(currentUser);
                             startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+                            finish();
+                            return;
                         }
+
                         @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
+                        public void onCancelled(DatabaseError databaseError) {
+
                         }
                     });
                 }
-                else{
-                    // User is signed out. This would not happen here ever
+                else {
+
+                    return;
                 }
             }
         };
@@ -113,9 +142,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void confirmButtonPressed(){
-        //TODO ADD SELECTION OF REGISTRATION AS OWNER OR SEEKER
+        findViewById(R.id.registerLoad).setVisibility(View.VISIBLE);
+
         String validity = allInputFieldValid();
         if(!validity.equals("")) {
+            findViewById(R.id.registerLoad).setVisibility(View.GONE);
             new AlertDialog.Builder(RegisterActivity.this)
                     .setTitle("Registration failed")
                     .setMessage(validity)
@@ -135,8 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            System.out.println("Registration failed: Firebase issue: " + task.getException().toString());
-
+                            findViewById(R.id.registerLoad).setVisibility(View.GONE);
                             //Check if email is already registered.
                             if(task.getException().getClass().equals(FirebaseAuthUserCollisionException.class)){
                                 new AlertDialog.Builder(RegisterActivity.this)
@@ -154,22 +184,31 @@ public class RegisterActivity extends AppCompatActivity {
                             return;
                         }
 
-
-                        //TODO Make sure to create owner or seeker depending on user choice
-                        Seeker seeker = createUserObject();
-                        FirebaseDatabase.getInstance().getReference().child("Seekers").
-                                child(Global_ParkHere_Application.reformatEmail(emailField.getText().toString())).setValue(seeker);
+                        currentUser = createUserObject();
+                        Global.setCurUser(currentUser);
+                        Global.peers().child(Global.reformatEmail(emailField.getText().toString())).setValue(currentUser);
                     }
                 });
     }
 
-    private Seeker createUserObject(){
-        Seeker seeker = new Seeker();
-        seeker.setEmailAddress(emailField.getText().toString());
-        seeker.setFirstName(firstNameField.getText().toString());
-        seeker.setLastName(lastNameField.getText().toString());
-        seeker.setPhoneNumber(phoneNumberField.getText().toString());
-        return seeker;
+    private Peer createUserObject(){
+        Peer peer = new Peer();
+        peer.setEmailAddress(emailField.getText().toString());
+        peer.setReformattedEmail(Global.reformatEmail(emailField.getText().toString()));
+        peer.setFirstName(firstNameField.getText().toString());
+        peer.setLastName(lastNameField.getText().toString());
+        peer.setPhoneNumber(phoneNumberField.getText().toString());
+        peer.setDPNonFirebaseRelated(imageView.getDrawable());
+        peer.setStatus(Status.valueOf(statusSpinner.getSelectedItem().toString().toUpperCase()));
+        peer.setPhotoID("");
+        if(peer.getStatus().equals(Status.OWNER)) {
+            peer.setPreferredStatus(Status.OWNER);
+        }
+        else{
+            peer.setPreferredStatus(Status.SEEKER);
+        }
+
+        return peer;
     }
 
     private String allInputFieldValid(){
@@ -192,6 +231,8 @@ public class RegisterActivity extends AppCompatActivity {
         //Password must be at least 10 characters with upper/lower case, number(s), and special characters
         if(passwordField.getText().toString().length() < 10)
             return "Password must be at least 10 characters";
+        if((BitmapDrawable)(imageView.getDrawable()) == null)
+            return "Must set a display picture for your profile";
         for(char c: passwordField.getText().toString().toCharArray()){
             if("!@#$%^&*()_+-=".contains(String.valueOf(c)))
                 return "";
@@ -199,17 +240,6 @@ public class RegisterActivity extends AppCompatActivity {
         return "Password must contain at least one special character";
     }
 
-    @Override
-    protected void onDestroy() {
-        mAuth.signOut();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        mAuth.signOut();
-        super.onStop();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -217,18 +247,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            System.out.println("Before decode file" + picturePath);
-            ImageView imageView = (ImageView) findViewById(R.id.imgView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            System.out.println("After decode file");
+            imageView.setImageURI(selectedImage);
         }
 
 

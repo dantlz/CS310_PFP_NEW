@@ -3,15 +3,15 @@ package com.pfp.parkhere;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-/**
- * Created by tshih on 10/21/16.
- */
-
 public class MyBookingsDetailsActivity extends AppCompatActivity{
+    private String bookingIdentifier, ownerEmail, spaceName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,33 +20,44 @@ public class MyBookingsDetailsActivity extends AppCompatActivity{
         //get information passed from mybookings activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        TextView addressView = (TextView) findViewById(R.id.address);
+        ownerEmail = extras.getString("SPACE_OWNEREMAIL");
+        spaceName = extras.getString("SPACE_NAME");
+
+        TextView addressView = (TextView) findViewById(R.id.streetAddress);
         addressView.setTextColor(Color.BLACK);
-        addressView.setText(extras.getString("ADDRESS_TEXT"));
+        addressView.setText(extras.getString("SPACE_ADDRESS"));
 
         //set start and end times
-        String times = "START: " + extras.getString("START_TIME_TEXT") + "\n"+ "END: " + extras.getString("END_TIME_TEXT");
+        String times = "START: " + extras.getString("SPACE_STARTTIME") + "\n"+ "END: " + extras.getString("SPACE_ENDTIME");
         TextView timesView = (TextView) findViewById(R.id.start_end_time);
         timesView.setTextColor(Color.BLACK);
-        //textView.setTextSize(20);
-
         timesView.setText(times);
 
         TextView nameView = (TextView) findViewById(R.id.owner_name);
-        nameView.setText(extras.getString("OWNER_NAME_TEXT"));
+        nameView.setText(extras.getString("SPACE_OWNERNAME"));
         TextView emailView = (TextView) findViewById(R.id.owner_email);
-        emailView.setText(extras.getString("OWNER_EMAIL_TEXT"));
-        TextView ratingView = (TextView) findViewById(R.id.space_rating);
-        ratingView.setText("Rating: " + extras.getString("SPACE_RATING_TEXT"));
+        emailView.setText(ownerEmail);
+        RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
+        DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
+        rateBar.setRating(extras.getInt("SPACE_RATING"));
         TextView reviewView = (TextView) findViewById(R.id.space_review);
-        reviewView.setText("Review: " + extras.getString("SPACE_REVIEW_TEXT"));
-        //random comment
+        String spaceReview = "Review: " + extras.getString("SPACE_REVIEW");
+        reviewView.setText(spaceReview);
+
+        bookingIdentifier = extras.getString("BOOKING_IDENTIFIER");
     }
+
     public void ReturnToBookings(View view){
         finish();
     }
+
     public void GoToCancel(View view){
         Intent intent = new Intent(this, CancelActivity.class);
+        intent.putExtra("BOOKING_IDENTIFIER", bookingIdentifier);
+        intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
+        intent.putExtra("SPACE_NAME", spaceName);
         startActivity(intent);
     }
+
+
 }

@@ -18,40 +18,37 @@
             tools:textColor="@android:color/black" />
         <EditText
             android:id="@+id/spaceNameField"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/AddSpaceTitle"
             android:hint="Enter your space name"/>
         <EditText
             android:id="@+id/priceField"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Price"
             android:layout_below="@+id/spaceNameField"
             android:inputType="number"/>
         <EditText
             android:id="@+id/descriptionField"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your description"
-            android:layout_below="@+id/priceField"/>
+            android:layout_below="@+id/priceField"
+            android:inputType="text"/>
 
 
-        <EditText android:id="@+id/streetNumber"
+        <EditText android:id="@+id/streetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Street Number"
-            android:layout_below="@id/descriptionField"/>
-        <EditText android:id="@+id/streetName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Street Name"
-            android:layout_below="@+id/streetNumber" />
+            android:hint="Enter Street Address"
+            android:layout_below="@id/descriptionField"
+            android:inputType="text"/>
         <EditText android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter City"
-            android:layout_below="@+id/streetName"/>
+            android:layout_below="@+id/streetAddress"/>
         <EditText android:id="@+id/state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +65,7 @@
             android:layout_height="wrap_content"
             android:hint="Enter Zip Code"
             android:layout_below="@+id/country"
-            android:inputType="phone" />
+            android:inputType="number" />
 
 
         <TextView
@@ -119,7 +116,7 @@
         <Spinner
             android:id="@+id/typeSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@+id/typeSpinnerLabel"
             android:spinnerMode="dropdown"/>
         <TextView
@@ -132,21 +129,21 @@
         <Spinner
             android:id="@+id/spinnerForCancellation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@+id/spinnerCancellationLabel"
             android:spinnerMode="dropdown"/>
 
             
         <ImageView
             android:id="@+id/imageview"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_weight="1"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/spinnerForCancellation"/>
         <Button
             android:id="@+id/LoadPictureButton"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/imageview"
             android:onClick="onLoadPictureClicked"
@@ -155,7 +152,7 @@
             android:layout_alignStart="@+id/confirmButton" />
         <Button
             android:id="@+id/confirmButton"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onNewSpaceClicked"
             android:text="Confirm"

@@ -15,13 +15,21 @@
       },
       "oauth_client": [
         {
+          "client_id": "205570712410-5jprg1nqv3rh4qo3kt2qifrgf6u25iib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pfp.parkhere",
+            "certificate_hash": "78415D4BDAF82D69323CFA7759B0B5F58936A957"
+          }
+        },
+        {
           "client_id": "205570712410-k1s3r8fq48f647u8611cben7rakvass4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAoh7uwfHcFGqrc3uqFMzZGYxDrl9355sw"
+          "current_key": "AIzaSyB6fRuZ_YkDgL2E51kLand17GEHYBnUoF8"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205570712410-k1s3r8fq48f647u8611cben7rakvass4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

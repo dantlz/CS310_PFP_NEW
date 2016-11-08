@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/address"
+        android:id="@+id/streetAddress"
         android:textSize="15pt"
         android:autoLink="map">
     </TextView>
@@ -39,14 +39,17 @@
         tools:textColor="@android:color/black"
         android:autoLink="email">
     </TextView>
-    <TextView
-        android:layout_width="match_parent"
+
+    <RatingBar
+        android:id="@+id/BookingDetailRatingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/space_rating"
-        android:textSize="12pt"
-        tools:textColor="@android:color/black"
-        android:autoLink="email">
-    </TextView>
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:isIndicator="true">
+    </RatingBar>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,13 +63,13 @@
         android:layout_height="wrap_content"
         android:onClick="GoToCancel"
         android:id="@+id/Booking_To_Cancel"
-        android:text="Cancel?">
+        android:text="Cancel Booking">
     </Button>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Return me to Bookings"
+        android:text="Return to My Bookings"
         android:id="@+id/BookingDetail_to_Bookings"
         android:onClick="ReturnToBookings">
     </Button>
