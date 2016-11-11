@@ -95,7 +95,7 @@ public class LoginActivity extends Activity {
                 else if(passwordField.getText().toString().equals(""))
                     message = "Please enter your password";
                 if(!message.equals("")){
-                    new AlertDialog.Builder(LoginActivity.this)
+                    new AlertDialog.Builder(LoginActivity.this, R.style.MyAlertDialogStyle)
                             .setTitle("Missing email or password")
                             .setMessage(message)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -134,7 +134,7 @@ public class LoginActivity extends Activity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()){
-                                new AlertDialog.Builder(LoginActivity.this)
+                                new AlertDialog.Builder(LoginActivity.this, R.style.MyAlertDialogStyle)
                                         .setTitle("Email or password invalid")
                                         .setMessage("The entered email or password is invalid. " +
                                                 "Please retry or register")

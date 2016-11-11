@@ -111,7 +111,7 @@ public class PayWithCardActivity extends Activity {
 
         if (!error.equals("")) {
             AlertDialog dialog;
-            AlertDialog.Builder errorDisplay = new AlertDialog.Builder(getBaseContext());
+            AlertDialog.Builder errorDisplay = new AlertDialog.Builder(getBaseContext(), R.style.MyAlertDialogStyle);
             errorDisplay.setTitle("ERROR!")
                     .setMessage(error);
             errorDisplay.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
