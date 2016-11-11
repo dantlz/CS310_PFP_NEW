@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +31,7 @@ import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 import ObjectClasses.SpaceType;
 
-public class AddSpaceActivity extends AppCompatActivity {
+public class AddSpaceActivity extends Activity {
     private EditText spaceNameField;
     private EditText priceField;
     private EditText descriptionField;

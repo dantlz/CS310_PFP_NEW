@@ -1,6 +1,7 @@
 package com.pfp.parkhere;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Handler;
 
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -61,7 +63,7 @@ import ObjectClasses.Status;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Map<LatLng, Space> allSpaces = new HashMap<>();
@@ -73,7 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker addSpaceMarker;
     private Button filtersButton;
     private Button resultAsListButton;
-    private SupportMapFragment mapFragment;
+    private MapFragment mapFragment;
     private SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmssZ");
     private LatLng currentCameraOrZoomLatLng;
     private Intent currentFiltersIntent;
@@ -90,7 +92,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 

@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import android.widget.Button;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-public class VerificationActivity extends AppCompatActivity {
+public class VerificationActivity extends Activity {
 
     private static int RESULT_LOAD_IMAGE = 1;
     private Button buttonLoadImage;

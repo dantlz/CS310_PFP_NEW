@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -22,7 +23,7 @@ import java.util.LinkedList;
 
 import ObjectClasses.Space;
 
-public class MyListedSpacesActivity extends AppCompatActivity {
+public class MyListedSpacesActivity extends Activity {
 
     private ListView listedSpacesList;
     private LinkedList<Space> MyListedSpaces;

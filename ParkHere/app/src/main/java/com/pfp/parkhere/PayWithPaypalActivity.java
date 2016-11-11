@@ -1,6 +1,7 @@
 package com.pfp.parkhere;
 
 
+import android.app.Activity;
 import android.content.Intent;
 
 
@@ -18,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import ObjectClasses.Booking;
 import ObjectClasses.Space;
 
-public class PayWithPaypalActivity extends AppCompatActivity {
+public class PayWithPaypalActivity extends Activity {
 
     private Booking booking;
     private String ownerEmail, ownerEmailReformatted, spaceName, bookingID;

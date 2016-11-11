@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -23,7 +24,7 @@ import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
 
-public class MyBookingsActivity extends AppCompatActivity {
+public class MyBookingsActivity extends Activity {
     private ListView bookingsView;
     private LinkedList<String> myBookingIdentifiers;
     private LinkedList<Booking> myBookings;

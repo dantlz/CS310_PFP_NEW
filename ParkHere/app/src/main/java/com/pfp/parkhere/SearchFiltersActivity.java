@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import java.util.Calendar;
 
 import ObjectClasses.SpaceType;
 
-public class SearchFiltersActivity extends AppCompatActivity {
+public class SearchFiltersActivity extends Activity {
 
     private SpaceType type;
     private EditText lowestPriceField, highestPriceField;

@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,7 +34,7 @@ import java.util.List;
 import ObjectClasses.Peer;
 import ObjectClasses.Status;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends Activity {
     private static int RESULT_LOAD_IMAGE = 1;
     private Button buttonLoadImage;
     private Button confirmButton;
