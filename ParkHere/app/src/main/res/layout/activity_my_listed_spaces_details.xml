@@ -24,9 +24,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listed_space_name"
-                android:textColor="@android:color/black"
-                android:textSize="15pt"/>
+                android:id="@+id/listed_space_name"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,8 +38,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/listed_space_address"
-                android:textColor="@android:color/black"
-                android:textSize="12pt"
                 android:autoLink="map"/>
         </LinearLayout>
 
@@ -56,9 +52,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listed_space_price"
-                android:textColor="@android:color/black"
-                android:textSize="12pt"/>
+                android:id="@+id/listed_space_price"/>
         </LinearLayout>
 
         <LinearLayout
@@ -155,6 +149,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/finishBookingsButton"
-            android:text="Finish existing bookings for this space"/>
+            android:text="Finish existing bookings"/>
     </LinearLayout>
 </ScrollView>

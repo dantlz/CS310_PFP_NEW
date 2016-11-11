@@ -122,18 +122,15 @@ public class ProfileActivity extends Activity {
                         Peer owner = dataSnapshot.getValue(Peer.class);
                         mFirstName.setText("Owner first name: " + owner.getFirstName());
                         disableEditText(mFirstName);
-                        mFirstName.setTextColor(Color.BLACK);
                         mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
                         mEmail.setText("Owner rating: ");
                         RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
                         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
                         rateBar.setRating(owner.getOwnerRating());
                         disableEditText(mEmail);
-                        mEmail.setTextColor(Color.BLACK);
                         mPhone.setInputType(InputType.TYPE_CLASS_TEXT);
                         mPhone.setText("Owner review: " + owner.getReview());
                         disableEditText(mPhone);
-                        mPhone.setTextColor(Color.BLACK);
                     }
 
                     @Override

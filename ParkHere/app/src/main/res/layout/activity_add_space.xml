@@ -14,8 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="30dp"
-            android:text="Add Space"
-            tools:textColor="@android:color/black" />
+            android:text="Add Space" />
         <EditText
             android:id="@+id/spaceNameField"
             android:layout_width="match_parent"
