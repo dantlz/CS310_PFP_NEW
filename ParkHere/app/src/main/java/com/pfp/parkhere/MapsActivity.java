@@ -563,8 +563,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
 
     private void ownerMode(boolean firstTime){
         userMode = Status.OWNER;
-        if(!firstTime)
+        if(!firstTime) {
+            addSpaceItem.setVisible(true);
             addSpaceItem.setEnabled(true);
+        }
         filtersButton.setVisibility(View.GONE);
         resultAsListButton.setVisibility(View.GONE);
         Global.curUserRef().child("preferredStatus").setValue(Status.OWNER);
@@ -574,6 +576,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         userMode = Status.SEEKER;
         if(!firstTime) {
             addSpaceItem.setEnabled(false);
+            addSpaceItem.setVisible(false);
             if (addSpaceMarker != null) {
                 addSpaceMarker.remove();
             }
@@ -634,13 +637,25 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         registerAsBothItem = menu.getItem(2);
         if(Global.getCurUser().getStatus().equals(Status.BOTH)){
             registerAsBothItem.setEnabled(false);
-
+            registerAsBothItem.setVisible(false);
         }
+
         if(Global.getCurUser().getStatus().equals(Status.SEEKER)){
             addSpaceItem.setEnabled(false);
+            addSpaceItem.setVisible(false);
         }
-        if(userMode.equals(Status.SEEKER))
-            addSpaceItem.setEnabled(false);
+
+        if(Global.getCurUser().getStatus().equals(Status.OWNER))
+            ownerMode(false);
+        else if(Global.getCurUser().getStatus().equals(Status.SEEKER))
+            seekerMode(false);
+        else{
+            if(Global.getCurUser().getPreferredStatus().equals(Status.SEEKER))
+                seekerMode(false);
+            else
+                ownerMode(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 

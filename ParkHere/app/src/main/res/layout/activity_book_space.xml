@@ -15,26 +15,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/space_name_confirmation"
-        android:textSize="24sp"
         android:layout_weight="0"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/space_address_confirmation"
-        android:textSize="20sp" />
+        android:id="@+id/space_address_confirmation"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/space_price_confirmation"
-        android:textSize="20sp" />
+        android:id="@+id/space_price_confirmation"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/display_cancellation_policy"
-        android:textSize="22sp"
         android:paddingTop="20dp"/>
 
     <LinearLayout

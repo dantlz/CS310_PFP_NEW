@@ -13,38 +13,37 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <Button
-            android:text="Choose from Gallery..."
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/uploadPictureButton"
-            android:textStyle="normal|bold"
-            android:textAlignment="center"
-            android:backgroundTint="@android:color/black"
-            android:visibility="visible"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="51dp"
-            android:elevation="24dp"
-            style="@android:style/Widget.Holo.Button" />
-
-        <TextView
-            android:text="Upload ID"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:id="@+id/uploadIDTextView"
-            android:layout_height="100dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:fontFamily="sans-serif"
-            android:textSize="50sp"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:layout_above="@+id/uploadPictureButton"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="234dp" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:id="@+id/uploadIDTextView"
+                android:text="Upload Photo ID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:fontFamily="sans-serif"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:layout_alignParentStart="true"/>
+
+            <Button
+                android:text="Choose from Gallery..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/uploadPictureButton"
+                android:textStyle="normal|bold"
+                android:textAlignment="center"
+                android:visibility="visible"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/uploadIDTextView"
+                style="@android:style/Widget.Holo.Button" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

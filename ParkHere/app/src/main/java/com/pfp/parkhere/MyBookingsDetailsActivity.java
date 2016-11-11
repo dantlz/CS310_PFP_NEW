@@ -25,13 +25,11 @@ public class MyBookingsDetailsActivity extends Activity{
         spaceName = extras.getString("SPACE_NAME");
 
         TextView addressView = (TextView) findViewById(R.id.streetAddress);
-        addressView.setTextColor(Color.BLACK);
         addressView.setText(extras.getString("SPACE_ADDRESS"));
 
         //set start and end times
         String times = "START: " + extras.getString("SPACE_STARTTIME") + "\n"+ "END: " + extras.getString("SPACE_ENDTIME");
         TextView timesView = (TextView) findViewById(R.id.start_end_time);
-        timesView.setTextColor(Color.BLACK);
         timesView.setText(times);
 
         TextView nameView = (TextView) findViewById(R.id.owner_name);
