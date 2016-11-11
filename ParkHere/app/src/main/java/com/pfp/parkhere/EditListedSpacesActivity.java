@@ -116,7 +116,7 @@ public class EditListedSpacesActivity extends Activity {
         try {
             List<Address> addressList = new Geocoder(getApplicationContext()).getFromLocationName(editAddress.getText().toString(), 1);
             if (addressList.size() < 1){
-                new AlertDialog.Builder(EditListedSpacesActivity.this)
+                new AlertDialog.Builder(EditListedSpacesActivity.this, R.style.MyAlertDialogStyle)
                         .setTitle("Location not found")
                         .setMessage("We could not find a location based on your address. Please try again")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

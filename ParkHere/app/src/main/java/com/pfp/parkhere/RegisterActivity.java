@@ -148,7 +148,7 @@ public class RegisterActivity extends Activity {
         String validity = allInputFieldValid();
         if(!validity.equals("")) {
             findViewById(R.id.registerLoad).setVisibility(View.GONE);
-            new AlertDialog.Builder(RegisterActivity.this)
+            new AlertDialog.Builder(RegisterActivity.this, R.style.MyAlertDialogStyle)
                     .setTitle("Registration failed")
                     .setMessage(validity)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -170,7 +170,7 @@ public class RegisterActivity extends Activity {
                             findViewById(R.id.registerLoad).setVisibility(View.GONE);
                             //Check if email is already registered.
                             if(task.getException().getClass().equals(FirebaseAuthUserCollisionException.class)){
-                                new AlertDialog.Builder(RegisterActivity.this)
+                                new AlertDialog.Builder(RegisterActivity.this, R.style.MyAlertDialogStyle)
                                         .setTitle("Email already in use")
                                         .setMessage("The email: " + emailField.getText().toString()
                                                 + " is already registered. Please register with a different email or log in")

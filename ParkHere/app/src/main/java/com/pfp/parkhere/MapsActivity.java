@@ -3,6 +3,7 @@ package com.pfp.parkhere;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.os.Handler;
 
 import android.content.Context;
@@ -178,7 +179,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         //Must verify
         if(Global.getCurUser().getPhotoID() == null ||
                 Global.getCurUser().getPhotoID().equals("")){
-            Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
+            Dialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyAlertDialogStyle)
                     .setTitle("Verification Needed")
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -198,7 +199,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
     protected void onResume() {
         if(Global.getCurUser().getPhotoID() == null ||
                 Global.getCurUser().getPhotoID().equals("")){
-            Dialog dialog = new AlertDialog.Builder(MapsActivity.this)
+            Dialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyAlertDialogStyle)
                     .setTitle("Verification Needed")
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
