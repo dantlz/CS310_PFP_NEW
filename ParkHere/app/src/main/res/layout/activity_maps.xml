@@ -5,34 +5,31 @@
     android:orientation="vertical"
     android:id="@+id/activity_maps">
 
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
-        android:id="@+id/TypeRadioGroup">
-        <RadioButton
+        android:orientation="horizontal">
+        <ToggleButton
             android:id="@+id/Owner"
-            android:text="Owner"
-            android:button="@null"
-            android:drawableBottom="@android:drawable/btn_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:onClick="onRadioButtonClicked"/>
-
-        <RadioButton
+            android:textOn="Owner"
+            android:textOff="Owner"
+            android:onClick="onToggleButtonClicked"/>
+        <ToggleButton
             android:id="@+id/Seeker"
-            android:text="Seeker"
-            android:button="@null"
-            android:drawableBottom="@android:drawable/btn_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:onClick="onRadioButtonClicked"/>
-    </RadioGroup>
+            android:textOn="Seeker"
+            android:textOff="Seeker"
+            android:onClick="onToggleButtonClicked"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,22 +43,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:hint="Search for a parking space" />
+            android:hint="Enter address" />
+        <Button
+            android:id="@+id/filtersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filters"/>
+
         <Button
             android:id="@+id/search_button"
-            android:layout_width="90dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:onClick="onMapSearch"
-            android:text="Search" />
+            android:text="Search"
+            android:backgroundTint="@android:color/holo_blue_light"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/filtersButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/searchBar"
-        android:text="Search Filters"/>
 
     <fragment
         android:id="@+id/map"
@@ -69,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_below="@+id/filtersButton"
+        android:layout_below="@+id/searchBar"
         tools:context="com.viralandroid.googlemapsandroidapi.MapsActivity" />
 
     <Button

@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -148,26 +149,28 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         });
 
 
+        ToggleButton ownerToggle = (ToggleButton) findViewById(R.id.Owner);
+        ToggleButton seekerToggle = (ToggleButton) findViewById(R.id.Seeker);
+
         if(Global.getCurUser().getStatus().equals(Status.OWNER)){
-            ((RadioButton)findViewById(R.id.Owner)).setChecked(true);
-            (findViewById(R.id.Seeker)).setEnabled(false);
+            ownerToggle.setChecked(true);
+            seekerToggle.setEnabled(false);
             ownerMode(true);
         }
         else if(Global.getCurUser().getStatus().equals(Status.SEEKER)){
-            ((RadioButton)findViewById(R.id.Seeker)).setChecked(true);
-            (findViewById(R.id.Owner)).setEnabled(false);
+            seekerToggle.setChecked(true);
+            ownerToggle.setEnabled(false);
             seekerMode(true);
         }
         else{
             //Registered as both owner and seeker
             //Remember last time's preferred status
             if(Global.getCurUser().getPreferredStatus().equals(Status.SEEKER)) {
-                ((RadioButton) findViewById(R.id.Seeker)).setChecked(true);
+                seekerToggle.setChecked(true);
                 seekerMode(true);
             }
             else{
-                ((RadioButton) findViewById(R.id.Owner)).setChecked(true);
-                userMode = Status.OWNER;
+                ownerToggle.setChecked(true);
                 ownerMode(true);
             }
         }
@@ -546,7 +549,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         return withinRadius;
     }
 
-    public void onRadioButtonClicked(View view) {
+    public void onToggleButtonClicked(View view) {
         // Check which radio button was clicked
         switch (view.getId()) {
             case R.id.Owner:
