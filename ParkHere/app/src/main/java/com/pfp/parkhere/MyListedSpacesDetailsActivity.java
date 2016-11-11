@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,7 +21,7 @@ import ObjectClasses.Space;
 import ObjectClasses.Status;
 
 //DOUBLEUSE
-public class MyListedSpacesDetailsActivity extends AppCompatActivity {
+public class MyListedSpacesDetailsActivity extends Activity {
 
     private Bundle extras;
     private RatingBar rateBar;

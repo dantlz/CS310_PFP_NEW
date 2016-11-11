@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +36,7 @@ import ObjectClasses.Space;
 //TODO Add fields for review and ratings
 //TODO Create a function to get average of all ratings
 //TODO Append new review to a list of string reviews
-public class FinishBookingsActivity extends AppCompatActivity {
+public class FinishBookingsActivity extends Activity {
 
     private SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmssZ");
     private String spaceName;

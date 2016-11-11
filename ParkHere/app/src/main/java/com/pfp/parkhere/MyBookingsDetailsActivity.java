@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class MyBookingsDetailsActivity extends AppCompatActivity{
+public class MyBookingsDetailsActivity extends Activity{
     private String bookingIdentifier, ownerEmail, spaceName;
 
     @Override

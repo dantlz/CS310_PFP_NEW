@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -24,7 +25,7 @@ import java.util.List;
 import ObjectClasses.Booking;
 import ObjectClasses.Space;
 
-public class PayWithCardActivity extends AppCompatActivity {
+public class PayWithCardActivity extends Activity {
 
     private Booking booking;
     private String ownerEmail;

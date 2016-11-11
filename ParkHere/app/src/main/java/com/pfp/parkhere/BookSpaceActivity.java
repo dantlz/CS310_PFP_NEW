@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import ObjectClasses.CancellationPolicy;
 import ObjectClasses.Space;
 
-public class BookSpaceActivity extends AppCompatActivity {
+public class BookSpaceActivity extends Activity {
 
     private Space selectedSpace;
     private String spaceName;

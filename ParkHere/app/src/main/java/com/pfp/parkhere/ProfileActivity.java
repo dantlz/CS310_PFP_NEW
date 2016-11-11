@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -23,8 +24,7 @@ import ObjectClasses.Status;
 import static com.pfp.parkhere.R.id.editButton;
 
 //DOUBLEUSE
-public class ProfileActivity extends AppCompatActivity
-{
+public class ProfileActivity extends Activity {
 
     protected EditText mEmail, mPhone, mFirstName, mLastName;
     private Button mEditButton, mSaveButton, mBookingButton, myListedSpacesButton;

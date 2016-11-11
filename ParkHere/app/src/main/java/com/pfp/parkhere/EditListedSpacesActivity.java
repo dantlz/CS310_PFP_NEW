@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import ObjectClasses.Space;
 
-public class EditListedSpacesActivity extends AppCompatActivity {
+public class EditListedSpacesActivity extends Activity {
 
     private Bundle extras;
     private EditText editName, editAddress, editPrice, editDescription;

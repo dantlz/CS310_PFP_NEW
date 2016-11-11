@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import ObjectClasses.Status;
 
-public class BecomeBothOwnerAndSeeker extends AppCompatActivity {
+public class BecomeBothOwnerAndSeeker extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

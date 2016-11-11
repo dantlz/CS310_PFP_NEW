@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Peer;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     //Firebase objects
     private FirebaseAuth mAuth;

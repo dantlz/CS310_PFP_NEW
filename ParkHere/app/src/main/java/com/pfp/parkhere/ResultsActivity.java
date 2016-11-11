@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ import java.util.Map;
 import ObjectClasses.Space;
 import ObjectClasses.Status;
 
-public class ResultsActivity extends AppCompatActivity {
+public class ResultsActivity extends Activity {
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
