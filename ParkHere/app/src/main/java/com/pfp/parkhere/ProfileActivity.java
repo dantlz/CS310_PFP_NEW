@@ -35,6 +35,7 @@ public class ProfileActivity extends Activity {
      */
 
     //TODO Allow user to change profile picture
+    //TODO If owner. User should see their own reviews as well
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

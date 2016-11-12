@@ -27,7 +27,6 @@ import java.util.List;
 
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
-//TODO Sprint if owner or space review is empty. populate with "NO REVIEWs"
 public class OwnerProfileActivity extends AppCompatActivity {
 
     private String ownerEmail;
