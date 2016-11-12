@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
-//TODO SPRINT reviews need to be a listview. Add a button to rateandreview if DONE. Add button to ownerdetails. Make  this activity's rating and review obviously for space, not owner.
+
 public class MyBookingsDetailsActivity extends Activity{
     private String bookingIdentifier, ownerEmail, spaceName;
 
@@ -39,9 +39,8 @@ public class MyBookingsDetailsActivity extends Activity{
         RatingBar rateBar = (RatingBar) findViewById(R.id.BookingDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
         rateBar.setRating(extras.getInt("SPACE_RATING"));
-        TextView reviewView = (TextView) findViewById(R.id.space_review);
-        String spaceReview = "Review: " + extras.getString("SPACE_REVIEW");
-        reviewView.setText(spaceReview);
+
+        //TODO Populate a list of space reviews
 
         bookingIdentifier = extras.getString("BOOKING_IDENTIFIER");
     }

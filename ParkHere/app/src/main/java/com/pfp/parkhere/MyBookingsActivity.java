@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +22,6 @@ import ObjectClasses.Booking;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
-//TODO SPRINT reviews need to be a list. Extracted from spaceReviews.
 public class MyBookingsActivity extends Activity {
     private ListView bookingsView;
     private LinkedList<String> myBookingIdentifiers;
@@ -58,7 +56,6 @@ public class MyBookingsActivity extends Activity {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
-
 
     private void populate() {
         //Set values displayed as a list
@@ -98,7 +95,7 @@ public class MyBookingsActivity extends Activity {
                 .child(currBooking.getSpaceName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                bookingClickedContinued(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
+                bookingClicked1(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
             }
 
             @Override
@@ -108,7 +105,7 @@ public class MyBookingsActivity extends Activity {
         });
     }
 
-    private void bookingClickedContinued(Space space, String bookingIdentifier){
+    private void bookingClicked1(Space space, String bookingIdentifier){
         //Generate text for address
         String ad = space.getStreetAddress()
                 + " " + space.getCity() + " " + space.getState()
@@ -156,7 +153,6 @@ public class MyBookingsActivity extends Activity {
         //Generate text for owner name and email
         extras.putString("SPACE_OWNERNAME", space.getSpaceName());
         extras.putString("SPACE_OWNEREMAIL", space.getOwnerEmail());
-        extras.putString("SPACE_REVIEW", space.getSpaceReview());
         extras.putString("SPACE_NAME", space.getSpaceName());
         extras.putString("BOOKING_IDENTIFIER", bookingIdentifier);
         extras.putInt("SPACE_RATING", ownerRating);
@@ -172,7 +168,7 @@ public class MyBookingsActivity extends Activity {
 
                 Peer currentUser = dataSnapshot.getValue(Peer.class);
                 ownerRating = ((Peer) currentUser).getOwnerRating();
-                finishPopulate(extras);
+                bookingClicked2(extras);
             }
 
             @Override
@@ -182,7 +178,7 @@ public class MyBookingsActivity extends Activity {
         });
     }
 
-    private void finishPopulate(Bundle extras){
+    private void bookingClicked2(Bundle extras){
         intent.putExtras(extras);
         startActivity(intent);
     }

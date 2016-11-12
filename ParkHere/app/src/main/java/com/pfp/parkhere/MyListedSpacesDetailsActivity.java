@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Space;
 import ObjectClasses.Status;
-//TODO SPRINT Make review into listview. Get reviews from spaceReviews
+
 //DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends Activity {
 
@@ -160,8 +160,6 @@ public class MyListedSpacesDetailsActivity extends Activity {
         rateBar.setRating(space.getSpaceRating());
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
-        spaceReviewField.setText(space.getSpaceReview());
-
     }
 
 }
