@@ -23,7 +23,7 @@ public class PayWithCardTest {
     private String tooLongNumber = "12341234123412345";
 
     private String tooShortDate = "123";
-    private String correctDate = "0195"
+    private String correctDate = "0195";
     private String tooLongDate = "12345";
 
     private String tooShortCV = "12";
