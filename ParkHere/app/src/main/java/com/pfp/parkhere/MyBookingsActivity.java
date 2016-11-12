@@ -23,7 +23,7 @@ import ObjectClasses.Booking;
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
 
-
+//TODO SPRINT reviews need to be a list. Extracted from spaceReviews.
 public class MyBookingsActivity extends Activity {
     private ListView bookingsView;
     private LinkedList<String> myBookingIdentifiers;

@@ -201,13 +201,9 @@ public class RegisterActivity extends Activity {
         peer.setPhoneNumber(phoneNumberField.getText().toString());
         peer.setDPNonFirebaseRelated(imageView.getDrawable());
         peer.setStatus(Status.valueOf(statusSpinner.getSelectedItem().toString().toUpperCase()));
+        peer.setPreferredStatus(peer.getStatus());
         peer.setPhotoID("");
-        if(peer.getStatus().equals(Status.OWNER)) {
-            peer.setPreferredStatus(Status.OWNER);
-        }
-        else{
-            peer.setPreferredStatus(Status.SEEKER);
-        }
+        peer.setOwnerRating(0);
 
         return peer;
     }
