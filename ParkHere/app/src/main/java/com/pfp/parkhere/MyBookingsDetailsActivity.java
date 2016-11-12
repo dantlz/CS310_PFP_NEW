@@ -90,6 +90,10 @@ public class MyBookingsDetailsActivity extends Activity{
 //        for(int i = 0; i < sizeOfReviewList;i++){
 //            viewValues[i] = reviewList[i];
 //        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, viewValues);
+//        // Assign adapter to ListView
+//        reviewsView.setAdapter(adapter);
 //    }
     public void GoToRateAndReview(View view){
         //Intent intent = new Intent(this, Activity.class);
