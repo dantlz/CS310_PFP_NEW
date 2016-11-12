@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
+//TODO SPRINT reviews need to be a listview. Add a button to rateandreview if DONE. Add button to ownerdetails. Make  this activity's rating and review obviously for space, not owner.
 public class MyBookingsDetailsActivity extends Activity{
     private String bookingIdentifier, ownerEmail, spaceName;
 
@@ -27,7 +27,7 @@ public class MyBookingsDetailsActivity extends Activity{
         TextView addressView = (TextView) findViewById(R.id.streetAddress);
         addressView.setText(extras.getString("SPACE_ADDRESS"));
 
-        //set start and end times
+        //set start and end times TODO SPRINT Start date end date for booking are null
         String times = "START: " + extras.getString("SPACE_STARTTIME") + "\n"+ "END: " + extras.getString("SPACE_ENDTIME");
         TextView timesView = (TextView) findViewById(R.id.start_end_time);
         timesView.setText(times);

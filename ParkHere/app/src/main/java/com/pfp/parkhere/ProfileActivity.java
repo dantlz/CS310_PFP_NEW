@@ -23,7 +23,6 @@ import ObjectClasses.Status;
 
 import static com.pfp.parkhere.R.id.editButton;
 
-//DOUBLEUSE
 public class ProfileActivity extends Activity {
 
     protected EditText mEmail, mPhone, mFirstName, mLastName;
@@ -54,19 +53,18 @@ public class ProfileActivity extends Activity {
         myListedSpacesButton = (Button) findViewById(R.id.myListedSpacesButton);
 
         //User's own profile
-        if(extras.get("SPACE_OWNEREMAIL") == null) {
-            if(extras.get("USER_STATUS").equals("OWNER")){
+        if (extras.get("SPACE_OWNEREMAIL") == null) {
+            if (extras.get("USER_STATUS").equals("OWNER")) {
                 mBookingButton.setVisibility(View.GONE);
                 myListedSpacesButton.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 myListedSpacesButton.setVisibility(View.GONE);
                 mBookingButton.setVisibility(View.VISIBLE);
             }
 
             RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
             rateBar.setVisibility(View.GONE);
-            if(!Global.getCurUser().getStatus().equals(Status.SEEKER)) {
+            if (!Global.getCurUser().getStatus().equals(Status.SEEKER)) {
                 rateBar.setVisibility(View.VISIBLE);
                 DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
                 rateBar.setRating(Global.getCurUser().getOwnerRating());
@@ -112,41 +110,6 @@ public class ProfileActivity extends Activity {
             return;
         }
 
-        String ownerEmail = extras.getString("SPACE_OWNEREMAIL");
-
-        //Checking owner profile
-        hideFields();
-        Global.peers().child(Global.reformatEmail(ownerEmail)).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Peer owner = dataSnapshot.getValue(Peer.class);
-                        mFirstName.setText("Owner first name: " + owner.getFirstName());
-                        disableEditText(mFirstName);
-                        mEmail.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        mEmail.setText("Owner rating: ");
-                        RatingBar rateBar = (RatingBar) findViewById(R.id.ProfileRatingBar);
-                        DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
-                        rateBar.setRating(owner.getOwnerRating());
-                        disableEditText(mEmail);
-                        mPhone.setInputType(InputType.TYPE_CLASS_TEXT);
-                        mPhone.setText("Owner review: " + owner.getReview());
-                        disableEditText(mPhone);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    private void hideFields(){
-        mImageView.setVisibility(View.GONE);
-        mEditButton.setVisibility(View.GONE);
-        mSaveButton.setVisibility(View.GONE);
-        mLastName.setVisibility(View.GONE);
-        mBookingButton.setVisibility(View.GONE);
-        myListedSpacesButton.setVisibility(View.GONE);
     }
 
     private void populateFields() throws InterruptedException {

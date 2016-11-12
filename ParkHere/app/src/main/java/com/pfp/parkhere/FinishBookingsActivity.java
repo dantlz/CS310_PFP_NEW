@@ -145,8 +145,6 @@ public class FinishBookingsActivity extends Activity {
     }
 
     public void completeBookings(View view) {
-        int countOfRemovedSpaces = 0;
-
         int counter = 0;
         for (Iterator<Booking> iterator = allBookings.iterator(); iterator.hasNext();) {
             Booking booking = iterator.next();
@@ -157,8 +155,7 @@ public class FinishBookingsActivity extends Activity {
 
             if (currTime.after(endTime)) {
                 Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers").child(curIdentifier).removeValue();
-                Global.bookings().child(Global.reformatEmail(curEmail)).child(curIdentifier).removeValue();
-
+                Global.bookings().child(Global.reformatEmail(curEmail)).child(curIdentifier).child("done").setValue(true);
                 iterator.remove();
             }
         }

@@ -13,14 +13,39 @@ import java.util.List;
 public class Peer {
     private String emailAddress;
     private String reformattedEmail;
-    private PaymentInfo paymentInfo;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String profilePicture;
     private Status status;
-    private String photoID;
     private Status preferredStatus;
+    private String photoID;
+    private int ownerRating; //TODO This needs to be a double, but too much to change.
+    //Reviews/ListedSpaces/Bookings all such lists are on database only.
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getReformattedEmail() {
+        return reformattedEmail;
+    }
+
+    public void setReformattedEmail(String reformattedEmail) {
+        this.reformattedEmail = reformattedEmail;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getLastName() {
         return lastName;
@@ -36,30 +61,6 @@ public class Peer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public PaymentInfo getPaymentInfo() {
-        return paymentInfo;
-    }
-
-    public void setPaymentInfo(PaymentInfo paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     //This is for firebase purposes.
@@ -86,7 +87,7 @@ public class Peer {
         return bitmap;
     }
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -102,61 +103,12 @@ public class Peer {
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
-    //SEEKER STUFF
-    private List<Booking> completedBookings = new ArrayList<Booking>();
-
-    public List<Booking> getCompletedBookings() {
-        return completedBookings;
-    }
-
-    public void setCompletedBookings(List<Booking> completedBookings) {
-        this.completedBookings = completedBookings;
-    }
-
-    //OWNER STUFF
-    private List<Space> listedSpaces = new ArrayList<Space>();
-    int ownerRating;
-    //TODO Make this a list of reviews
-    String review;
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
-    }
-
-    public List<Space> getListedSpaces() {
-        return listedSpaces;
-    }
-
-    public void setListedSpaces(List<Space> listedSpaces) {
-        this.listedSpaces = listedSpaces;
-    }
-
-    public int getOwnerRating() {
-        return ownerRating;
-    }
-
-    public void setOwnerRating(int ownerRating) {
-        this.ownerRating = ownerRating;
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getPhotoID() {
-        return photoID;
-    }
-
-    public void setPhotoID(String photoID) {
-        this.photoID = photoID;
     }
 
     public Status getPreferredStatus() {
@@ -167,12 +119,12 @@ public class Peer {
         this.preferredStatus = preferredStatus;
     }
 
-    public String getReformattedEmail() {
-        return reformattedEmail;
+    public String getPhotoID() {
+        return photoID;
     }
 
-    public void setReformattedEmail(String reformattedEmail) {
-        this.reformattedEmail = reformattedEmail;
+    public void setPhotoID(String photoID) {
+        this.photoID = photoID;
     }
 
     public void setIDNonFirebaseRelated(Drawable dpDrawable) {
@@ -187,6 +139,14 @@ public class Peer {
         byte [] encodeByte =Base64.decode(photoID,Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         return bitmap;
+    }
+
+    public int getOwnerRating() {
+        return ownerRating;
+    }
+
+    public void setOwnerRating(int ownerRating) {
+        this.ownerRating = ownerRating;
     }
 }
 

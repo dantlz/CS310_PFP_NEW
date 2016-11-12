@@ -23,12 +23,10 @@ public class Space {
     private String description;
     private MyCalendar availableStartDateAndTime;
     private MyCalendar availableEndDateAndTime;
-    //TODO Make this a list of images
-    private String picture;
-
-    private int spaceRating;
-    //TODO Make this a list of reviews
-    private String spaceReview;
+    private String picture; //TODO Make this a list of images
+    private int spaceRating; //TODO This needs to be a double, but too much to change
+    private boolean done;
+    //Reviews are on database only
 
     //The key is currentBookingOwnerEmails, the value is a list of currentBookingsIdentifiers
     private List<MyCalendar> bookingStartDates;
@@ -169,6 +167,14 @@ public class Space {
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
+    public int getSpaceRating() {
+        return spaceRating;
+    }
+
+    public void setSpaceRating(int spaceRating) {
+        this.spaceRating = spaceRating;
+    }
+
     public List<MyCalendar> getBookingStartDates() {
         return bookingStartDates;
     }
@@ -185,20 +191,11 @@ public class Space {
         this.bookingEndDates = bookingEndDates;
     }
 
-    public int getSpaceRating() {
-        return spaceRating;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setSpaceRating(int spaceRating) {
-        this.spaceRating = spaceRating;
+    public void setDone(boolean done) {
+        this.done = done;
     }
-
-    public String getSpaceReview() {
-        return spaceReview;
-    }
-
-    public void setSpaceReview(String spaceReview) {
-        this.spaceReview = spaceReview;
-    }
-
 }
