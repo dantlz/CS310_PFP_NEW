@@ -1,66 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:id="@+id/activity_my_bookings_details"
-    tools:context="com.pfp.parkhere.MyBookingsDetailsActivity">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/streetAddress"
-        android:autoLink="map">
-    </TextView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/start_end_time">
-    </TextView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/owner_name">
-    </TextView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/owner_email"
-        android:autoLink="email">
-    </TextView>
-
-    <RatingBar
-        android:id="@+id/BookingDetailRatingBar"
-        style="?android:attr/ratingBarStyleSmall"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="1.0"
-        android:isIndicator="true">
-    </RatingBar>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/space_review"
-        android:autoLink="email">
-    </TextView>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="GoToCancel"
-        android:id="@+id/Booking_To_Cancel"
-        android:text="Cancel Booking">
-    </Button>
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:id="@+id/activity_my_bookings_details"
+        tools:context="com.pfp.parkhere.MyBookingsDetailsActivity"
+        android:weightSum="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/streetAddress"
+            android:autoLink="map">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_end_time">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/owner_name">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/owner_email"
+            android:autoLink="email">
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Average Space Rating: "/>
+            <RatingBar
+                android:id="@+id/SpaceAverageRating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:numStars="5"
+                android:stepSize="1.0"
+                android:isIndicator="true">
+            </RatingBar>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ReviewsLabel"
+            android:text="Space Reviews"
+            android:autoLink="email">
+        </TextView>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:id="@+id/space_reviews"
+            android:autoLink="email">
+        </ListView>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Return to My Bookings"
-        android:id="@+id/BookingDetail_to_Bookings"
-        android:onClick="ReturnToBookings">
-    </Button>
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="GoToCancel"
+            android:id="@+id/Booking_To_Cancel"
+            android:text="Cancel Booking">
+        </Button>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Return to My Bookings"
+            android:id="@+id/BookingDetail_to_Bookings"
+            android:onClick="ReturnToBookings">
+        </Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Owner Details"
+            android:id="@+id/BookingDetail_to_OwnerDetail"
+            android:onClick="GoToOwnerDetail">
+        </Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rate and Review"
+            android:id="@+id/Rate_Review_BookDetails"
+            android:onClick="GoToRateAndReview"
+            android:visibility="gone">
+        </Button>
+    </LinearLayout>
+</ScrollView>
