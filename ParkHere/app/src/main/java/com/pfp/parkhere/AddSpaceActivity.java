@@ -221,7 +221,11 @@ public class AddSpaceActivity extends Activity {
                     endTimePicker.getMinute()
             ));
             listedSpace.setDPNonFireBase(picture.getDrawable());
+            listedSpace.setSpaceRating(0);
+            listedSpace.setDone(false);
 
+
+            //TODO If an owner has a space with the same name, this should not work!!!
             Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceNameField.getText().toString()).setValue(listedSpace);
             finish();
         } catch (IOException e) {

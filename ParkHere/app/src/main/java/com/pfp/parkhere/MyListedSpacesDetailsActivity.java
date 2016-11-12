@@ -85,7 +85,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, OwnerProfileActivity.class);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
             }
@@ -160,8 +160,6 @@ public class MyListedSpacesDetailsActivity extends Activity {
         rateBar.setRating(space.getSpaceRating());
 
         TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
-        spaceReviewField.setText(space.getSpaceReview());
-
     }
 
 }

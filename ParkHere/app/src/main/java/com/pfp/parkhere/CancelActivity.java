@@ -32,6 +32,7 @@ public class CancelActivity extends Activity {
         Intent intent = new Intent(CancelActivity.this, MapsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+
         //TODO This returns to mybookingdetail no matter what.
     }
 }

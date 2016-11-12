@@ -46,17 +46,19 @@
         <activity
             android:name=".AddSpaceActivity"
             android:label="List Your Space"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--BECOME BOTH OWNER AND SEEKER-->
-        <activity android:name=".BecomeBothOwnerAndSeeker"
+        <!-- BECOME BOTH OWNER AND SEEKER -->
+        <activity
+            android:name=".BecomeBothOwnerAndSeeker"
             android:label="Become Both Owner and Seeker"
             android:screenOrientation="portrait" />
 
         <!-- BOOK SPACE -->
-        <activity android:name=".BookSpaceActivity"
+        <activity
+            android:name=".BookSpaceActivity"
             android:label="Book a Space"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- CANCEL -->
         <activity
@@ -70,16 +72,17 @@
             android:label="Edit This Listed Space"
             android:screenOrientation="portrait" />
 
-        <!--FINISH BOOKING-->
-        <activity android:name=".FinishBookingsActivity"
-            android:label="Finish This Space's Existing Bookings"
-            android:screenOrientation="portrait"/>
+        <!-- FINISH BOOKING -->
+        <activity
+            android:name=".FinishBookingsActivity"
+            android:label="Finish This Space&apos;s Existing Bookings"
+            android:screenOrientation="portrait" />
 
         <!-- LOGIN -->
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:label="ParkHere" >
+            android:label="ParkHere"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -109,7 +112,7 @@
         <activity
             android:name=".MyListedSpacesActivity"
             android:label="All Listed Spaces"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- MY LISTED SPACE DETAIL -->
         <activity
@@ -117,13 +120,13 @@
             android:label="Listed Space Details"
             android:screenOrientation="portrait" />
 
-        <!--PAY WITH CARD-->
+        <!-- PAY WITH CARD -->
         <activity
             android:name=".PayWithCardActivity"
             android:label="Paying With Card"
             android:screenOrientation="portrait" />
 
-        <!--PAY WITH PAYPAL-->
+        <!-- PAY WITH PAYPAL -->
         <activity
             android:name=".PayWithPaypalActivity"
             android:label="Paying With PayPal"
@@ -141,22 +144,25 @@
             android:label="Register"
             android:screenOrientation="portrait" />
 
-        <!--RESULTS AS LIST-->
+        <!-- RESULTS AS LIST -->
         <activity
             android:name=".ResultsActivity"
             android:label="View Results as List"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <!--SEARHC FILTERS-->
+        <!-- SEARHC FILTERS -->
         <activity
             android:name=".SearchFiltersActivity"
             android:label="Set Search Filters"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- VERIFICATION -->
         <activity
             android:name=".VerificationActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
+        <activity android:name=".OwnerProfileActivity" />
+        <activity android:name=".RateAndReviewActivity"></activity>
     </application>
+
 </manifest>
