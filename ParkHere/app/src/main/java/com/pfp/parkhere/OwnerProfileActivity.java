@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
@@ -27,7 +28,7 @@ import java.util.List;
 
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
-public class OwnerProfileActivity extends AppCompatActivity {
+public class OwnerProfileActivity extends Activity {
 
     private String ownerEmail;
     private TextView mFirstName;
@@ -53,11 +54,11 @@ public class OwnerProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Peer owner = dataSnapshot.getValue(Peer.class);
 
-                mFirstName.setText("Owner first name: " + owner.getFirstName());
+                mFirstName.setText(owner.getFirstName());
                 DrawableCompat.setTint(ratingBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
                 ratingBar.setRating(owner.getOwnerRating());
 
-                Global.ownerReviews().child(ownerEmail).addValueEventListener(new ValueEventListener() {
+                Global.ownerReviews().child(Global.reformatEmail(ownerEmail)).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()) {

@@ -222,11 +222,11 @@ public class AddSpaceActivity extends Activity {
             ));
             listedSpace.setDPNonFireBase(picture.getDrawable());
             listedSpace.setSpaceRating(0);
-            listedSpace.setDone(false);
 
 
             //TODO If an owner has a space with the same name, this should not work!!!
             Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceNameField.getText().toString()).setValue(listedSpace);
+            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         } catch (IOException e) {
             e.printStackTrace();

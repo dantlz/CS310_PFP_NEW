@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -33,9 +34,6 @@ import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 
 //TODO Firebase - Add field to Peer: available balance
-//TODO Add fields for review and ratings
-//TODO Create a function to get average of all ratings
-//TODO Append new review to a list of string reviews
 public class FinishBookingsActivity extends Activity {
 
     private SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmssZ");
@@ -66,7 +64,6 @@ public class FinishBookingsActivity extends Activity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
                         for(DataSnapshot id: dataSnapshot.getChildren()){
                             listOfBookingIdentifiers.add(id.getKey());
                             listOfBookingSeekerEmails.add(id.getValue(String.class));
@@ -134,6 +131,9 @@ public class FinishBookingsActivity extends Activity {
                     + startTime.getYear() + " "
                     + String.format("%02d", startTime.getHour()) +":"
                     + String.format("%02d", startTime.getMinute()) + " - "
+                    + endTime.getMonth() + "/"
+                    + endTime.getDay() + "/"
+                    + endTime.getYear() + " "
                     + String.format("%02d", endTime.getHour()) + ":"
                     + String.format("%02d", endTime.getMinute());
         }
@@ -153,13 +153,15 @@ public class FinishBookingsActivity extends Activity {
             Date endTime = myCalendarToDate(booking.getEndCalendarDate());
             Date currTime = new Date();
 
+            System.out.println("curr: " + currTime + " endTime: " + endTime);
+
             if (currTime.after(endTime)) {
                 Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers").child(curIdentifier).removeValue();
                 Global.bookings().child(Global.reformatEmail(curEmail)).child(curIdentifier).child("done").setValue(true);
                 iterator.remove();
             }
         }
-
+        startActivity(new Intent(FinishBookingsActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }
 
@@ -167,7 +169,7 @@ public class FinishBookingsActivity extends Activity {
         String year, month, day, hour, minute;
         Date dateTime;
 
-        year = String.valueOf(calendar.getYear());
+        year = String.valueOf(calendar.getYear()).substring(2);
         month = getDoubleDigit(calendar.getMonth());
         day = getDoubleDigit(calendar.getDay());
         hour = getDoubleDigit(calendar.getHour());
@@ -183,7 +185,7 @@ public class FinishBookingsActivity extends Activity {
     }
 
     private String getDoubleDigit(int i){
-        String result = "";
+        String result;
         if(i < 10){
             result = "0" + i;
         }

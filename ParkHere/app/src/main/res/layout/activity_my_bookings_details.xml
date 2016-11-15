@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Average Space Rating: "/>
+                android:text="Space Rating: "/>
             <RatingBar
                 android:id="@+id/SpaceAverageRating"
                 style="?android:attr/ratingBarStyleSmall"
@@ -68,15 +68,6 @@
             android:id="@+id/space_reviews"
             android:autoLink="email">
         </ListView>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="GoToCancel"
-            android:id="@+id/Booking_To_Cancel"
-            android:text="Cancel Booking">
-        </Button>
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,10 +85,16 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="GoToCancel"
+            android:id="@+id/Booking_To_Cancel"
+            android:text="Cancel Booking">
+        </Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Rate and Review"
             android:id="@+id/Rate_Review_BookDetails"
-            android:onClick="GoToRateAndReview"
-            android:visibility="gone">
+            android:onClick="GoToRateAndReview">
         </Button>
     </LinearLayout>
 </ScrollView>

@@ -8,7 +8,9 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -17,21 +19,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ObjectClasses.Space;
 import ObjectClasses.Status;
 
 //DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends Activity {
-
-    private Bundle extras;
+    private Button ownerButton, editButton, bookSpaceButton, finishBookingButton;
+    private ListView reviewsListView;
     private RatingBar rateBar;
 
     private String spaceName;
     private String ownerEmail;
-
-    private Button ownerButton, editButton, bookSpaceButton, finishBookingButton;
-
     private boolean firstTime;
+    private List<String> viewValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +46,14 @@ public class MyListedSpacesDetailsActivity extends Activity {
         editButton = (Button) findViewById(R.id.edit_listed_space_button);
         bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
         finishBookingButton = (Button) findViewById(R.id.finishBookingsButton);
-
+        reviewsListView = (ListView) findViewById(R.id.listedSpaceReviewListView);
         rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
-        Intent intent = getIntent();
-        extras = intent.getExtras();
+        Bundle extras = getIntent().getExtras();
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
+        viewValues = new ArrayList<>();
 
         //Can't book my own space or look at myself, but can confirm/edit space
         if(ownerEmail.equals(Global.getCurUser().getEmailAddress())){
@@ -80,6 +83,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
                 intent.putExtra("SPACE_NAME", spaceName);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
+                finish();
             }
         });
         ownerButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +117,8 @@ public class MyListedSpacesDetailsActivity extends Activity {
             }
         });
 
-        ValueEventListener listener = new ValueEventListener() {
+
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Space space = dataSnapshot.getValue(Space.class);
@@ -124,9 +129,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };
-
-        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(listener);
+        });
     }
 
     private void onCreateContinued(Space space){
@@ -159,7 +162,25 @@ public class MyListedSpacesDetailsActivity extends Activity {
 
         rateBar.setRating(space.getSpaceRating());
 
-        TextView spaceReviewField = (TextView) findViewById(R.id.spaceReviewField);
+        Global.spaceReviews().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot entry: dataSnapshot.getChildren()){
+                    viewValues.add(entry.getValue(String.class));
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        MyListedSpacesDetailsActivity.this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, viewValues);
+
+                reviewsListView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

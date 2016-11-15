@@ -116,19 +116,16 @@
             </RatingBar>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Review: "/>
-            <TextView
-                android:id="@+id/spaceReviewField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:text="Review: "/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:id="@+id/listedSpaceReviewListView">
+        </ListView>
 
         <Button
             android:id="@+id/ownerButton"

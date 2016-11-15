@@ -25,7 +25,6 @@ public class Space {
     private MyCalendar availableEndDateAndTime;
     private String picture; //TODO Make this a list of images
     private int spaceRating; //TODO This needs to be a double, but too much to change
-    private boolean done;
     //Reviews are on database only
 
     //The key is currentBookingOwnerEmails, the value is a list of currentBookingsIdentifiers
@@ -189,13 +188,5 @@ public class Space {
 
     public void setBookingEndDates(List<MyCalendar> bookingEndDates) {
         this.bookingEndDates = bookingEndDates;
-    }
-
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
     }
 }

@@ -69,7 +69,7 @@ public class LoginActivity extends Activity {
                                         return;
                                     }
                                     Global.setCurUser(currentUser);
-                                    startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                     finish();
                                     return;
                                 }

@@ -64,14 +64,16 @@ public class PayWithPaypalActivity extends Activity {
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
         booking.setEndCalendarDate(Global.getCurrentSearchTimedateEnd());
         booking.setBookingSpaceOwnerEmail(space.getOwnerEmail());
+        booking.setDone(false);
         DatabaseReference addedBookingRef = Global.bookings().child(Global.getCurUser().getReformattedEmail()).push();
         addedBookingRef.setValue(booking);
 
         bookingID = addedBookingRef.getKey();
         Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
-        startActivity(new Intent(PayWithPaypalActivity.this, MapsActivity.class));
+        startActivity(new Intent(PayWithPaypalActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
-        //Maybe add unavailable times to space obejct too?
+
+        //TODO Maybe add unavailable times to space object too?
 //        FirebaseDatabase.getInstance().getReference().child("Spaces")
 //                .child(Global.reformatEmail(
 //                        getIntent().getExtras().getString("OWNEREMAIL")))

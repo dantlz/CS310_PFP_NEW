@@ -30,7 +30,7 @@ public class CancelActivity extends Activity {
         Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers").child(bookingIdentifier).removeValue();
         Global.bookings().child(Global.getCurUser().getReformattedEmail()).child(bookingIdentifier).removeValue();
         Intent intent = new Intent(CancelActivity.this, MapsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
         //TODO This returns to mybookingdetail no matter what.

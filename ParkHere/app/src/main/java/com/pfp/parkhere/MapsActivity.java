@@ -51,6 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -93,6 +94,10 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        currentFiltersIntent = createDefaultSearchFilters();
+        setCurrentSearchTimeFrame(currentFiltersIntent);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -121,7 +126,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 else{
                     onlyThreeMileRadius = false;
                 }
-                addAndFilterMarkers(currentFiltersIntent);
+                addAndFilterMarkers();
             }
         };
         runnableRunning = false;
@@ -131,9 +136,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, SearchFiltersActivity.class);
-                if(currentFiltersIntent == null){
-                    intent.putExtra("SET_DEFAULT", "TRUE");
-                }
+                intent.putExtras(currentFiltersIntent.getExtras());
                 startActivityForResult(intent, 123);
             }
         });
@@ -193,6 +196,26 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
+    }
+
+    private Intent createDefaultSearchFilters(){
+        Intent intent = new Intent(MapsActivity.this, SearchFiltersActivity.class);
+        Calendar cal = Calendar.getInstance();
+        intent.putExtra("TYPE", SpaceType.COMPACT);
+        intent.putExtra("LOWESTPRICE", 0);
+        intent.putExtra("HIGHESTPRICE", 1000);
+        intent.putExtra("STARTYEAR", cal.get(Calendar.YEAR));
+        intent.putExtra("STARTMONTH", cal.get(Calendar.MONTH));
+        intent.putExtra("STARTDAY", cal.get(Calendar.DAY_OF_MONTH));
+        intent.putExtra("STARTHOUR", cal.get(Calendar.HOUR));
+        intent.putExtra("STARTMINUTE", cal.get(Calendar.MINUTE));
+        intent.putExtra("ENDYEAR", cal.get(Calendar.YEAR));
+        intent.putExtra("ENDMONTH", cal.get(Calendar.MONTH));
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        intent.putExtra("ENDDAY", cal.get(Calendar.DAY_OF_MONTH));
+        intent.putExtra("ENDHOUR", cal.get(Calendar.HOUR));
+        intent.putExtra("ENDMINUTE", cal.get(Calendar.MINUTE));
+        return intent;
     }
 
     @Override
@@ -283,7 +306,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                                 }
                             }
                         }
-                        addAndFilterMarkers(currentFiltersIntent);
+                        addAndFilterMarkers();
                     }
 
                     @Override
@@ -481,39 +504,35 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         return null;
     }
 
-    private void addAndFilterMarkers(Intent intent) {
+    private void addAndFilterMarkers() {
         mMap.clear();
 
         int lowestPrice = 0, highestPrice = 0;
         SpaceType type = null;
-        Date startDateTime = null, endDateTime = null;
+        Date filterStart = null, filterEnd = null;
 
-        if(intent != null){
-            Bundle extras = intent.getExtras();
-            type = (SpaceType) extras.get("TYPE");
-            lowestPrice = extras.getInt("LOWESTPRICE");
-            highestPrice = extras.getInt("HIGHESTPRICE");
-            startDateTime = extraToDate(extras, "START");
-            endDateTime = extraToDate(extras, "END");
-        }
+        Bundle extras = currentFiltersIntent.getExtras();
+        type = (SpaceType) extras.get("TYPE");
+        lowestPrice = extras.getInt("LOWESTPRICE");
+        highestPrice = extras.getInt("HIGHESTPRICE");
+        filterStart = extraToDate(extras, "START");
+        filterEnd = extraToDate(extras, "END");
 
         Iterator it = allSpaces.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             Space space = (Space) pair.getValue();
             //Filtering
-            if(intent != null){
-                if(!space.getType().equals(type)) {
-                    continue;
-                }
-                if(space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice) {
-                    continue;
-                }
-                MyCalendar start = space.getAvailableStartDateAndTime();
-                MyCalendar end = space.getAvailableEndDateAndTime();
-                if(startDateTime.before(myCalendarToDate(start)) || myCalendarToDate(end).before(endDateTime)) {
-                    continue;
-                }
+            if(!space.getType().equals(type)) {
+                continue;
+            }
+            if(space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice) {
+                continue;
+            }
+            Date spaceStart = myCalendarToDate(space.getAvailableStartDateAndTime());
+            Date spaceEnd = myCalendarToDate(space.getAvailableEndDateAndTime());
+            if(filterStart.before(spaceStart) || spaceEnd.before(filterEnd)) {
+                continue;
             }
 
             if(onlyThreeMileRadius) {
@@ -606,6 +625,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 intent = new Intent(MapsActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
                 return true;
@@ -623,7 +643,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             if(resultCode == 12321) {
                 setCurrentSearchTimeFrame(data);
                 currentFiltersIntent = data;
-                addAndFilterMarkers(currentFiltersIntent);
+                addAndFilterMarkers();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

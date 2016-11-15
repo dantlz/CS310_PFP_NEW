@@ -1,6 +1,7 @@
 package com.pfp.parkhere;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ public class BecomeBothOwnerAndSeeker extends Activity {
 
     public void onChangeStatusClicked(View view){
         Global.curUserRef().child("status").setValue(Status.BOTH);
+        startActivity(new Intent(BecomeBothOwnerAndSeeker.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }
 }

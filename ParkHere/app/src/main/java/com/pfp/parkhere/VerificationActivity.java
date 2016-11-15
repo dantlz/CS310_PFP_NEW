@@ -40,7 +40,7 @@ public class VerificationActivity extends Activity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            Global.curUserRef().child("photoID").setValue(selectedImage.toString());
+            Global.peers().child(Global.getCurUser().getReformattedEmail()).child("photoID").setValue(selectedImage.toString());
             startActivity(new Intent(VerificationActivity.this, MapsActivity.class));
             finish();
         }

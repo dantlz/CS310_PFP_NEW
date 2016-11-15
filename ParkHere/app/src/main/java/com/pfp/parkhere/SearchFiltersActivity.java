@@ -37,23 +37,21 @@ public class SearchFiltersActivity extends Activity {
         //Give filters very broad default values;
         lowestPriceField = (EditText) findViewById(R.id.lowestPriceField);
         highestPriceField = (EditText) findViewById(R.id.highestPriceField);
-        Calendar cal = Calendar.getInstance();
         startDatePicker = (DatePicker) findViewById(R.id.startDate);
         endDatePicker = (DatePicker) findViewById(R.id.endDate);
         startTimePicker = (TimePicker) findViewById(R.id.startTime);
         endTimePicker = (TimePicker) findViewById(R.id.endTime);
 
-        if(getIntent().getExtras() != null) {
-            lowestPriceField.setText("0");
-            highestPriceField.setText("1000");
-            startDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-            cal.add(Calendar.YEAR, 1);
-            endDatePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-            startTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
-            startTimePicker.setMinute(cal.get(Calendar.MINUTE));
-            endTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
-            endTimePicker.setMinute(cal.get(Calendar.MINUTE));
-        }
+        Bundle extras = getIntent().getExtras();
+
+        lowestPriceField.setText(String.valueOf(extras.getInt("LOWESTPRICE")));
+        highestPriceField.setText(String.valueOf(extras.getInt("HIGHESTPRICE")));
+        startDatePicker.updateDate(extras.getInt("STARTYEAR"), extras.getInt("STARTMONTH"), extras.getInt("STARTDAY"));
+        startTimePicker.setHour(extras.getInt("STARTHOUR"));
+        startTimePicker.setMinute(extras.getInt("STARTMINUTE"));
+        endDatePicker.updateDate(extras.getInt("ENDYEAR"), extras.getInt("ENDMONTH"), extras.getInt("ENDDAY"));
+        endTimePicker.setHour(extras.getInt("ENDHOUR"));
+        endTimePicker.setMinute(extras.getInt("ENDMINUTE"));
 
         confirmButton = (Button) findViewById(R.id.confirmFilterButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {

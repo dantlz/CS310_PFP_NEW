@@ -156,6 +156,7 @@ public class MyBookingsActivity extends Activity {
         extras.putString("SPACE_NAME", space.getSpaceName());
         extras.putString("BOOKING_IDENTIFIER", bookingIdentifier);
         extras.putInt("SPACE_RATING", ownerRating);
+        extras.putBoolean("BOOKING_DONE", currBooking.isDone());
 
         //Generate Rating and Review
         //Get owner object to set rating

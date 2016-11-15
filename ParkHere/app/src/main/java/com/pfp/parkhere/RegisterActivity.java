@@ -122,7 +122,7 @@ public class RegisterActivity extends Activity {
                             if(currentUser == null)
                                 return;
                             Global.setCurUser(currentUser);
-                            startActivity(new Intent(RegisterActivity.this, MapsActivity.class));
+                            startActivity(new Intent(RegisterActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             finish();
                             return;
                         }
@@ -134,7 +134,6 @@ public class RegisterActivity extends Activity {
                     });
                 }
                 else {
-
                     return;
                 }
             }
