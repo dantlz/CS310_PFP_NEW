@@ -103,7 +103,6 @@ public class MyListedSpacesDetailsActivity extends Activity {
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
-                return;
             }
         });
         bookSpaceButton.setOnClickListener(new View.OnClickListener() {

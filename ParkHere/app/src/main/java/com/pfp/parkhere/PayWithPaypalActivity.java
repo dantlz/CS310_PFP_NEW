@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import ObjectClasses.Booking;
 import ObjectClasses.Space;
 
+//TODO Have the balance in both peers change upon completion. Calculations done by hour and hourly rate
 public class PayWithPaypalActivity extends Activity {
 
     private Booking booking;

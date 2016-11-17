@@ -52,7 +52,9 @@ public class ResultsActivity extends Activity {
                 Intent intent = new Intent(ResultsActivity.this, MyListedSpacesDetailsActivity.class);
                 intent.putExtra("SPACE_NAME", spx.getSpaceName());
                 intent.putExtra("SPACE_OWNEREMAIL", spx.getOwnerEmail());
+                //Stack depth 2
                 startActivity(intent);
+                finish();
             }
         });
 

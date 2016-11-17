@@ -14,7 +14,7 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import ObjectClasses.SpaceType;
-
+//No further activity stacks here
 public class SearchFiltersActivity extends Activity {
 
     private SpaceType type;

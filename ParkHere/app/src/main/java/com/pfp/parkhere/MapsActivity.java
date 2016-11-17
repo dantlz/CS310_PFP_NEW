@@ -137,6 +137,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, SearchFiltersActivity.class);
                 intent.putExtras(currentFiltersIntent.getExtras());
+                //Stack depth 1
                 startActivityForResult(intent, 123);
             }
         });
@@ -148,6 +149,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 Intent intent = new Intent(MapsActivity.this, ResultsActivity.class);
                 intent.putExtra("LATLNG", currentCameraOrZoomLatLng);
                 Global.setMapOfLatLngSpacesToPass(filterForResultsList(currentFiltersIntent));
+                //Stack depth 1
                 startActivity(intent);
             }
         });
@@ -187,6 +189,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            //Stack depth 1
                             startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
                         }
                     })
@@ -227,6 +230,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            //Stack depth 1
                             startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
                         }
                     })
@@ -339,6 +343,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     Intent intent = new Intent(MapsActivity.this, MyListedSpacesDetailsActivity.class);
                     intent.putExtra("SPACE_NAME", selectedSpace.getSpaceName());
                     intent.putExtra("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
+                    //Stack depth 1
                     startActivity(intent);
                 }
                 //This is an owner listing a new space
@@ -346,6 +351,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     Intent intent = new Intent(MapsActivity.this, AddSpaceActivity.class);
                     intent.putExtra("LAT", marker.getPosition().latitude);
                     intent.putExtra("LNG", marker.getPosition().longitude);
+                    //Stack depth 1
                     startActivity(intent);
                 }
             }
@@ -614,12 +620,15 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 // User chose the "Profile" action, change to that Activity Screen
                 intent = new Intent(MapsActivity.this, ProfileActivity.class);
                 intent.putExtra("USER_STATUS", String.valueOf(userMode));
+                //Stack depth 1
                 startActivity(intent);
                 return true;
             case R.id.itemAddSpace:
+                //Stack depth 1
                 startActivity(new Intent(MapsActivity.this, AddSpaceActivity.class));
                 return true;
             case R.id.Both:
+                //Stack depth 1
                 startActivity(new Intent(MapsActivity.this, BecomeBothOwnerAndSeeker.class));
                 return true;
             case R.id.logout:
