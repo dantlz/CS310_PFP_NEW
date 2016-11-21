@@ -73,7 +73,7 @@ public class MyCalendar {
                 return day < 29;
             }
         }
-        else if(month == 4 || month == 6 || month == 8 || month == 9 || month == 11){
+        else if(month == 4 || month == 6 || month == 9 || month == 11){
             return day < 31;
         }
         else{
@@ -81,7 +81,7 @@ public class MyCalendar {
         }
     }
     public boolean isHourValid(){
-        return hour > 0 && hour < 25;
+        return hour >= 0 && hour < 25;
     }
     public boolean isMinuteValid(){
         return minute >= 0 && minute <= 60;
