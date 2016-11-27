@@ -185,7 +185,6 @@ public class RegisterActivity extends Activity {
                         }
 
                         currentUser = createUserObject();
-                        Global.setCurUser(currentUser);
                         Global.peers().child(Global.reformatEmail(emailField.getText().toString())).setValue(currentUser);
                     }
                 });
