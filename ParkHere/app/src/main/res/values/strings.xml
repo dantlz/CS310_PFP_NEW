@@ -286,4 +286,12 @@
     <string name="title_listedspace_list">ListedSpaces</string>
     <string name="title_listedspace_detail">ListedSpace Detail</string>
     <string name="title_activity_add_space">AddSpaceActivity</string>
+
+    <string name="xprompt">Policy type</string>
+
+    <string-array name="policytype">
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Strict</item>
+    </string-array>
 </resources>

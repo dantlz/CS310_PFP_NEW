@@ -82,9 +82,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="ParkHere"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <!-- MAPS -->
         <activity
@@ -169,6 +167,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AddPostActivity"></activity>
     </application>
 
 </manifest>

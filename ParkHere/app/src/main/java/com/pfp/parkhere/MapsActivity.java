@@ -268,10 +268,11 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                     continue;
                 if (space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice)
                     continue;
-                MyCalendar start = space.getAvailableStartDateAndTime();
-                MyCalendar end = space.getAvailableEndDateAndTime();
-                if (myCalendarToDate(start).before(startDateTime) || myCalendarToDate(end).before(endDateTime))
-                    continue;
+                //TODO Must uncomment to filter
+//                MyCalendar start = space.getAvailableStartDateAndTime();
+//                MyCalendar end = space.getAvailableEndDateAndTime();
+//                if (myCalendarToDate(start).before(startDateTime) || myCalendarToDate(end).before(endDateTime))
+//                    continue;
             }
 
             if (onlyThreeMileRadius) {
@@ -535,11 +536,12 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
             if(space.getPricePerHour() < lowestPrice || space.getPricePerHour() > highestPrice) {
                 continue;
             }
-            Date spaceStart = myCalendarToDate(space.getAvailableStartDateAndTime());
-            Date spaceEnd = myCalendarToDate(space.getAvailableEndDateAndTime());
-            if(filterStart.before(spaceStart) || spaceEnd.before(filterEnd)) {
-                continue;
-            }
+            //TODO Must uncomment to filter
+//            Date spaceStart = myCalendarToDate(space.getAvailableStartDateAndTime());
+//            Date spaceEnd = myCalendarToDate(space.getAvailableEndDateAndTime());
+//            if(filterStart.before(spaceStart) || spaceEnd.before(filterEnd)) {
+//                continue;
+//            }
 
             if(onlyThreeMileRadius) {
                 if (!checkThreeMileRadius(currentCameraOrZoomLatLng, (LatLng) pair.getKey()))

@@ -26,7 +26,7 @@ import ObjectClasses.Status;
 //TODO Fix the ListView inside a ScrollView issue in MyBookingsDetailsActivity
 //DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends Activity {
-    private Button ownerButton, editButton, bookSpaceButton, finishBookingButton;
+    private Button ownerButton, editButton, bookSpaceButton, finishBookingButton, addPostButton;
     private ListView reviewsListView, postsListView;
     private RatingBar rateBar;
 
@@ -45,6 +45,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         editButton = (Button) findViewById(R.id.edit_listed_space_button);
         bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
         finishBookingButton = (Button) findViewById(R.id.finishBookingsButton);
+        addPostButton = (Button) findViewById(R.id.addPostButton);
         reviewsListView = (ListView) findViewById(R.id.listedSpaceReviewListView);
         postsListView = (ListView) findViewById(R.id.postsListView);
         rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
@@ -64,6 +65,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         else{
             finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
+            addPostButton.setVisibility(View.GONE);
         }
 
         //Owners can't book space, but can view other owners, confirm/edit his own
@@ -74,6 +76,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         else{
             finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
+            addPostButton.setVisibility(View.GONE);
         }
 
         finishBookingButton.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +116,16 @@ public class MyListedSpacesDetailsActivity extends Activity {
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
                 finish();
+            }
+        });
+        addPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, AddPostActivity.class);
+//                intent.putExtra("SPACE_NAME", spaceName);
+//                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
+//                startActivity(intent);
+//                finish();
             }
         });
 

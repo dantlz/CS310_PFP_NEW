@@ -68,22 +68,7 @@ public class AddSpaceActivity extends Activity {
         countryField = (EditText) findViewById(R.id.country);
         zipCodeField = (EditText) findViewById(R.id.zipCode);
 
-        startDatePicker = (DatePicker) findViewById(R.id.startDatePicker);
-        startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-        endDatePicker = (DatePicker) findViewById(R.id.endDatePicker);
-        endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
-
         typeSpinner = (Spinner) findViewById(R.id.typeSpinner);
-        cancellationSpinner = (Spinner) findViewById(R.id.spinnerForCancellation);
-        cancellationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //TODO Complete more information pop out and such
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
 
         picture = (ImageView) findViewById(R.id.imageview);
         picture.setImageDrawable(null);
