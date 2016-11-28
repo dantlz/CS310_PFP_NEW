@@ -6,13 +6,18 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+
+import ObjectClasses.CancellationPolicy;
+import ObjectClasses.MyCalendar;
+import ObjectClasses.Post;
 
 public class AddPostActivity extends AppCompatActivity {
 
-    public String name;
+    public String name, ownerEmail, spaceName;
     private EditText nameField;
-    private DatePicker fromDatePicker;
-    private DatePicker toDatePicker;
+    private DatePicker startDatePicker, endDatePicker;
+    private TimePicker startTimePicker, endTimePicker;
     private Spinner policySpinner;
 
     @Override
@@ -20,47 +25,53 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
         nameField = (EditText) findViewById(R.id.nameEditTextAP);
-        fromDatePicker = (DatePicker) findViewById(R.id.fromDatePicker);
-        toDatePicker = (DatePicker) findViewById(R.id.toDatePicker);
+        startDatePicker = (DatePicker) findViewById(R.id.fromDatePicker);
+        startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        endDatePicker = (DatePicker) findViewById(R.id.toDatePicker);
+        endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
         policySpinner = (Spinner) findViewById(R.id.policySpinner);
+
+        ownerEmail = getIntent().getStringExtra("SPACE_OWNEREMAIL");
+        spaceName = getIntent().getStringExtra("SPACE_NAME");
 
     }
 
-    void addPostButtonClicked(View view)
-    {
-        //Send all the info entered to server to create post
-        //Take the info from the private member variables nameField, fromDatePicker, toDatePicker and policySpinner.
-        //Something like what's below.
+    void addPostButtonClicked(View view) {
 
-        String name = nameField.toString();
-        int d1 = fromDatePicker.getDayOfMonth();
-        int m1 = fromDatePicker.getMonth();
-        int y1 = fromDatePicker.getYear();
-        int d2 = toDatePicker.getDayOfMonth();
-        int m2 = toDatePicker.getMonth();
-        int y2 = toDatePicker.getYear();
-        String policy = "";
+        Post post = new Post();
+        post.setParentOwnerEmail(ownerEmail);
+        post.setParentSpaceName(spaceName);
 
+        post.setPostName(nameField.toString());
         int n = policySpinner.getSelectedItemPosition();
+        CancellationPolicy policy;
         if(n == 0)
-        {
-            policy = "Light";
-        }
+            policy = CancellationPolicy.LIGHT;
         if(n==1)
-        {
-            policy = "Moderate";
-        }
-        if(n==2)
-        {
-            policy = "Strict";
-        }
+            policy = CancellationPolicy.MODERATE;
         else
-        {
-            //No policy selected. Won't ever happen because it always selects 0 by default.
-        }
+            policy = CancellationPolicy.STRICT;
+        post.setPolicy(policy);
 
-        //Now just send this info (as contained in the variables) to the server and create a post.
+        MyCalendar startDateTime = new MyCalendar();
+        startDateTime.setYear(startDatePicker.getYear());
+        startDateTime.setYear(startDatePicker.getMonth());
+        startDateTime.setYear(startDatePicker.getDayOfMonth());
+        startDateTime.setHour(startTimePicker.getHour());
+        startDateTime.setMinute(startTimePicker.getMinute());
+        post.setAvailableStartDateAndTime(startDateTime);
 
+        MyCalendar endDateTime = new MyCalendar();
+        endDateTime.setYear(endDatePicker.getYear());
+        endDateTime.setYear(endDatePicker.getMonth());
+        endDateTime.setYear(endDatePicker.getDayOfMonth());
+        endDateTime.setHour(endTimePicker.getHour());
+        endDateTime.setMinute(endTimePicker.getMinute());
+        post.setAvailableEndDateAndTime(endDateTime);
+
+        Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(nameField.toString()).setValue(post);
+        //TODO If the space already has a post with this name, this should not work!!!
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("PostNames").child(nameField.toString()).setValue(nameField.toString());
     }
 
 }

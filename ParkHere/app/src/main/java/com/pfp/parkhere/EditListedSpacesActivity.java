@@ -30,10 +30,10 @@ public class EditListedSpacesActivity extends Activity {
 
     private Bundle extras;
     private EditText editName, editAddress, editPrice, editDescription;
-    private Spinner typeSpinner, cancellationSpinner;
+    private Spinner typeSpinner;
     private String spaceName;
     private String ownerEmail;
-    private List<String> cancellationPolicies, types;
+    private List<String>  types;
     private boolean firstTime = true;
 
     //TODO Allow user to change space's picture
@@ -55,27 +55,21 @@ public class EditListedSpacesActivity extends Activity {
         editPrice = (EditText)findViewById(R.id.editPrice);
         editDescription = (EditText) findViewById(R.id.editDescription);
         typeSpinner = (Spinner) findViewById(R.id.editType);
-        //cancellationSpinner = (Spinner) findViewById(R.id.editPolicy);
+
         // Spinner Drop down elements
         types = new ArrayList<String>();
         types.add("Compact");
         types.add("Truck");
         types.add("Disabled");
-        /*
-        cancellationPolicies = new ArrayList<String>();
-        cancellationPolicies.add("Light");
-        cancellationPolicies.add("Moderate");
-        cancellationPolicies.add("Strict");
-        */
+
         // Creating adapter for typeSpinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
-        //ArrayAdapter<String> dataCancellation = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cancellationPolicies);
+
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //dataCancellation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // attaching data adapter to typeSpinner
         typeSpinner.setAdapter(dataAdapter);
-        //cancellationSpinner.setAdapter(dataCancellation);
 
         Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,13 +95,7 @@ public class EditListedSpacesActivity extends Activity {
         editAddress.setText(space.getStreetAddress());
         editPrice.setText(String.valueOf(space.getPricePerHour()));
         editDescription.setText(space.getDescription());
-        /*
-        for(int i = 0; i < cancellationPolicies.size(); i++){
-            if(cancellationPolicies.get(i).equals(space.getPolicy())){
-                cancellationSpinner.setSelection(i);
-            }
-        }
-        */
+
         for(int i = 0; i < types.size(); i++){
             if(types.get(i).equals(space.getType())){
                 typeSpinner.setSelection(i);
@@ -140,8 +128,6 @@ public class EditListedSpacesActivity extends Activity {
                 .child("pricePerHour").setValue(Integer.valueOf(editPrice.getText().toString()));
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("type").setValue(typeSpinner.getSelectedItem().toString().toUpperCase());
-        Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
-                .child("policy").setValue(cancellationSpinner.getSelectedItem().toString().toUpperCase());
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("description").setValue(editDescription.getText().toString());
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
