@@ -122,8 +122,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Space space = dataSnapshot.getValue(Space.class);
-                Post post = Global.makeFakePost();
-                onCreateContinued(space, post);
+                onCreateContinued(space);
             }
 
             @Override
@@ -133,7 +132,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         });
     }
 
-    private void onCreateContinued(Space space, Post post){
+    private void onCreateContinued(Space space){
         if(!firstTime){
             return;
         }
@@ -154,10 +153,10 @@ public class MyListedSpacesDetailsActivity extends Activity {
 
         TextView typeField = (TextView) findViewById(R.id.typeField);
         typeField.setText(String.valueOf(space.getType()));
-
+/*
         TextView policyField = (TextView) findViewById(R.id.policyField);
         policyField.setText(String.valueOf(post.getPolicy()));
-
+*/
         TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
         descriptionField.setText(space.getDescription());
 
