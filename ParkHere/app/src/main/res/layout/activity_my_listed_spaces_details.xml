@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ScrollView01" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -76,20 +76,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancellation Policy: "/>
-            <TextView
-                android:id="@+id/policyField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Description: "/>
             <TextView
                 android:id="@+id/descriptionField"
@@ -123,8 +109,19 @@
             android:text="Review: "/>
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="75dp"
             android:id="@+id/listedSpaceReviewListView">
+        </ListView>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Posts:"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:id="@+id/postsListView">
         </ListView>
 
         <Button
@@ -147,5 +144,10 @@
             android:layout_height="match_parent"
             android:id="@+id/finishBookingsButton"
             android:text="Finish existing bookings"/>
+        <Button
+            android:id="@+id/addPostButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add a new post"/>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

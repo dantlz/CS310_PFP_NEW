@@ -82,13 +82,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="ParkHere"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <!-- MAPS -->
         <activity
@@ -168,6 +162,17 @@
             android:name=".PostDetailActivity"
             android:label="Post Details"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EditPostActivity"
+            android:label="Edit This Post"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddPostActivity"></activity>
     </application>
 
 </manifest>

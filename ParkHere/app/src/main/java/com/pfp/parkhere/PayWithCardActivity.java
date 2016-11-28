@@ -31,6 +31,7 @@ public class PayWithCardActivity extends Activity {
     private String ownerEmail;
     private String ownerEmailReformatted;
     private String spaceName;
+    private String postName;
     private String bookingID;
     private boolean firstTime;
 
@@ -45,6 +46,7 @@ public class PayWithCardActivity extends Activity {
         spaceName = getIntent().getExtras().getString("SPACE_NAME");
         ownerEmail = getIntent().getExtras().getString("SPACE_OWNEREMAIL");
         ownerEmailReformatted = Global.reformatEmail(ownerEmail);
+        postName = getIntent().getExtras().getString("POST_NAME");
 
         List<String> cardTypeText = new ArrayList<String>();
         cardTypeText.add("Visa");

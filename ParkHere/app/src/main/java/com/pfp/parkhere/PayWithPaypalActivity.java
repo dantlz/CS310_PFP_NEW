@@ -23,7 +23,7 @@ import ObjectClasses.Space;
 public class PayWithPaypalActivity extends Activity {
 
     private Booking booking;
-    private String ownerEmail, ownerEmailReformatted, spaceName, bookingID;
+    private String ownerEmail, ownerEmailReformatted, spaceName, bookingID, postName;
     private boolean firstTime;
 
     @Override
@@ -37,6 +37,7 @@ public class PayWithPaypalActivity extends Activity {
         spaceName = getIntent().getExtras().getString("SPACE_NAME");
         ownerEmail = getIntent().getExtras().getString("SPACE_OWNEREMAIL");
         ownerEmailReformatted = Global.reformatEmail(ownerEmail);
+        postName = getIntent().getExtras().getString("POST_NAME");
     }
 
 

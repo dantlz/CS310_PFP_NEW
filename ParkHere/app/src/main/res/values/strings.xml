@@ -179,7 +179,11 @@
     <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
-
+    <string name="policy_string">Policy: </string>
+    <string name="start_availability_string">Start Availability: </string>
+    <string name="end_availability_string">End Availability: </string>
+    <string name="goto_space_string">Edit Space</string>
+    <string name="save_post_changes">Save Post Changes</string>
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
@@ -282,4 +286,12 @@
     <string name="title_listedspace_list">ListedSpaces</string>
     <string name="title_listedspace_detail">ListedSpace Detail</string>
     <string name="title_activity_add_space">AddSpaceActivity</string>
+
+    <string name="xprompt">Policy type</string>
+
+    <string-array name="policytype">
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Strict</item>
+    </string-array>
 </resources>

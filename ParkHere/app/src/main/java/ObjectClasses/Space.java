@@ -19,18 +19,15 @@ public class Space {
     private String state;
     private String zipCode;
     private int pricePerHour;
-    private CancellationPolicy policy;
     private String description;
-    private MyCalendar availableStartDateAndTime;
-    private MyCalendar availableEndDateAndTime;
     private String picture; //TODO Make this a list of images
     private int spaceRating; //TODO This needs to be a double, but too much to change
+    //Post names are on database only
     //Reviews are on database only
 
     //The key is currentBookingOwnerEmails, the value is a list of currentBookingsIdentifiers
     private List<MyCalendar> bookingStartDates;
     private List<MyCalendar> bookingEndDates;
-
 
     public String getSpaceName() {
         return spaceName;
@@ -96,36 +93,12 @@ public class Space {
         this.pricePerHour = pricePerHour;
     }
 
-    public CancellationPolicy getPolicy() {
-        return policy;
-    }
-
-    public void setPolicy(CancellationPolicy policy) {
-        this.policy = policy;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public MyCalendar getAvailableStartDateAndTime() {
-        return availableStartDateAndTime;
-    }
-
-    public void setAvailableStartDateAndTime(MyCalendar availableStartDateAndTime) {
-        this.availableStartDateAndTime = availableStartDateAndTime;
-    }
-
-    public MyCalendar getAvailableEndDateAndTime() {
-        return availableEndDateAndTime;
-    }
-
-    public void setAvailableEndDateAndTime(MyCalendar availableEndDateAndTime) {
-        this.availableEndDateAndTime = availableEndDateAndTime;
     }
 
     public String getPicture() {
