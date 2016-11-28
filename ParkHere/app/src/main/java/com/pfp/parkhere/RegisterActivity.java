@@ -111,16 +111,18 @@ public class RegisterActivity extends Activity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
+                System.out.println("Register: " + 1);
                 if (user != null) {
+                    System.out.println("Register: " + 2);
                     findViewById(R.id.registerLoad).setVisibility(View.GONE);
-
                     Global.peers().child(Global.reformatEmail(user.getEmail())).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            System.out.println("Register: " + 3);
                             currentUser = dataSnapshot.getValue(Peer.class);
                             if(currentUser == null)
                                 return;
+                            System.out.println("Register: " + 4);
                             Global.setCurUser(currentUser);
                             startActivity(new Intent(RegisterActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             finish();

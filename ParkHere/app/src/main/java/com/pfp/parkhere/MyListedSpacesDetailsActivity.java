@@ -1,13 +1,12 @@
 package com.pfp.parkhere;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -24,17 +22,18 @@ import java.util.List;
 
 import ObjectClasses.Space;
 import ObjectClasses.Status;
-
+//TODO Fix the ListView inside a ScrollView issue in MyBookingsDetailsActivity
 //DOUBLEUSE
 public class MyListedSpacesDetailsActivity extends Activity {
     private Button ownerButton, editButton, bookSpaceButton, finishBookingButton;
-    private ListView reviewsListView;
+    private ListView reviewsListView, postsListView;
     private RatingBar rateBar;
 
     private String spaceName;
     private String ownerEmail;
     private boolean firstTime;
-    private List<String> viewValues;
+    private List<String> reviewListViewValues, postsListViewValues;
+    private List<Post>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +46,14 @@ public class MyListedSpacesDetailsActivity extends Activity {
         bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
         finishBookingButton = (Button) findViewById(R.id.finishBookingsButton);
         reviewsListView = (ListView) findViewById(R.id.listedSpaceReviewListView);
+        postsListView = (ListView) findViewById(R.id.postsListView);
         rateBar = (RatingBar) findViewById(R.id.ListedSpacesDetailRatingBar);
         DrawableCompat.setTint(rateBar.getProgressDrawable(), Color.parseColor("#FFCC00"));
 
         Bundle extras = getIntent().getExtras();
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
-        viewValues = new ArrayList<>();
+        reviewListViewValues = new ArrayList<>();
 
         //Can't book my own space or look at myself, but can confirm/edit space
         if(ownerEmail.equals(Global.getCurUser().getEmailAddress())){
@@ -153,9 +153,6 @@ public class MyListedSpacesDetailsActivity extends Activity {
         TextView typeField = (TextView) findViewById(R.id.typeField);
         typeField.setText(String.valueOf(space.getType()));
 
-        TextView policyField = (TextView) findViewById(R.id.policyField);
-        policyField.setText(String.valueOf(space.getPolicy()));
-
         TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
         descriptionField.setText(space.getDescription());
 
@@ -165,14 +162,16 @@ public class MyListedSpacesDetailsActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot entry: dataSnapshot.getChildren()){
-                    viewValues.add(entry.getValue(String.class));
+                    reviewListViewValues.add(entry.getValue(String.class));
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                //Reviews List
+                ArrayAdapter<String> reviewsAdapter = new ArrayAdapter<>(
                         MyListedSpacesDetailsActivity.this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, viewValues);
+                        android.R.layout.simple_list_item_1, android.R.id.text1, reviewListViewValues);
+                reviewsListView.setAdapter(reviewsAdapter);
 
-                reviewsListView.setAdapter(adapter);
+                getPosts();
             }
 
             @Override
@@ -182,4 +181,36 @@ public class MyListedSpacesDetailsActivity extends Activity {
         });
     }
 
+    private void getPosts(){
+        Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot entry: dataSnapshot.getChildren()){
+                    reviewListViewValues.add(entry.getValue(String.class));
+                }
+
+                //Posts List
+                ArrayAdapter<String> postsAdapter = new ArrayAdapter<>(
+                        MyListedSpacesDetailsActivity.this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, postsListViewValues);
+                postsListView.setAdapter(postsAdapter);
+                postsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        //TODO Figure out how to configure database structure with post here
+                        Intent intent = new Intent(MyListedSpacesDetailsActivity.this, PostDetailsActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("SPACE_OWNEREMAIL", ownerEmail);
+                        extras.putString("SPACE_NAME", spaceName);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

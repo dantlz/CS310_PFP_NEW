@@ -100,6 +100,10 @@ public class Global extends Application {
         return FirebaseDatabase.getInstance().getReference().child("OwnerReviews");
     }
 
+    public static DatabaseReference posts(){
+        return FirebaseDatabase.getInstance().getReference().child("Posts");
+    }
+
     public static DatabaseReference curUserRef(){
         return Global.peers().child(Global.getCurUser().getReformattedEmail());
     }
