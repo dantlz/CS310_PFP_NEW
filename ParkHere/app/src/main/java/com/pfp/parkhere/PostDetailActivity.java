@@ -154,7 +154,7 @@ public class PostDetailActivity extends Activity {
         typeField.setText(String.valueOf(space.getType()));
 
         TextView policyField = (TextView) findViewById(R.id.postdetail_policyField);
-        policyField.setText(String.valueOf(space.getPolicy()));
+        //policyField.setText(String.valueOf(space.getPolicy()));
 
         TextView descriptionField = (TextView) findViewById(R.id.postdetail_descriptionField);
         descriptionField.setText(space.getDescription());
