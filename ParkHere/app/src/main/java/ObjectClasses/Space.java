@@ -22,16 +22,12 @@ public class Space {
     private String description;
     private String picture; //TODO Make this a list of images
     private int spaceRating; //TODO This needs to be a double, but too much to change
-    private List<Post> spacePostings;
+    //Post names are on database only
     //Reviews are on database only
 
     //The key is currentBookingOwnerEmails, the value is a list of currentBookingsIdentifiers
     private List<MyCalendar> bookingStartDates;
     private List<MyCalendar> bookingEndDates;
-
-    public List<Post> getAllPostings() { return spacePostings; }
-
-    public void setAllPostings(List<Post> spacePostings) { this.spacePostings = spacePostings; }
 
     public String getSpaceName() {
         return spaceName;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ScrollView01" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -109,8 +109,19 @@
             android:text="Review: "/>
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="100dp"
             android:id="@+id/listedSpaceReviewListView">
+        </ListView>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Posts:"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/postsListView">
         </ListView>
 
         <Button
@@ -134,4 +145,4 @@
             android:id="@+id/finishBookingsButton"
             android:text="Finish existing bookings"/>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
