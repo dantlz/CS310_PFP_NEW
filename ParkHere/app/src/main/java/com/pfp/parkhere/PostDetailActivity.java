@@ -33,6 +33,7 @@ public class PostDetailActivity extends Activity {
 
     private String spaceName;
     private String ownerEmail;
+    private String postName;
     private boolean firstTime;
     private List<String> viewValues;
 
@@ -53,6 +54,7 @@ public class PostDetailActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
+        postName =  "Name Of Post"; //extras.getString("POST_NAME");
         viewValues = new ArrayList<>();
 
         //Can't book my own space or look at myself, but can confirm/edit space
