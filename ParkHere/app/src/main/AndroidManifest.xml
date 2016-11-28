@@ -83,11 +83,7 @@
             android:name=".LoginActivity"
             android:label="ParkHere"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- MAPS -->
@@ -162,7 +158,17 @@
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
         <activity android:name=".OwnerProfileActivity" />
-        <activity android:name=".RateAndReviewActivity"></activity>
+        <activity android:name=".RateAndReviewActivity" />
+        <activity
+            android:name=".EditPostActivity"
+            android:label="Edit This Post"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

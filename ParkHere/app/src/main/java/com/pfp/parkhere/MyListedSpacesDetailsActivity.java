@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ObjectClasses.Post;
 import ObjectClasses.Space;
 import ObjectClasses.Status;
 
@@ -121,7 +122,8 @@ public class MyListedSpacesDetailsActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Space space = dataSnapshot.getValue(Space.class);
-                onCreateContinued(space);
+                Post post = Global.makeFakePost();
+                onCreateContinued(space, post);
             }
 
             @Override
@@ -131,7 +133,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         });
     }
 
-    private void onCreateContinued(Space space){
+    private void onCreateContinued(Space space, Post post){
         if(!firstTime){
             return;
         }
@@ -154,7 +156,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
         typeField.setText(String.valueOf(space.getType()));
 
         TextView policyField = (TextView) findViewById(R.id.policyField);
-        policyField.setText(String.valueOf(space.getPolicy()));
+        policyField.setText(String.valueOf(post.getPolicy()));
 
         TextView descriptionField = (TextView) findViewById(R.id.descriptionField);
         descriptionField.setText(space.getDescription());

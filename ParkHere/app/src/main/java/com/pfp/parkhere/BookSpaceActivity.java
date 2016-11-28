@@ -17,13 +17,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.CancellationPolicy;
+import ObjectClasses.MyCalendar;
+import ObjectClasses.Post;
 import ObjectClasses.Space;
 
 public class BookSpaceActivity extends Activity {
 
     private Space selectedSpace;
+    private Post selectedPost;
     private String spaceName;
     private String ownerEmail;
+    private String postName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +37,17 @@ public class BookSpaceActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
+        //postName = extras.getString("POST_NAME");
+        //TODO DANNY retrieve Post from database, unsafe to just pass index in case it changes, but
+        //would be faster. Will need to send the name from whatever activity starts this
+
+
 
         Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 selectedSpace = dataSnapshot.getValue(Space.class);
+                selectedPost = Global.makeFakePost(); //TODO change this to access
                 populateFields();
             }
             @Override
@@ -47,7 +57,7 @@ public class BookSpaceActivity extends Activity {
 
     private void populateFields(){
         TextView nameView = (TextView)findViewById(R.id.space_name_confirmation);
-        nameView.setText(selectedSpace.getSpaceName());
+        nameView.setText(selectedPost.getPostName());
 
         TextView addressView = (TextView)findViewById(R.id.space_address_confirmation);
         addressView.setText(selectedSpace.getStreetAddress() + ",\n"
@@ -57,7 +67,7 @@ public class BookSpaceActivity extends Activity {
         priceView.setText("Price: $" + selectedSpace.getPricePerHour());
 
         TextView policyView = (TextView)findViewById(R.id.display_cancellation_policy);
-        policyView.setText(Global.getCancellationPolicy(selectedSpace.getPolicy()));
+        policyView.setText(Global.getCancellationPolicy(selectedPost.getPolicy()));
 
     }
 
@@ -84,6 +94,7 @@ public class BookSpaceActivity extends Activity {
         Bundle extras = new Bundle();
         extras.putString("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
         extras.putString("SPACE_NAME", selectedSpace.getSpaceName());
+        extras.putString("POST_NAME", selectedPost.getPostName());
 
         intent.putExtras(extras);
         startActivity(intent);
@@ -97,6 +108,7 @@ public class BookSpaceActivity extends Activity {
         Bundle extras = new Bundle();
         extras.putString("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
         extras.putString("SPACE_NAME", selectedSpace.getSpaceName());
+        extras.putString("POST_NAME", selectedPost.getPostName());
 
         intent.putExtras(extras);
         startActivity(intent);

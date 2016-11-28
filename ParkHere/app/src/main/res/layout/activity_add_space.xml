@@ -68,48 +68,10 @@
 
 
         <TextView
-            android:id="@+id/startTimeDateLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/zipCode"
-            android:hint="Start Time and Date"
-            tools:text="Start Time"/>
-        <DatePicker
-            android:id="@+id/startDatePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/startTimeDateLabel"
-            android:hint="Start Date"/>
-        <TimePicker
-            android:id="@+id/startTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/startDatePicker"/>
-        <TextView
-            android:id="@+id/endTimeDateLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/startTimePicker"
-            android:hint="End Time"
-            tools:text="End Time and Date"/>
-        <DatePicker
-            android:id="@+id/endDatePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/endTimeDateLabel"
-            android:hint="End Date"/>
-        <TimePicker
-            android:id="@+id/endTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/endDatePicker"/>
-
-
-        <TextView
             android:id="@+id/typeSpinnerLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/endTimePicker"
+            android:layout_below="@+id/zipCode"
             android:hint="Spot Type:"
             tools:text="Spot Type"/>
         <Spinner
@@ -117,19 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/typeSpinnerLabel"
-            android:spinnerMode="dropdown"/>
-        <TextView
-            android:id="@+id/spinnerCancellationLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/typeSpinner"
-            android:hint="Cancellation Policy"
-            tools:text="Cancellation Policy"/>
-        <Spinner
-            android:id="@+id/spinnerForCancellation"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/spinnerCancellationLabel"
             android:spinnerMode="dropdown"/>
 
             
@@ -139,7 +88,7 @@
             android:layout_height="300dp"
             android:layout_weight="1"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/spinnerForCancellation"/>
+            android:layout_below="@+id/typeSpinner"/>
         <Button
             android:id="@+id/LoadPictureButton"
             android:layout_width="match_parent"

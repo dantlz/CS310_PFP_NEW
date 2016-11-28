@@ -204,8 +204,9 @@ public class AddSpaceActivity extends Activity {
             listedSpace.setState(stateField.getText().toString());
             listedSpace.setZipCode(zipCodeField.getText().toString());
             listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
-            listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
+            //listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
             listedSpace.setDescription(descriptionField.getText().toString());
+            /*
             listedSpace.setAvailableStartDateAndTime(new MyCalendar(
                     startDatePicker.getYear(),
                     startDatePicker.getMonth(),
@@ -220,6 +221,7 @@ public class AddSpaceActivity extends Activity {
                     endTimePicker.getHour(),
                     endTimePicker.getMinute()
             ));
+            */
             listedSpace.setDPNonFireBase(picture.getDrawable());
             listedSpace.setSpaceRating(0);
 
