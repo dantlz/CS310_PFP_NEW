@@ -32,13 +32,12 @@ import java.util.List;
 import ObjectClasses.Booking;
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
-
+//Done Sprint 2
 //TODO Firebase - Add field to Peer: available balance
 public class FinishBookingsActivity extends Activity {
 
     private SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmssZ");
-    private String spaceName;
-    private String ownerEmail;
+    private String spaceName, ownerEmail, postName;
     private List<String> listOfBookingIdentifiers;
     private List<String> listOfBookingSeekerEmails;
     private List<Booking> allBookings;
@@ -59,8 +58,9 @@ public class FinishBookingsActivity extends Activity {
 
         spaceName = getIntent().getExtras().getString("SPACE_NAME");
         ownerEmail = getIntent().getExtras().getString("SPACE_OWNEREMAIL");
+        postName = getIntent().getExtras().getString("POST_NAME");
 
-        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers")
+        Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(postName).child("currentBookingIdentifiers")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,7 +108,7 @@ public class FinishBookingsActivity extends Activity {
 
         TextView nameOfSpace = (TextView) findViewById(R.id.space_name_for_bookings);
         if (allBookings.size() != 0) {
-            nameOfSpace.setText(spaceName);
+            nameOfSpace.setText(spaceName + ": " + postName);
         }
         else {
             nameOfSpace.setText("This space has no active bookings.");
@@ -156,12 +156,11 @@ public class FinishBookingsActivity extends Activity {
             System.out.println("curr: " + currTime + " endTime: " + endTime);
 
             if (currTime.after(endTime)) {
-                Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("currentBookingIdentifiers").child(curIdentifier).removeValue();
+                Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(postName).child("currentBookingIdentifiers").child(curIdentifier).removeValue();
                 Global.bookings().child(Global.reformatEmail(curEmail)).child(curIdentifier).child("done").setValue(true);
                 iterator.remove();
             }
         }
-        startActivity(new Intent(FinishBookingsActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }
 

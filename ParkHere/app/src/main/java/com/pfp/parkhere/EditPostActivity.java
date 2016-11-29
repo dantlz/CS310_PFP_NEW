@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import ObjectClasses.CancellationPolicy;
 import ObjectClasses.MyCalendar;
-
+//Done Sprint 2
 public class EditPostActivity extends AppCompatActivity {
 
     private String ownerEmail, spaceName, postName;

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,9 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Vector;
-
-public class MyBookingsDetailsActivity extends Activity{
-    private String bookingIdentifier, ownerEmail, spaceName, spaceAddress, startTime, endTime, ownerName;
+//Done Sprint 2
+public class MyBookingDetailsActivity extends Activity{
+    private String bookingIdentifier, ownerEmail, spaceName, spaceAddress, startTime, endTime, ownerName, postName;
     private TextView addressView, timesView, nameView, emailView;
     private Button rateAndReviewButton, cancelButton;
     private RatingBar rateBar;
@@ -42,6 +41,7 @@ public class MyBookingsDetailsActivity extends Activity{
         Bundle extras = intent.getExtras();
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
         spaceName = extras.getString("SPACE_NAME");
+        postName = extras.getString("POST_NAME");
         bookingIdentifier = extras.getString("BOOKING_IDENTIFIER");
         spaceAddress = extras.getString("SPACE_ADDRESS");
         startTime = extras.getString("BOOKING_STARTTIME");
@@ -60,7 +60,7 @@ public class MyBookingsDetailsActivity extends Activity{
         reviewsView = (ListView) findViewById(R.id.space_reviews);
         rateAndReviewButton = (Button) findViewById(R.id.Rate_Review_BookDetails);
         cancelButton = (Button) findViewById(R.id.Booking_To_Cancel);
-
+//TODO cancelButton doesn't actually do anything right now
         if(done)
             cancelButton.setVisibility(View.GONE);
         else
@@ -80,7 +80,7 @@ public class MyBookingsDetailsActivity extends Activity{
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        MyBookingsDetailsActivity.this,
+                        MyBookingDetailsActivity.this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, viewValues);
 
                 reviewsView.setAdapter(adapter);
@@ -98,15 +98,17 @@ public class MyBookingsDetailsActivity extends Activity{
     }
 
     public void GoToCancel(View view){
-        Intent intent = new Intent(this, CancelActivity.class);
+        Intent intent = new Intent(this, CancelBookingActivity.class);
         intent.putExtra("BOOKING_IDENTIFIER", bookingIdentifier);
         intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
         intent.putExtra("SPACE_NAME", spaceName);
+        intent.putExtra("POST_NAME", postName);
         startActivity(intent);
+        finish();
     }
     //This function opens the Owner details of this space
     public void GoToOwnerDetail(View view){
-        Intent intent = new Intent(this, OwnerProfileActivity.class);
+        Intent intent = new Intent(this, ProfileOwnerActivity.class);
         intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
         startActivity(intent);
         finish();
@@ -114,9 +116,10 @@ public class MyBookingsDetailsActivity extends Activity{
 
     public void GoToRateAndReview(View view){
         Intent intent = new Intent(this, RateAndReviewActivity.class);
+        intent.putExtra("BOOKING_IDENTIFIER", bookingIdentifier);
         intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
         intent.putExtra("SPACE_NAME", spaceName);
-        intent.putExtra("BOOKING_IDENTIFIER", bookingIdentifier);
+        intent.putExtra("POST_NAME", postName);
         startActivity(intent);
         finish();
     }

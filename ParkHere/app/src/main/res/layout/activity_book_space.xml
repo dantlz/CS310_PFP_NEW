@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.pfp.parkhere.BookSpaceActivity">
+    tools:context="com.pfp.parkhere.BookActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -20,12 +20,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/space_address_confirmation"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/space_price_confirmation"/>
+        android:id="@+id/post_name_confirmation"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -74,7 +69,4 @@
             android:layout_weight="1" />
 
     </LinearLayout>
-
-
-
 </LinearLayout>

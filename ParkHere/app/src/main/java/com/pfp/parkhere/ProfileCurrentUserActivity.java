@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
@@ -13,17 +11,12 @@ import android.widget.ImageView;
 import android.graphics.Color;
 import android.widget.RatingBar;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import ObjectClasses.Peer;
 import ObjectClasses.Status;
 
 import static com.pfp.parkhere.R.id.editButton;
-
-public class ProfileActivity extends Activity {
+//Done Sprint 2
+public class ProfileCurrentUserActivity extends Activity {
 
     protected EditText mEmail, mPhone, mFirstName, mLastName;
     private Button mEditButton, mSaveButton, mBookingButton, myListedSpacesButton;
@@ -136,13 +129,13 @@ public class ProfileActivity extends Activity {
 
     public void clickedMyBookings(View view)
     {
-        startActivity(new Intent(ProfileActivity.this, MyBookingsActivity.class));
+        startActivity(new Intent(ProfileCurrentUserActivity.this, MyBookingsActivity.class));
 
     }
 
     public void clickedMyListedSpaces(View view)
     {
-        startActivity(new Intent(ProfileActivity.this, MyListedSpacesActivity.class));
+        startActivity(new Intent(ProfileCurrentUserActivity.this, MySpaces.class));
 
     }
 }

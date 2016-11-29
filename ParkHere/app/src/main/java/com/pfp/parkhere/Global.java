@@ -16,7 +16,7 @@ import ObjectClasses.MyCalendar;
 import ObjectClasses.Peer;
 import ObjectClasses.Post;
 import ObjectClasses.Space;
-
+//Done Sprint 2
 public class Global extends Application {
 
 
@@ -53,15 +53,6 @@ public class Global extends Application {
         else {
             return "Strict: You will not receive a refund if you cancel your reservation.";
         }
-    }
-
-    public static Post makeFakePost() {
-        Post retPost = new Post();
-        retPost.setPostName("My Test Space");
-        retPost.setPolicy(CancellationPolicy.LIGHT);
-        retPost.setAvailableStartDateAndTime(new MyCalendar(2016,11,20,12,0));
-        retPost.setAvailableEndDateAndTime(new MyCalendar(2016,11,27,12,0));
-        return retPost;
     }
 
     public static Peer getCurUser() {

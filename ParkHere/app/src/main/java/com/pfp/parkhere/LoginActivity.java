@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,12 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Peer;
-
+//Done Sprint 2
 public class LoginActivity extends Activity {
 
     //Firebase objects
@@ -69,7 +66,7 @@ public class LoginActivity extends Activity {
                                         return;
                                     }
                                     Global.setCurUser(currentUser);
-                                    startActivity(new Intent(LoginActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                    startActivity(new Intent(LoginActivity.this, MapsMainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                     finish();
                                     return;
                                 }

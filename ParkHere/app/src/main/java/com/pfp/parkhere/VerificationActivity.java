@@ -3,13 +3,11 @@ package com.pfp.parkhere;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.database.FirebaseDatabase;
-
+//Done Sprint 2
 public class VerificationActivity extends Activity {
 
     private static int RESULT_LOAD_IMAGE = 1;
@@ -41,7 +39,7 @@ public class VerificationActivity extends Activity {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             Global.peers().child(Global.getCurUser().getReformattedEmail()).child("photoID").setValue(selectedImage.toString());
-            startActivity(new Intent(VerificationActivity.this, MapsActivity.class));
+            startActivity(new Intent(VerificationActivity.this, MapsMainActivity.class));
             finish();
         }
 

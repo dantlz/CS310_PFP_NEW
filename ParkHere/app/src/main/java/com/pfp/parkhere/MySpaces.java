@@ -1,11 +1,9 @@
 package com.pfp.parkhere;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,16 +12,14 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
 import ObjectClasses.Space;
-
-public class MyListedSpacesActivity extends Activity {
+//Done Sprint 2
+public class MySpaces extends Activity {
 
     private ListView listedSpacesList;
     private LinkedList<Space> MyListedSpaces;
@@ -80,7 +76,7 @@ public class MyListedSpacesActivity extends Activity {
         listedSpacesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyListedSpacesActivity.this, MyListedSpacesDetailsActivity.class);
+                Intent intent = new Intent(MySpaces.this, MySpaceDetails.class);
                 Bundle extras = new Bundle();
                 Space chosenSpace = MyListedSpaces.get(position);
                 extras.putString("SPACE_NAME", chosenSpace.getSpaceName());

@@ -2,7 +2,6 @@ package com.pfp.parkhere;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +18,7 @@ public class RateAndReviewActivity extends Activity {
 
     private EditText spaceRating, spaceReview, ownerRating, ownerReview;
     private Button finishButton;
-    private String ownerEmail, spaceName, bookingIdentifier;
+    private String ownerEmail, spaceName, bookingIdentifier, postName;
     private int currOwnerRating, currSpaceRating;
     private boolean firstTime;
 
@@ -41,6 +40,7 @@ public class RateAndReviewActivity extends Activity {
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
         spaceName = extras.getString("SPACE_NAME");
         bookingIdentifier = extras.getString("BOOKING_IDENTIFIER");
+        postName = extras.getString("POST_NAME");
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,20 +76,23 @@ public class RateAndReviewActivity extends Activity {
                 int newOwnerRating = (Integer.valueOf(ownerRating.getText().toString()) + currOwnerRating) / 2; //TODO This definitely should be /2
                 int newSpaceRating = (Integer.valueOf(spaceRating.getText().toString()) + currSpaceRating) / 2; //TODO This definitely should be /2
 
+                //Update ratings
                 Global.peers().child(Global.reformatEmail(ownerEmail)).child("ownerRating").setValue(newOwnerRating);
                 Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("spaceRating").setValue(newSpaceRating);
 
+                //Update reviews
                 Global.ownerReviews().child(Global.reformatEmail(ownerEmail)).push().setValue(ownerReview.getText().toString());
                 Global.spaceReviews().child(Global.reformatEmail(ownerEmail)).child(spaceName).push().setValue(spaceReview.getText().toString());
+
+                //Delete bookings and references
                 Global.bookings().child(Global.getCurUser().getReformattedEmail()).child(bookingIdentifier).removeValue();
-                startActivity(new Intent(RateAndReviewActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(postName).child("currentBookingIdentifiers").child(bookingIdentifier).removeValue();
+
                 finish();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 }

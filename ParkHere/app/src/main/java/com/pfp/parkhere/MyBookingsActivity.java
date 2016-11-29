@@ -1,7 +1,6 @@
 package com.pfp.parkhere;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,9 +18,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import ObjectClasses.Booking;
-import ObjectClasses.Peer;
 import ObjectClasses.Space;
-
+//Done Sprint 2
 public class MyBookingsActivity extends Activity {
     private ListView bookingsView;
     private LinkedList<String> myBookingIdentifiers;
@@ -31,6 +29,7 @@ public class MyBookingsActivity extends Activity {
     private Intent intent;
     private Bundle extras;
     private Booking currBooking;
+    private Space curSpace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +81,8 @@ public class MyBookingsActivity extends Activity {
     }
 
     private void bookingClicked(View view, final int position){
-        // ListView Clicked item index
-        Context context = view.getContext();
-
         //New intent to pass to booking details, new Bundle to attach to intent
-        intent = new Intent(context, MyBookingsDetailsActivity.class);
+        intent = new Intent(MyBookingsActivity.this, MyBookingDetailsActivity.class);
         extras = new Bundle();
 
         currBooking = myBookings.get(position);
@@ -95,7 +91,10 @@ public class MyBookingsActivity extends Activity {
                 .child(currBooking.getSpaceName()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                bookingClicked1(dataSnapshot.getValue(Space.class), myBookingIdentifiers.get(position));
+                curSpace = dataSnapshot.getValue(Space.class);
+
+                bookingClicked1(curSpace, myBookingIdentifiers.get(position));
+
             }
 
             @Override
@@ -103,7 +102,9 @@ public class MyBookingsActivity extends Activity {
 
             }
         });
+
     }
+
 
     private void bookingClicked1(Space space, String bookingIdentifier){
         //Generate text for address
@@ -119,7 +120,6 @@ public class MyBookingsActivity extends Activity {
 
         String addressText = bookingAddress.getAddressLine(0) + "\n" +
                 bookingAddress.getLocality() + " " + bookingAddress.getAdminArea();
-        extras.putString("SPACE_ADDRESS", addressText);
 
         //Generate text for start and end dates
         String startMinute;
@@ -148,6 +148,8 @@ public class MyBookingsActivity extends Activity {
                 + currBooking.getStartCalendarDate().getMonth()+ "/"
                 + currBooking.getStartCalendarDate().getDay() + "/"
                 + currBooking.getStartCalendarDate().getYear();
+
+        extras.putString("SPACE_ADDRESS", addressText);
         extras.putString("BOOKING_STARTTIME", startTimeText);
         extras.putString("BOOKING_ENDTIME", endTimeText);
         //Generate text for owner name and email
@@ -155,31 +157,10 @@ public class MyBookingsActivity extends Activity {
         extras.putString("SPACE_OWNEREMAIL", space.getOwnerEmail());
         extras.putString("SPACE_NAME", space.getSpaceName());
         extras.putString("BOOKING_IDENTIFIER", bookingIdentifier);
-        extras.putInt("SPACE_RATING", ownerRating);
+        extras.putInt("SPACE_RATING", space.getSpaceRating());
         extras.putBoolean("BOOKING_DONE", currBooking.isDone());
+        extras.putString("POST_NAME", currBooking.getPostName());
 
-        //Generate Rating and Review
-        //Get owner object to set rating
-        String bookingsSpacesOwnerEmail = space.getOwnerEmail();
-        Global.peers().child(Global.reformatEmail(bookingsSpacesOwnerEmail)).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-
-                Peer currentUser = dataSnapshot.getValue(Peer.class);
-                ownerRating = ((Peer) currentUser).getOwnerRating();
-                bookingClicked2(extras);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-    }
-
-    private void bookingClicked2(Bundle extras){
         intent.putExtras(extras);
         startActivity(intent);
     }

@@ -3,7 +3,6 @@ package com.pfp.parkhere;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,18 +11,13 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import ObjectClasses.CancellationPolicy;
-import ObjectClasses.MyCalendar;
 import ObjectClasses.Post;
-import ObjectClasses.Space;
 
-public class BookSpaceActivity extends Activity {
+//Done Sprint 2
+public class BookActivity extends Activity {
 
-    private Space selectedSpace;
     private Post selectedPost;
     private String spaceName;
     private String ownerEmail;
@@ -37,17 +31,12 @@ public class BookSpaceActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
-        //postName = extras.getString("POST_NAME");
-        //TODO DANNY retrieve Post from database, unsafe to just pass index in case it changes, but
-        //would be faster. Will need to send the name from whatever activity starts this
+        postName = extras.getString("POST_NAME");
 
-
-
-        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).addValueEventListener(new ValueEventListener() {
+        Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(postName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                selectedSpace = dataSnapshot.getValue(Space.class);
-                selectedPost = Global.makeFakePost(); //TODO change this to access
+                selectedPost = dataSnapshot.getValue(Post.class);
                 populateFields();
             }
             @Override
@@ -57,18 +46,13 @@ public class BookSpaceActivity extends Activity {
 
     private void populateFields(){
         TextView nameView = (TextView)findViewById(R.id.space_name_confirmation);
-        nameView.setText(selectedPost.getPostName());
+        nameView.setText(selectedPost.getParentSpaceName());
 
-        TextView addressView = (TextView)findViewById(R.id.space_address_confirmation);
-        addressView.setText(selectedSpace.getStreetAddress() + ",\n"
-                + selectedSpace.getCity() + ", " + selectedSpace.getState() + ", " + selectedSpace.getZipCode());
-
-        TextView priceView = (TextView)findViewById(R.id.space_price_confirmation);
-        priceView.setText("Price: $" + selectedSpace.getPricePerHour());
+        TextView postNameView = (TextView)findViewById(R.id.post_name_confirmation);
+        postNameView.setText(selectedPost.getPostName());
 
         TextView policyView = (TextView)findViewById(R.id.display_cancellation_policy);
         policyView.setText(Global.getCancellationPolicy(selectedPost.getPolicy()));
-
     }
 
     public void activatePaymentButtons(View view) {
@@ -89,11 +73,11 @@ public class BookSpaceActivity extends Activity {
 
     public void payWithCard(View view) {
         Context context = view.getContext();
-        Intent intent = new Intent(context, PayWithCardActivity.class);
+        Intent intent = new Intent(context, BookCardPaymentActivity.class);
 
         Bundle extras = new Bundle();
-        extras.putString("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
-        extras.putString("SPACE_NAME", selectedSpace.getSpaceName());
+        extras.putString("SPACE_OWNEREMAIL", selectedPost.getParentOwnerEmail());
+        extras.putString("SPACE_NAME", selectedPost.getParentSpaceName());
         extras.putString("POST_NAME", selectedPost.getPostName());
 
         intent.putExtras(extras);
@@ -103,11 +87,11 @@ public class BookSpaceActivity extends Activity {
 
     public void payWithPaypal(View view) {
         Context context = view.getContext();
-        Intent intent = new Intent(context, PayWithPaypalActivity.class);
+        Intent intent = new Intent(context, BookCardPaymentActivity.class);
 
         Bundle extras = new Bundle();
-        extras.putString("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
-        extras.putString("SPACE_NAME", selectedSpace.getSpaceName());
+        extras.putString("SPACE_OWNEREMAIL", selectedPost.getParentOwnerEmail());
+        extras.putString("SPACE_NAME", selectedPost.getParentSpaceName());
         extras.putString("POST_NAME", selectedPost.getPostName());
 
         intent.putExtras(extras);

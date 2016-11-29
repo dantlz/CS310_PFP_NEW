@@ -24,8 +24,8 @@ import java.util.List;
 
 import ObjectClasses.Booking;
 import ObjectClasses.Space;
-
-public class PayWithCardActivity extends Activity {
+//Done Sprint 2
+public class BookCardPaymentActivity extends Activity {
 
     private Booking booking;
     private String ownerEmail;
@@ -62,17 +62,17 @@ public class PayWithCardActivity extends Activity {
 
     public void finishPayment(View view) {
         Global.spaces().child(ownerEmailReformatted).child(spaceName).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Space space = dataSnapshot.getValue(Space.class);
-                        completePayment(space);
-                    }
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Space space = dataSnapshot.getValue(Space.class);
+                completePayment(space);
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
     }
 
     private void completePayment(Space space){
@@ -128,6 +128,7 @@ public class PayWithCardActivity extends Activity {
 //            dialog.show();
         }
 
+        booking.setPostName(postName);
         booking.setSpaceName(space.getSpaceName());
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
         booking.setEndCalendarDate(Global.getCurrentSearchTimedateEnd());
@@ -137,8 +138,7 @@ public class PayWithCardActivity extends Activity {
         addedBookingRef.setValue(booking);
 
         bookingID = addedBookingRef.getKey();
-        Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
-        startActivity(new Intent(PayWithCardActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Global.posts().child(ownerEmailReformatted).child(spaceName).child(postName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         finish();
 
         //TODO Maybe add unavailable times to space object too?

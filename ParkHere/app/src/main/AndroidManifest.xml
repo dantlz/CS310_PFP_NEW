@@ -56,19 +56,19 @@
 
         <!-- BOOK SPACE -->
         <activity
-            android:name=".BookSpaceActivity"
+            android:name=".BookActivity"
             android:label="Book a Space"
             android:screenOrientation="portrait" />
 
         <!-- CANCEL -->
         <activity
-            android:name=".CancelActivity"
+            android:name=".CancelBookingActivity"
             android:label="Cancel This Booking"
             android:screenOrientation="portrait" />
 
         <!-- EDIT SPACE -->
         <activity
-            android:name=".EditListedSpacesActivity"
+            android:name=".EditSpaceActivity"
             android:label="Edit This Listed Space"
             android:screenOrientation="portrait" />
 
@@ -86,7 +86,7 @@
 
         <!-- MAPS -->
         <activity
-            android:name=".MapsActivity"
+            android:name=".MapsMainActivity"
             android:label="ParkHere"
             android:screenOrientation="portrait" />
 
@@ -98,37 +98,37 @@
 
         <!-- MY BOOKINGS DETAIL -->
         <activity
-            android:name=".MyBookingsDetailsActivity"
+            android:name=".MyBookingDetailsActivity"
             android:label="Booking Details"
             android:screenOrientation="portrait" />
 
         <!-- MY LISTED SPACES -->
         <activity
-            android:name=".MyListedSpacesActivity"
+            android:name=".MySpaces"
             android:label="All Listed Spaces"
             android:screenOrientation="portrait" />
 
         <!-- MY LISTED SPACE DETAIL -->
         <activity
-            android:name=".MyListedSpacesDetailsActivity"
+            android:name=".MySpaceDetails"
             android:label="Listed Space Details"
             android:screenOrientation="portrait" />
 
         <!-- PAY WITH CARD -->
         <activity
-            android:name=".PayWithCardActivity"
+            android:name=".BookCardPaymentActivity"
             android:label="Paying With Card"
             android:screenOrientation="portrait" />
 
         <!-- PAY WITH PAYPAL -->
         <activity
-            android:name=".PayWithPaypalActivity"
+            android:name=".BookPayPalActivity"
             android:label="Paying With PayPal"
             android:screenOrientation="portrait" />
 
         <!-- PROFILE -->
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ProfileCurrentUserActivity"
             android:label="Profile"
             android:screenOrientation="portrait" />
 
@@ -155,11 +155,11 @@
             android:name=".VerificationActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
-        <activity android:name=".OwnerProfileActivity" />
+        <activity android:name=".ProfileOwnerActivity" />
         <activity android:name=".RateAndReviewActivity" />
         
         <activity
-            android:name=".PostDetailActivity"
+            android:name=".MyPostDetailsActivity"
             android:label="Post Details"
             android:screenOrientation="portrait"/>
         <activity

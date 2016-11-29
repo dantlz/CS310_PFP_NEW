@@ -8,29 +8,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import ObjectClasses.CancellationPolicy;
-import ObjectClasses.MyCalendar;
 import ObjectClasses.Space;
 import ObjectClasses.SpaceType;
-
+//Done Sprint 2
 public class AddSpaceActivity extends Activity {
     private EditText spaceNameField;
     private EditText priceField;
@@ -42,13 +32,7 @@ public class AddSpaceActivity extends Activity {
     private EditText countryField;
     private EditText zipCodeField;
 
-    private DatePicker startDatePicker;
-    private TimePicker startTimePicker;
-    private DatePicker endDatePicker;
-    private TimePicker endTimePicker;
-
     private Spinner typeSpinner;
-    private Spinner cancellationSpinner;
     private ImageView picture;
 
     //TODO More Information can be set as a space's policy. Don't allow that
@@ -79,24 +63,14 @@ public class AddSpaceActivity extends Activity {
         types.add("Truck");
         types.add("Disabled");
 
-        List<String> cancellationPolicies = new ArrayList<String>();
-        cancellationPolicies.add("Light");
-        cancellationPolicies.add("Moderate");
-        cancellationPolicies.add("Strict");
-//        cancellationPolicies.add("More Information"); Add this back in once the listener is completed
-
-
         // Creating adapter for typeSpinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types);
-        ArrayAdapter<String> dataCancellation = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cancellationPolicies);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dataCancellation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to typeSpinner
         typeSpinner.setAdapter(dataAdapter);
-        cancellationSpinner.setAdapter(dataCancellation);
 
         if(getIntent().getExtras() != null){
             try {
@@ -129,8 +103,7 @@ public class AddSpaceActivity extends Activity {
                 stateField.getText().toString().equals("") ||
                 countryField.getText().toString().equals("") ||
                 zipCodeField.getText().toString().equals("") ||
-                typeSpinner.getSelectedItem().equals(null) ||
-                cancellationSpinner.getSelectedItem().equals(null)) {
+                typeSpinner.getSelectedItem().equals(null)){
             new AlertDialog.Builder(AddSpaceActivity.this, R.style.MyAlertDialogStyle)
                     .setTitle("Please complete all fields")
                     .setMessage("All input fields must be completed.")
@@ -189,31 +162,14 @@ public class AddSpaceActivity extends Activity {
             listedSpace.setState(stateField.getText().toString());
             listedSpace.setZipCode(zipCodeField.getText().toString());
             listedSpace.setPricePerHour(Integer.valueOf(priceField.getText().toString()));
-            //listedSpace.setPolicy(CancellationPolicy.valueOf(cancellationSpinner.getSelectedItem().toString().toUpperCase()));
             listedSpace.setDescription(descriptionField.getText().toString());
-            /*
-            listedSpace.setAvailableStartDateAndTime(new MyCalendar(
-                    startDatePicker.getYear(),
-                    startDatePicker.getMonth(),
-                    startDatePicker.getDayOfMonth(),
-                    startTimePicker.getHour(),
-                    startTimePicker.getMinute()
-            ));
-            listedSpace.setAvailableEndDateAndTime(new MyCalendar(
-                    endDatePicker.getYear(),
-                    endDatePicker.getMonth(),
-                    endDatePicker.getDayOfMonth(),
-                    endTimePicker.getHour(),
-                    endTimePicker.getMinute()
-            ));
-            */
             listedSpace.setDPNonFireBase(picture.getDrawable());
             listedSpace.setSpaceRating(0);
 
 
             //TODO If an owner has a space with the same name, this should not work!!!
             Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceNameField.getText().toString()).setValue(listedSpace);
-            startActivity(new Intent(AddSpaceActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            startActivity(new Intent(AddSpaceActivity.this, MapsMainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         } catch (IOException e) {
             e.printStackTrace();

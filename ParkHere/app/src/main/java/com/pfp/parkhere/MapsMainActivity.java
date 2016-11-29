@@ -3,7 +3,6 @@ package com.pfp.parkhere;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.res.Resources;
 import android.os.Handler;
 
 import android.content.Context;
@@ -21,14 +20,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -36,7 +33,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -44,8 +40,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
@@ -65,8 +59,9 @@ import ObjectClasses.SpaceType;
 import ObjectClasses.Status;
 
 import static android.location.LocationManager.GPS_PROVIDER;
-
-public class MapsActivity extends Activity implements OnMapReadyCallback {
+//Done Sprint 2
+//TODO All the space/post passing could be done much more easily by passing objects, or sending object to global
+public class MapsMainActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Map<LatLng, Space> allSpaces = new HashMap<>();
@@ -135,7 +130,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         filtersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, SearchFiltersActivity.class);
+                Intent intent = new Intent(MapsMainActivity.this, SearchFiltersActivity.class);
                 intent.putExtras(currentFiltersIntent.getExtras());
                 //Stack depth 1
                 startActivityForResult(intent, 123);
@@ -146,7 +141,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         resultAsListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, ResultsActivity.class);
+                Intent intent = new Intent(MapsMainActivity.this, ResultsActivity.class);
                 intent.putExtra("LATLNG", currentCameraOrZoomLatLng);
                 Global.setMapOfLatLngSpacesToPass(filterForResultsList(currentFiltersIntent));
                 //Stack depth 1
@@ -184,13 +179,13 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         //Must verify
         if(Global.getCurUser().getPhotoID() == null ||
                 Global.getCurUser().getPhotoID().equals("")){
-            Dialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyAlertDialogStyle)
+            Dialog dialog = new AlertDialog.Builder(MapsMainActivity.this, R.style.MyAlertDialogStyle)
                     .setTitle("Verification Needed")
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //Stack depth 1
-                            startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
+                            startActivity(new Intent(MapsMainActivity.this, VerificationActivity.class));
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -202,7 +197,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
     }
 
     private Intent createDefaultSearchFilters(){
-        Intent intent = new Intent(MapsActivity.this, SearchFiltersActivity.class);
+        Intent intent = new Intent(MapsMainActivity.this, SearchFiltersActivity.class);
         Calendar cal = Calendar.getInstance();
         intent.putExtra("TYPE", SpaceType.COMPACT);
         intent.putExtra("LOWESTPRICE", 0);
@@ -225,13 +220,13 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
     protected void onResume() {
         if(Global.getCurUser().getPhotoID() == null ||
                 Global.getCurUser().getPhotoID().equals("")){
-            Dialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyAlertDialogStyle)
+            Dialog dialog = new AlertDialog.Builder(MapsMainActivity.this, R.style.MyAlertDialogStyle)
                     .setTitle("Verification Needed")
                     .setMessage("You must verify your identity by uploading your photo ID to use ParkHere")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //Stack depth 1
-                            startActivity(new Intent(MapsActivity.this, VerificationActivity.class));
+                            startActivity(new Intent(MapsMainActivity.this, VerificationActivity.class));
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -299,7 +294,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                             for (DataSnapshot spce : peer.getChildren()) {
                                 Space space = spce.getValue(Space.class);
                                 try {
-                                    List<Address> addressList = new Geocoder(MapsActivity.this)
+                                    List<Address> addressList = new Geocoder(MapsMainActivity.this)
                                             .getFromLocationName(space.getStreetAddress() + space.getCity()
                                                     + space.getState() + " " + space.getZipCode(), 1);
                                     //If the space's LatLng could not be located, just skip it to avoid crashes or lags
@@ -341,7 +336,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 //This is a listed space marker
                 if(allSpaces.get(marker.getPosition()) != null) {
                     Space selectedSpace = allSpaces.get(marker.getPosition());
-                    Intent intent = new Intent(MapsActivity.this, MyListedSpacesDetailsActivity.class);
+                    Intent intent = new Intent(MapsMainActivity.this, MySpaceDetails.class);
                     intent.putExtra("SPACE_NAME", selectedSpace.getSpaceName());
                     intent.putExtra("SPACE_OWNEREMAIL", selectedSpace.getOwnerEmail());
                     //Stack depth 1
@@ -349,7 +344,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
                 }
                 //This is an owner listing a new space
                 else{
-                    Intent intent = new Intent(MapsActivity.this, AddSpaceActivity.class);
+                    Intent intent = new Intent(MapsMainActivity.this, AddSpaceActivity.class);
                     intent.putExtra("LAT", marker.getPosition().latitude);
                     intent.putExtra("LNG", marker.getPosition().longitude);
                     //Stack depth 1
@@ -620,22 +615,22 @@ public class MapsActivity extends Activity implements OnMapReadyCallback {
         switch (item.getItemId()) {
             case R.id.itemProfile:
                 // User chose the "Profile" action, change to that Activity Screen
-                intent = new Intent(MapsActivity.this, ProfileActivity.class);
+                intent = new Intent(MapsMainActivity.this, ProfileCurrentUserActivity.class);
                 intent.putExtra("USER_STATUS", String.valueOf(userMode));
                 //Stack depth 1
                 startActivity(intent);
                 return true;
             case R.id.itemAddSpace:
                 //Stack depth 1
-                startActivity(new Intent(MapsActivity.this, AddSpaceActivity.class));
+                startActivity(new Intent(MapsMainActivity.this, AddSpaceActivity.class));
                 return true;
             case R.id.Both:
                 //Stack depth 1
-                startActivity(new Intent(MapsActivity.this, BecomeBothOwnerAndSeeker.class));
+                startActivity(new Intent(MapsMainActivity.this, BecomeBothOwnerAndSeeker.class));
                 return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                intent = new Intent(MapsActivity.this, LoginActivity.class);
+                intent = new Intent(MapsMainActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

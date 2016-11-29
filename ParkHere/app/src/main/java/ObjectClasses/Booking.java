@@ -3,6 +3,7 @@ package ObjectClasses;
 public class Booking {
     private String spaceName;
     private String bookingSpaceOwnerEmail;
+    private String postName;
     private MyCalendar startCalendarDate;
     private MyCalendar endCalendarDate;
     private boolean done;
@@ -46,5 +47,13 @@ public class Booking {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getPostName() {
+        return postName;
+    }
+
+    public void setPostName(String postName) {
+        this.postName = postName;
     }
 }

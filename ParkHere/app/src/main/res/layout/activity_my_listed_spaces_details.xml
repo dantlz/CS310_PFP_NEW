@@ -12,7 +12,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.pfp.parkhere.MyListedSpacesDetailsActivity">
+        tools:context="com.pfp.parkhere.MySpaceDetails">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -134,16 +134,6 @@
             android:layout_height="wrap_content"
             android:text="Edit"
             android:id="@+id/edit_listed_space_button"/>
-        <Button
-            android:id="@+id/bookSpaceButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Book this space"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/finishBookingsButton"
-            android:text="Finish existing bookings"/>
         <Button
             android:id="@+id/addPostButton"
             android:layout_width="match_parent"

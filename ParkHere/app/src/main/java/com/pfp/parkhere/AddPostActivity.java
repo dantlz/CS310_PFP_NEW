@@ -12,6 +12,7 @@ import ObjectClasses.CancellationPolicy;
 import ObjectClasses.MyCalendar;
 import ObjectClasses.Post;
 
+//Done sprint 2
 public class AddPostActivity extends AppCompatActivity {
 
     public String name, ownerEmail, spaceName;
@@ -25,9 +26,9 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
         nameField = (EditText) findViewById(R.id.nameEditTextAP);
-        startDatePicker = (DatePicker) findViewById(R.id.fromDatePicker);
+        startDatePicker = (DatePicker) findViewById(R.id.startDatePicker);
         startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-        endDatePicker = (DatePicker) findViewById(R.id.toDatePicker);
+        endDatePicker = (DatePicker) findViewById(R.id.endDatePicker);
         endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
         policySpinner = (Spinner) findViewById(R.id.policySpinner);
 
@@ -36,7 +37,7 @@ public class AddPostActivity extends AppCompatActivity {
 
     }
 
-    void addPostButtonClicked(View view) {
+    public void addPostButtonClicked(View view) {
 
         Post post = new Post();
         post.setParentOwnerEmail(ownerEmail);

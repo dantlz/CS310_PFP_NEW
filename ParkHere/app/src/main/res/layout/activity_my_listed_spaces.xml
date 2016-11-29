@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.pfp.parkhere.MyListedSpacesActivity">
+    tools:context="com.pfp.parkhere.MySpaces">
     <ListView
         android:id="@+id/listed_spaces_list"
         android:layout_width="match_parent"

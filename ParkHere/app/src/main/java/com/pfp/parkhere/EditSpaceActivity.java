@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,8 +14,6 @@ import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
@@ -25,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ObjectClasses.Space;
-
-public class EditListedSpacesActivity extends Activity {
+//Done Sprint 2
+public class EditSpaceActivity extends Activity {
 
     private Bundle extras;
     private EditText editName, editAddress, editPrice, editDescription;
@@ -108,7 +104,7 @@ public class EditListedSpacesActivity extends Activity {
         try {
             List<Address> addressList = new Geocoder(getApplicationContext()).getFromLocationName(editAddress.getText().toString(), 1);
             if (addressList.size() < 1){
-                new AlertDialog.Builder(EditListedSpacesActivity.this, R.style.MyAlertDialogStyle)
+                new AlertDialog.Builder(EditSpaceActivity.this, R.style.MyAlertDialogStyle)
                         .setTitle("Location not found")
                         .setMessage("We could not find a location based on your address. Please try again")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -138,13 +134,12 @@ public class EditListedSpacesActivity extends Activity {
                 .child("streetAddress").setValue(address.getAddressLine(0));
 
         //TODO Allow user to change start date/time and end date/time
-        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }
 
     public void deleteListedSpace(View view) {
+        //TODO Must take care of related posts when deleting a space
         Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).removeValue();
-        startActivity(new Intent(EditListedSpacesActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         finish();
     }
 

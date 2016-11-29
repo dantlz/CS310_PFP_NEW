@@ -3,7 +3,6 @@ package com.pfp.parkhere;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,8 +16,7 @@ import java.util.Comparator;
 import java.util.Map;
 
 import ObjectClasses.Space;
-import ObjectClasses.Status;
-
+//Done Sprint 2
 public class ResultsActivity extends Activity {
 
     private ListView listView;
@@ -49,7 +47,7 @@ public class ResultsActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int n = position;
                 ObjectClasses.Space spx = spaceList.get(n);
-                Intent intent = new Intent(ResultsActivity.this, MyListedSpacesDetailsActivity.class);
+                Intent intent = new Intent(ResultsActivity.this, MySpaceDetails.class);
                 intent.putExtra("SPACE_NAME", spx.getSpaceName());
                 intent.putExtra("SPACE_OWNEREMAIL", spx.getOwnerEmail());
                 //Stack depth 2

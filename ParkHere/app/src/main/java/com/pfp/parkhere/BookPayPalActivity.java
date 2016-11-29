@@ -18,9 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import ObjectClasses.Booking;
 import ObjectClasses.Space;
-
+//Done Sprint 2
 //TODO Have the balance in both peers change upon completion. Calculations done by hour and hourly rate
-public class PayWithPaypalActivity extends Activity {
+//TODO Merge pay with paypal and car. Don't need 2 actiities
+public class BookPayPalActivity extends Activity {
 
     private Booking booking;
     private String ownerEmail, ownerEmailReformatted, spaceName, bookingID, postName;
@@ -62,6 +63,7 @@ public class PayWithPaypalActivity extends Activity {
         }
         firstTime = false;
 
+        booking.setPostName(postName);
         booking.setSpaceName(space.getSpaceName());
         booking.setStartCalendarDate(Global.getCurrentSearchTimeDateStart());
         booking.setEndCalendarDate(Global.getCurrentSearchTimedateEnd());
@@ -71,8 +73,7 @@ public class PayWithPaypalActivity extends Activity {
         addedBookingRef.setValue(booking);
 
         bookingID = addedBookingRef.getKey();
-        Global.spaces().child(ownerEmailReformatted).child(spaceName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
-        startActivity(new Intent(PayWithPaypalActivity.this, MapsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Global.posts().child(ownerEmailReformatted).child(spaceName).child(postName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         finish();
 
         //TODO Maybe add unavailable times to space object too?

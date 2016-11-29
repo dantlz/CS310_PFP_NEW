@@ -28,7 +28,9 @@ import java.util.List;
 
 import ObjectClasses.Peer;
 import ObjectClasses.Space;
-public class OwnerProfileActivity extends Activity {
+
+//Done Sprint 2
+public class ProfileOwnerActivity extends Activity {
 
     private String ownerEmail;
     private TextView mFirstName;

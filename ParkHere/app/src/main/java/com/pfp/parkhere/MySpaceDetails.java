@@ -20,13 +20,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import ObjectClasses.Post;
 import ObjectClasses.Space;
 import ObjectClasses.Status;
-//TODO Fix the ListView inside a ScrollView issue in MyBookingsDetailsActivity
+
 //DOUBLEUSE
-public class MyListedSpacesDetailsActivity extends Activity {
-    private Button ownerButton, editButton, bookSpaceButton, finishBookingButton, addPostButton;
+//Done Sprint 2
+//TODO Fix the ListView inside a ScrollView issue in MyBookingDetailsActivity
+
+public class MySpaceDetails extends Activity {
+    private Button ownerButton, editButton, addPostButton;
     private ListView reviewsListView, postsListView;
     private RatingBar rateBar;
 
@@ -43,8 +45,6 @@ public class MyListedSpacesDetailsActivity extends Activity {
 
         ownerButton = (Button) findViewById(R.id.ownerButton);
         editButton = (Button) findViewById(R.id.edit_listed_space_button);
-        bookSpaceButton = (Button) findViewById(R.id.bookSpaceButton);
-        finishBookingButton = (Button) findViewById(R.id.finishBookingsButton);
         addPostButton = (Button) findViewById(R.id.addPostButton);
         reviewsListView = (ListView) findViewById(R.id.listedSpaceReviewListView);
         postsListView = (ListView) findViewById(R.id.postsListView);
@@ -58,41 +58,27 @@ public class MyListedSpacesDetailsActivity extends Activity {
 
         //Can't book my own space or look at myself, but can confirm/edit space
         if(ownerEmail.equals(Global.getCurUser().getEmailAddress())){
-            bookSpaceButton.setVisibility(View.GONE);
             ownerButton.setVisibility(View.GONE);
         }
         //Can book or look at someone else, but can't modify their stuff
         else{
-            finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
             addPostButton.setVisibility(View.GONE);
         }
 
         //Owners can't book space, but can view other owners, confirm/edit his own
         if(Global.getCurUser().getPreferredStatus().equals(Status.OWNER)){
-            bookSpaceButton.setVisibility(View.GONE);
         }
         //Seekers can book space or look at owner, but can't confirm or edit.
         else{
-            finishBookingButton.setVisibility(View.GONE);
             editButton.setVisibility(View.GONE);
             addPostButton.setVisibility(View.GONE);
         }
 
-        finishBookingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, FinishBookingsActivity.class);
-                intent.putExtra("SPACE_NAME", spaceName);
-                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
-                startActivity(intent);
-                finish();
-            }
-        });
         ownerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, OwnerProfileActivity.class);
+                Intent intent = new Intent(MySpaceDetails.this, ProfileOwnerActivity.class);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
             }
@@ -101,31 +87,21 @@ public class MyListedSpacesDetailsActivity extends Activity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, EditListedSpacesActivity.class);
+                Intent intent = new Intent(MySpaceDetails.this, EditSpaceActivity.class);
                 intent.putExtra("SPACE_NAME", spaceName);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
             }
         });
-        bookSpaceButton.setOnClickListener(new View.OnClickListener() {
+        addPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, BookSpaceActivity.class);
+                Intent intent = new Intent(MySpaceDetails.this, AddPostActivity.class);
                 intent.putExtra("SPACE_NAME", spaceName);
                 intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
                 startActivity(intent);
                 finish();
-            }
-        });
-        addPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(MyListedSpacesDetailsActivity.this, AddPostActivity.class);
-//                intent.putExtra("SPACE_NAME", spaceName);
-//                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
-//                startActivity(intent);
-//                finish();
             }
         });
 
@@ -180,7 +156,7 @@ public class MyListedSpacesDetailsActivity extends Activity {
 
                 //Reviews List
                 ArrayAdapter<String> reviewsAdapter = new ArrayAdapter<>(
-                        MyListedSpacesDetailsActivity.this,
+                        MySpaceDetails.this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, reviewListViewValues);
                 reviewsListView.setAdapter(reviewsAdapter);
 
@@ -204,20 +180,19 @@ public class MyListedSpacesDetailsActivity extends Activity {
 
                 //Posts List
                 final ArrayAdapter<String> postsAdapter = new ArrayAdapter<>(
-                        MyListedSpacesDetailsActivity.this,
+                        MySpaceDetails.this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, postsListViewValues);
                 postsListView.setAdapter(postsAdapter);
                 postsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        //TODO Figure out how to configure database structure with post here
-//                        Intent intent = new Intent(MyListedSpacesDetailsActivity.this, PostDetailsActivity.class);
+                        Intent intent = new Intent(MySpaceDetails.this, MyPostDetailsActivity.class);
                         Bundle extras = new Bundle();
                         extras.putString("SPACE_OWNEREMAIL", ownerEmail);
                         extras.putString("SPACE_NAME", spaceName);
                         extras.putString("POST_NAME", postsListViewValues.get(position));
-//                        intent.putExtras(extras);
-//                        startActivity(intent);
+                        intent.putExtras(extras);
+                        startActivity(intent);
                     }
                 });
             }
