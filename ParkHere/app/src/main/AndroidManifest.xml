@@ -42,6 +42,12 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <!--ADD POST-->
+        <activity
+            android:name=".AddPostActivity"
+            android:label="Add Your Post"
+            android:screenOrientation="portrait"/>
+
         <!-- ADD SPACE -->
         <activity
             android:name=".AddSpaceActivity"
@@ -60,11 +66,29 @@
             android:label="Book a Space"
             android:screenOrientation="portrait" />
 
+        <!-- PAY WITH CARD -->
+        <activity
+            android:name=".BookCardPaymentActivity"
+            android:label="Paying With Card"
+            android:screenOrientation="portrait" />
+
+        <!-- PAY WITH PAYPAL -->
+        <activity
+            android:name=".BookPayPalActivity"
+            android:label="Paying With PayPal"
+            android:screenOrientation="portrait" />
+
         <!-- CANCEL -->
         <activity
             android:name=".CancelBookingActivity"
             android:label="Cancel This Booking"
             android:screenOrientation="portrait" />
+
+        <!--EDIT POST-->
+        <activity
+            android:name=".EditPostActivity"
+            android:label="Edit This Post"
+            android:screenOrientation="portrait"/>
 
         <!-- EDIT SPACE -->
         <activity
@@ -82,18 +106,18 @@
         <activity
             android:name=".LoginActivity"
             android:label="ParkHere"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- MAPS -->
         <activity
             android:name=".MapsMainActivity"
             android:label="ParkHere"
-            android:screenOrientation="portrait" />
-
-        <!-- MY BOOKINGS -->
-        <activity
-            android:name=".MyBookingsActivity"
-            android:label="All Bookings"
             android:screenOrientation="portrait" />
 
         <!-- MY BOOKINGS DETAIL -->
@@ -102,11 +126,17 @@
             android:label="Booking Details"
             android:screenOrientation="portrait" />
 
-        <!-- MY LISTED SPACES -->
+        <!-- MY BOOKINGS -->
         <activity
-            android:name=".MySpaces"
-            android:label="All Listed Spaces"
+            android:name=".MyBookingsActivity"
+            android:label="All Bookings"
             android:screenOrientation="portrait" />
+
+        <!--POST DETAILS-->
+        <activity
+            android:name=".MyPostDetailsActivity"
+            android:label="Post Details"
+            android:screenOrientation="portrait"/>
 
         <!-- MY LISTED SPACE DETAIL -->
         <activity
@@ -114,23 +144,30 @@
             android:label="Listed Space Details"
             android:screenOrientation="portrait" />
 
-        <!-- PAY WITH CARD -->
+        <!-- MY LISTED SPACES -->
         <activity
-            android:name=".BookCardPaymentActivity"
-            android:label="Paying With Card"
+            android:name=".MySpaces"
+            android:label="All Listed Spaces"
             android:screenOrientation="portrait" />
 
-        <!-- PAY WITH PAYPAL -->
-        <activity
-            android:name=".BookPayPalActivity"
-            android:label="Paying With PayPal"
-            android:screenOrientation="portrait" />
 
-        <!-- PROFILE -->
+        <!-- CURRENT USER PROFILE -->
         <activity
             android:name=".ProfileCurrentUserActivity"
             android:label="Profile"
             android:screenOrientation="portrait" />
+
+        <!--OWNER PROFILE-->
+        <activity
+            android:name=".ProfileOwnerActivity"
+            android:label="Owner Profile"
+            android:screenOrientation="portrait"/>
+
+        <!--RATE AND REVIEW-->
+        <activity
+            android:name=".RateAndReviewActivity"
+            android:label="Rate and Review"
+            android:screenOrientation="portrait"/>
 
         <!-- REGISTER -->
         <activity
@@ -140,11 +177,11 @@
 
         <!-- RESULTS AS LIST -->
         <activity
-            android:name=".ResultsActivity"
+            android:name=".ResultAsListActivity"
             android:label="View Results as List"
             android:screenOrientation="portrait" />
 
-        <!-- SEARHC FILTERS -->
+        <!-- SEARCH FILTERS -->
         <activity
             android:name=".SearchFiltersActivity"
             android:label="Set Search Filters"
@@ -155,24 +192,6 @@
             android:name=".VerificationActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
-        <activity android:name=".ProfileOwnerActivity" />
-        <activity android:name=".RateAndReviewActivity" />
-        
-        <activity
-            android:name=".MyPostDetailsActivity"
-            android:label="Post Details"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".EditPostActivity"
-            android:label="Edit This Post"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".AddPostActivity"></activity>
     </application>
-
 </manifest>

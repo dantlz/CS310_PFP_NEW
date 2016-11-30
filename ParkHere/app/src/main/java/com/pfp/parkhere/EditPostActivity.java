@@ -1,6 +1,6 @@
 package com.pfp.parkhere;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import ObjectClasses.CancellationPolicy;
 import ObjectClasses.MyCalendar;
 //Done Sprint 2
-public class EditPostActivity extends AppCompatActivity {
+//TODO Name change: xml files need to have their names changed to match java files
+public class EditPostActivity extends Activity {
 
     private String ownerEmail, spaceName, postName;
 
@@ -39,7 +40,7 @@ public class EditPostActivity extends AppCompatActivity {
         cancellationPolicies.add("Light");
         cancellationPolicies.add("Moderate");
         cancellationPolicies.add("Strict");
-        ArrayAdapter<String> policyAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,
+        ArrayAdapter<String> policyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
                 cancellationPolicies);
         postCancellationPolicies.setAdapter(policyAdapter);
 

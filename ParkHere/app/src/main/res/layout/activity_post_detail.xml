@@ -41,12 +41,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-
-        <Button
-            android:id="@+id/goToSpaceDetailsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go to space and owner" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

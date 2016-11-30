@@ -17,7 +17,7 @@ import ObjectClasses.Status;
 //Done Sprint 2
 //DOUBLEUSE
 public class MyPostDetailsActivity extends Activity {
-    private Button goToSpaceDetailsButton, editButton, bookPostButton, finishBookingButton;
+    private Button editButton, bookPostButton, finishBookingButton;
 
     private String spaceName;
     private String ownerEmail;
@@ -30,7 +30,6 @@ public class MyPostDetailsActivity extends Activity {
         setContentView(R.layout.activity_post_detail);
         firstTime = true;
 
-        goToSpaceDetailsButton = (Button) findViewById(R.id.goToSpaceDetailsButton);
         editButton = (Button) findViewById(R.id.postdetail_edit_listed_space_button);
         bookPostButton = (Button) findViewById(R.id.postdetail_bookSpaceButton);
         finishBookingButton = (Button) findViewById(R.id.postdetail_finishBookingsButton);
@@ -60,15 +59,6 @@ public class MyPostDetailsActivity extends Activity {
             editButton.setVisibility(View.GONE);
         }
 
-        goToSpaceDetailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyPostDetailsActivity.this, MySpaceDetails.class);
-                intent.putExtra("SPACE_NAME", spaceName);
-                intent.putExtra("SPACE_OWNEREMAIL", ownerEmail);
-                startActivity(intent);
-            }
-        });
 
         finishBookingButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.pfp.parkhere;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import ObjectClasses.MyCalendar;
 import ObjectClasses.Post;
 
 //Done sprint 2
-public class AddPostActivity extends AppCompatActivity {
+public class AddPostActivity extends Activity {
 
     public String name, ownerEmail, spaceName;
     private EditText nameField;
@@ -42,8 +43,7 @@ public class AddPostActivity extends AppCompatActivity {
         Post post = new Post();
         post.setParentOwnerEmail(ownerEmail);
         post.setParentSpaceName(spaceName);
-
-        post.setPostName(nameField.toString());
+        post.setPostName(nameField.getText().toString());
         int n = policySpinner.getSelectedItemPosition();
         CancellationPolicy policy;
         if(n == 0)
@@ -70,9 +70,9 @@ public class AddPostActivity extends AppCompatActivity {
         endDateTime.setMinute(endTimePicker.getMinute());
         post.setAvailableEndDateAndTime(endDateTime);
 
-        Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(nameField.toString()).setValue(post);
+        Global.posts().child(Global.reformatEmail(ownerEmail)).child(spaceName).child(nameField.getText().toString()).setValue(post);
         //TODO If the space already has a post with this name, this should not work!!!
-        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("PostNames").child(nameField.toString()).setValue(nameField.toString());
+        Global.spaces().child(Global.reformatEmail(ownerEmail)).child(spaceName).child("PostNames").child(nameField.getText().toString()).setValue(nameField.getText().toString());
     }
 
 }

@@ -2,22 +2,28 @@ package com.pfp.parkhere;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import ObjectClasses.Space;
 //Done Sprint 2
-public class ResultsActivity extends Activity {
+public class ResultAsListActivity extends Activity {
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
@@ -47,7 +53,7 @@ public class ResultsActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int n = position;
                 ObjectClasses.Space spx = spaceList.get(n);
-                Intent intent = new Intent(ResultsActivity.this, MySpaceDetails.class);
+                Intent intent = new Intent(ResultAsListActivity.this, MySpaceDetails.class);
                 intent.putExtra("SPACE_NAME", spx.getSpaceName());
                 intent.putExtra("SPACE_OWNEREMAIL", spx.getOwnerEmail());
                 //Stack depth 2
@@ -59,6 +65,36 @@ public class ResultsActivity extends Activity {
         populateListView();
     }
 
+    private void createShading(){
+        Global.spaceReviews().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(int i = 0; i < spaceList.size(); i ++){
+                    Space space = spaceList.get(i);
+                    String ownerEmail = space.getOwnerEmail();
+                    String spaceName = space.getSpaceName();
+
+                    int reviewCount = (int) dataSnapshot.child(Global.reformatEmail(ownerEmail)).child(spaceName).getChildrenCount();
+                    System.out.println("Index: " + i);
+                    if(reviewCount > 5){
+                        listView.getChildAt(i).setBackgroundColor(Color.parseColor("#4682B4"));
+                    }
+                    else if(reviewCount == 0){
+                        listView.getChildAt(i).setBackgroundColor(Color.parseColor("#87CEFA"));
+                    }
+                    else{
+                        listView.getChildAt(i).setBackgroundColor(Color.parseColor("#00BFFF"));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void populateListView() {
         for (Map.Entry<LatLng, ObjectClasses.Space> spaceEntry : spacesLatLng.entrySet()) {
             LatLng latlng = spaceEntry.getKey(); //LatLng Object
@@ -66,6 +102,8 @@ public class ResultsActivity extends Activity {
             addItems(space.getOwnerEmail() + " $" + space.getPricePerHour() + " - " + (int)calculateDistanceFromTo(latlng, userLatLng) + " miles");
             spaceList.add(space);
         }
+
+        createShading();
     }
 
     private void addItems(String x) {
@@ -105,6 +143,7 @@ public class ResultsActivity extends Activity {
 
         sortSpaceList(0);
         adapter.notifyDataSetChanged();
+        createShading();
     }
 
     public void sortByDistance(View view) {
@@ -133,6 +172,7 @@ public class ResultsActivity extends Activity {
 
         sortSpaceList(1);
         adapter.notifyDataSetChanged();
+        createShading();
     }
 
     private void sortSpaceList(final int n) {

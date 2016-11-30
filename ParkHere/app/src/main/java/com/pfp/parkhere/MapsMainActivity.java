@@ -141,7 +141,7 @@ public class MapsMainActivity extends Activity implements OnMapReadyCallback {
         resultAsListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsMainActivity.this, ResultsActivity.class);
+                Intent intent = new Intent(MapsMainActivity.this, ResultAsListActivity.class);
                 intent.putExtra("LATLNG", currentCameraOrZoomLatLng);
                 Global.setMapOfLatLngSpacesToPass(filterForResultsList(currentFiltersIntent));
                 //Stack depth 1

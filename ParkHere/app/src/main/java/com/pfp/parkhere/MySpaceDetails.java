@@ -55,6 +55,7 @@ public class MySpaceDetails extends Activity {
         spaceName = extras.getString("SPACE_NAME");
         ownerEmail = extras.getString("SPACE_OWNEREMAIL");
         reviewListViewValues = new ArrayList<>();
+        postsListViewValues = new ArrayList<>();
 
         //Can't book my own space or look at myself, but can confirm/edit space
         if(ownerEmail.equals(Global.getCurUser().getEmailAddress())){

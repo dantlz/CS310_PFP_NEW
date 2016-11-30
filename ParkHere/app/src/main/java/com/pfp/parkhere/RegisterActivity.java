@@ -122,6 +122,7 @@ public class RegisterActivity extends Activity {
                             if(currentUser == null)
                                 return;
                             System.out.println("Register: " + 4);
+                            System.out.println("Register: " + currentUser.getEmailAddress());
                             Global.setCurUser(currentUser);
                             startActivity(new Intent(RegisterActivity.this, MapsMainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             finish();
