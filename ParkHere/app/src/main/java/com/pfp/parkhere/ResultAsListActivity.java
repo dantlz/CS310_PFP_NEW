@@ -33,7 +33,7 @@ public class ResultAsListActivity extends Activity {
 
     private ArrayList<String> viewValues;
     private ArrayList<ObjectClasses.Space> spaceList;
-//TODO Very strange issue. If new install of app or autologin, then populates with no probelm. If sign out then sign in, it crashes because listview didn't have any children
+//TODO Very strange issue. If new install of app or autologin, then populates with no probelm. If sign out then sign in, it crashes because listview didn't have any children. A rough fix is put into place
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
