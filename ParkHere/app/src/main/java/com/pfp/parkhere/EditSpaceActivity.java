@@ -120,6 +120,7 @@ public class EditSpaceActivity extends Activity {
             e.printStackTrace();
         }
 
+        //TODO Change price doesn’t need to affect current bookings. Finalize this
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)
                 .child("pricePerHour").setValue(Integer.valueOf(editPrice.getText().toString()));
         Global.spaces().child(Global.getCurUser().getReformattedEmail()).child(spaceName)

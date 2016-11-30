@@ -17,7 +17,7 @@ import ObjectClasses.Post;
 
 //Done Sprint 2
 public class BookActivity extends Activity {
-
+//TODO Figure out simultaneous booking criss crossing
     private Post selectedPost;
     private String spaceName;
     private String ownerEmail;

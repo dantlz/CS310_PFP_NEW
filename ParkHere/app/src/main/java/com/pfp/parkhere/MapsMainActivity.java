@@ -61,6 +61,7 @@ import ObjectClasses.Status;
 import static android.location.LocationManager.GPS_PROVIDER;
 //Done Sprint 2
 //TODO All the space/post passing could be done much more easily by passing objects, or sending object to global
+//TODO Decide whether editing space details changes it for the posts since they are inherited not dynamically acquired
 public class MapsMainActivity extends Activity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

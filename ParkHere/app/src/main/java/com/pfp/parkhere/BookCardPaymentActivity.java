@@ -26,7 +26,7 @@ import ObjectClasses.Booking;
 import ObjectClasses.Space;
 //Done Sprint 2
 public class BookCardPaymentActivity extends Activity {
-
+//TODO Balance needs to change
     private Booking booking;
     private String ownerEmail;
     private String ownerEmailReformatted;
@@ -141,7 +141,7 @@ public class BookCardPaymentActivity extends Activity {
         Global.posts().child(ownerEmailReformatted).child(spaceName).child(postName).child("currentBookingIdentifiers").child(bookingID).setValue(Global.getCurUser().getEmailAddress());
         finish();
 
-        //TODO Maybe add unavailable times to space object too?
+        //TODO Add unavailable dates to a space after a booking is made.
 //        FirebaseDatabase.getInstance().getReference().child("Spaces")
 //                .child(Global.reformatEmail(
 //                        getIntent().getExtras().getString("OWNEREMAIL")))
