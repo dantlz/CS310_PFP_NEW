@@ -33,7 +33,7 @@ public class ResultAsListActivity extends Activity {
 
     private ArrayList<String> viewValues;
     private ArrayList<ObjectClasses.Space> spaceList;
-
+//TODO Very strange issue. If new install of app or autologin, then populates with no probelm. If sign out then sign in, it crashes because listview didn't have any children
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +41,10 @@ public class ResultAsListActivity extends Activity {
 
         userLatLng = (LatLng)getIntent().getExtras().get("LATLNG");
         spacesLatLng = Global.getMapOfLatLngSpacesToPass();
-
         spaceList = new ArrayList<>();
+        viewValues = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.resultsListView);
-        viewValues = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, viewValues);
-        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -62,7 +59,15 @@ public class ResultAsListActivity extends Activity {
             }
         });
 
-        populateListView();
+        for (Map.Entry<LatLng, ObjectClasses.Space> spaceEntry : spacesLatLng.entrySet()) {
+            LatLng latlng = spaceEntry.getKey(); //LatLng Object
+            Space space = spaceEntry.getValue(); //Space Object
+            viewValues.add(space.getOwnerEmail() + " $" + space.getPricePerHour() + " - " + (int)calculateDistanceFromTo(latlng, userLatLng) + " miles");
+            spaceList.add(space);
+        }
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, viewValues);
+        listView.setAdapter(adapter);
+        createShading();
     }
 
     private void createShading(){
@@ -75,15 +80,33 @@ public class ResultAsListActivity extends Activity {
                     String spaceName = space.getSpaceName();
 
                     int reviewCount = (int) dataSnapshot.child(Global.reformatEmail(ownerEmail)).child(spaceName).getChildrenCount();
+
+                    System.out.println("Spacelatlng: " + spacesLatLng.size());
+                    System.out.println("viewValues: " + viewValues.size());
+                    System.out.println("Listview count: " + listView.getCount() + " Listview childrenCount" + listView.getChildCount());
                     System.out.println("Index: " + i);
+
+                    boolean hasChildren = false;
+                    if(listView.getChildCount() != 0)
+                        hasChildren = true;
+
                     if(reviewCount > 5){
-                        listView.getChildAt(i).setBackgroundColor(Color.parseColor("#4682B4"));
+                        if(hasChildren)
+                            listView.getChildAt(i).setBackgroundColor(Color.parseColor("#4682B4"));
+                        else
+                            getViewByPosition(i, listView).setBackgroundColor(Color.parseColor("#4682B4"));
                     }
                     else if(reviewCount == 0){
-                        listView.getChildAt(i).setBackgroundColor(Color.parseColor("#87CEFA"));
+                        if(hasChildren)
+                            listView.getChildAt(i).setBackgroundColor(Color.parseColor("#87CEFA"));
+                        else
+                            getViewByPosition(i, listView).setBackgroundColor(Color.parseColor("#87CEFA"));
                     }
                     else{
-                        listView.getChildAt(i).setBackgroundColor(Color.parseColor("#00BFFF"));
+                        if(hasChildren)
+                            listView.getChildAt(i).setBackgroundColor(Color.parseColor("#00BFFF"));
+                        else
+                            getViewByPosition(i, listView).setBackgroundColor(Color.parseColor("#00BFFF"));
                     }
                 }
             }
@@ -95,20 +118,17 @@ public class ResultAsListActivity extends Activity {
         });
     }
 
-    private void populateListView() {
-        for (Map.Entry<LatLng, ObjectClasses.Space> spaceEntry : spacesLatLng.entrySet()) {
-            LatLng latlng = spaceEntry.getKey(); //LatLng Object
-            Space space = spaceEntry.getValue(); //Space Object
-            addItems(space.getOwnerEmail() + " $" + space.getPricePerHour() + " - " + (int)calculateDistanceFromTo(latlng, userLatLng) + " miles");
-            spaceList.add(space);
-        }
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        createShading();
-    }
-
-    private void addItems(String x) {
-        viewValues.add(x);
-        adapter.notifyDataSetChanged();
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } /*else {
+        final int childIndex = pos - firstListItemPosition;
+        return listView.getChildAt(childIndex);
+    }*/ // Try with else part un-commented too
+        return null;
     }
 
     public void sortByPrice(View view) {
