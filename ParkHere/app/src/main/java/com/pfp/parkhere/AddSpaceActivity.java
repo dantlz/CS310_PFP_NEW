@@ -144,6 +144,7 @@ public class AddSpaceActivity extends Activity {
             List<Address> addressResults = geocoder.getFromLocationName(fullAddress, 1);
             //Check if entered full address can be located by Geocoder because all subsequent locating is done with Geocoders
             if(addressResults.size() < 1){
+                //TODO Apparently this check didn't work??
                 new AlertDialog.Builder(AddSpaceActivity.this, R.style.MyAlertDialogStyle)
                         .setTitle("Location not found")
                         .setMessage("We could not find a location based on your address. Please try again")

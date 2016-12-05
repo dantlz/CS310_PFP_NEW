@@ -508,6 +508,8 @@ public class MapsMainActivity extends Activity implements OnMapReadyCallback {
     }
 
     private void addAndFilterMarkers() {
+        //TODO owner shouldnt have filters: Add if statements here
+        //TODO owners can also filter: add a filter button to owner's map
         mMap.clear();
 
         int lowestPrice = 0, highestPrice = 0;
